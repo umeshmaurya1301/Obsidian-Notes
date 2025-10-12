@@ -11,14 +11,10 @@
             "id": "27417334def865a8",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Test Note Bhai.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Test Note Bhai"
+              "title": "New tab"
             }
           }
         ]
@@ -78,7 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 264.5
   },
   "right": {
     "id": "707542c070f0510d",
@@ -171,7 +167,13 @@
   },
   "active": "27417334def865a8",
   "lastOpenFiles": [
+    "testingchalnedo.md",
+    "firrsebhai.txt",
+    "TestAgain.md",
     "Test Note Bhai.md",
+    "Untitled.base",
+    "Untitled 1",
+    "Untitled",
     "TestFile"
   ]
 }
