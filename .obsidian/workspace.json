@@ -4,17 +4,41 @@
     "type": "split",
     "children": [
       {
-        "id": "ba640a711e927c39",
+        "id": "b221d3ffc870cb21",
         "type": "tabs",
         "children": [
           {
-            "id": "27417334def865a8",
+            "id": "cb486ff40f1d3435",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Tech/DSA/Questions/LT_338_Counting_Bits.md",
+                "mode": "source",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "LT_338_Counting_Bits"
+            }
+          }
+        ]
+      },
+      {
+        "id": "08936e0d995522b7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0428d6e7fc2c45f8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Tech/DSA/Questions/LT_338_Counting_Bits.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "LT_338_Counting_Bits"
             }
           }
         ]
@@ -74,7 +98,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 264.5
+    "width": 234.5,
+    "collapsed": true
   },
   "right": {
     "id": "707542c070f0510d",
@@ -90,7 +115,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Test Note Bhai.md",
+                "file": "Tech/DSA/Questions/LT_338_Counting_Bits.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +125,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Test Note Bhai"
+              "title": "Backlinks for LT_338_Counting_Bits"
             }
           },
           {
@@ -146,6 +171,16 @@
               "icon": "lucide-list",
               "title": "Outline of Test Note Bhai"
             }
+          },
+          {
+            "id": "fca2e7c237539590",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
           }
         ]
       }
@@ -162,18 +197,47 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "27417334def865a8",
+  "active": "0428d6e7fc2c45f8",
   "lastOpenFiles": [
-    "testingchalnedo.md",
-    "firrsebhai.txt",
-    "TestAgain.md",
-    "Test Note Bhai.md",
+    "Tech/DSA/Questions/LT_137_Single_Number_2.md",
+    "Tech/DSA/Questions/LT_260_Single_Numer_3.md",
+    "Tech/DSA/Questions/LT_338_Counting_Bits.md",
+    "2025-10-26.md",
+    "Tech/DSA/Questions/LTC_136_Two_Sum.md",
+    "Tech/Dev Ops/Kubernetes/Quick Setup.md",
+    "Tech/Dev Ops/Kubernetes/1. Architecture.md",
+    "TODO.md",
+    "Tech/DSA/Questions/Two Sum.md",
+    "Tech/DSA/Templates/DSA_Question_Template.md",
+    "Tech/DSA/Templates/DSA_Topic_Template.md",
+    "Quick.md",
+    "Templates/DSA_Question_Template.md",
+    "Tech/DSA/Templates",
+    "Tech/DSA/Topics",
+    "Tech/DSA/Questions",
+    "Tech/DSA/Bit Manipulation.md",
+    "Tech/DSA/Questions/LeetCode 260 - Single Number III.md",
+    "Templates/DSA_QUESTION_TEMPLATE.md.md",
+    "Templates/DSA_TEMPLATE.md.md",
+    "Tech/Dev Ops/Kubernetes",
+    "Tech/DSA/Questions/Demo2.md",
+    "Tech/DSA/Questions/Demo_1.md",
+    "Untitled.md",
+    "Untitled 1.md",
+    "Tech/DSA/BIT_MANIPULATION.md.md",
+    "Tech/DSA/Questions/LeetCode_260_Single_Number_III.md.md",
+    "Tech/DSA/Templates/DSA_Template.md.md",
+    "Templates",
+    "Tech/DSA/Questions",
+    "Tech/DSA/Templates",
+    "<Question_Name>.md",
+    "Templates/DSA_TEMPLATE.md",
+    "Templates",
     "Untitled.base",
-    "Untitled 1",
-    "Untitled",
-    "TestFile"
+    "Untitled 1.base"
   ]
 }
