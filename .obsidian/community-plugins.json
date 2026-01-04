@@ -2,5 +2,7 @@
   "calendar",
   "templater-obsidian",
   "dataview",
-  "obsidian-tasks-plugin"
+  "obsidian-tasks-plugin",
+  "sortable-tables",
+  "obsidian-git"
 ]
