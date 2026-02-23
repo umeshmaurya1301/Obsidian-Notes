@@ -2,6 +2,7 @@
 created: 2026-01-28 00:36
 tags:
   - Arrays
+  - SlidingWindow
 source: https://leetcode.com/problems/longest-substring-without-repeating-characters/
 problem_id: "3"
 difficulty: Medium

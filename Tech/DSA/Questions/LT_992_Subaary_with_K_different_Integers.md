@@ -1,4 +1,4 @@
-# LT_992 – Subarrays with K Different Integers
+
 
 **Link:** https://leetcode.com/problems/subarrays-with-k-different-integers/
 
