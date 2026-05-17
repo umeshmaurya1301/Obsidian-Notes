@@ -44,7 +44,7 @@
 
 |Week|Focus|Patterns|Target Problems|
 |---|---|---|---|
-|1|Arrays + Hashing|Arrays, Hashing|28|
+|1|Arrays + Hashing|Arrays, Hashing|29|
 |2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|27|
 |3|Stack + Monotonic Stack|Stack, Monotonic Stack|22|
 |4|Binary Search|Binary Search, Search on Answer|25|
@@ -73,16 +73,16 @@
 
 - [x] [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/) — Easy ✅ Neetcode ✅ 2026-05-14
 - [x] [Contains Duplicate 2](https://leetcode.com/problems/contains-duplicate-ii/description/) — Easy ✅ ✅ 2026-05-14
-- [ ] [Contains Duplicate 3](https://leetcode.com/problems/contains-duplicate-iii/description/) — Hard ✅
+- [x] [Contains Duplicate 3](https://leetcode.com/problems/contains-duplicate-iii/description/) — Hard ✅ ✅ 2026-05-18
 - [x] [Valid Anagram](https://leetcode.com/problems/valid-anagram/) — Easy ✅ Neetcode ✅ 2026-05-14
 - [x] [Two Sum](https://leetcode.com/problems/two-sum/) — Easy ✅ Neetcode 🔥 ✅ 2026-05-14
-- [ ] [Group Anagrams](https://leetcode.com/problems/group-anagrams/) — Medium ✅ Neetcode 🔥
+- [x] [Group Anagrams](https://leetcode.com/problems/group-anagrams/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-18
 - [x] [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-15
 - [x] [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-15
 - [x] [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) — Medium ✅ Neetcode ✅ 2026-05-15
 - [ ] [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) — Medium ✅ Neetcode
 - [x] [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-16
-- [ ] [Find Three Consecutive Integers That Sum to a Given Number](https://leetcode.com/problems/find-three-consecutive-integers-that-sum-to-a-given-number/) — Medium
+- [x] [Find Three Consecutive Integers That Sum to a Given Number](https://leetcode.com/problems/find-three-consecutive-integers-that-sum-to-a-given-number/) — Medium ✅ 2026-05-18
 
 ## Prefix Sum
 
@@ -109,6 +109,7 @@
 - [ ] [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) — Hard ✅ Neetcode 🔥 **(Google favourite)**
 - [ ] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard
 - [ ] [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) — Hard 🔥
+- [ ] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard
 
 ---
 
@@ -768,7 +769,7 @@
 
 |Pattern|Total|Solved|%|
 |---|---|---|---|
-|Arrays + Hashing|28|16|57%|
+|Arrays + Hashing|29|16|55%|
 |Two Pointers + Sliding Window|27|0|0%|
 |Stack + Monotonic Stack|22|0|0%|
 |Binary Search|25|0|0%|
@@ -784,7 +785,7 @@
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**397**|**16**|**4%**|
+|**TOTAL**|**398**|**16**|**4%**|
 
 ---
 

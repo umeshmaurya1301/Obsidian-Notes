@@ -1,131 +1,277 @@
-LT_0043_MULTIPLY_STRINGS
+FILE: LT_0049_GROUP_ANAGRAMS
 
-FILE: LT_0043_MULTIPLY_STRINGS
-ID: 43
+ID: 49
+
 Difficulty: Medium
-Tags: Math, String, Simulation
-Source: https://leetcode.com/problems/multiply-strings/
+
+Tags: Arrays, Strings, HashMap, Sorting
+
+Source: https://leetcode.com/problems/group-anagrams/description/
 
 Problem Description
-Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
-Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+Given an array of strings strs, group the anagrams together.
+
+Two strings are anagrams if they contain the same characters with the same frequencies, but the order of characters may differ.
+
+Return the grouped anagrams in any order.
 
 Examples
-Input: num1 = "2", num2 = "3"
-Output: "6"
-Explanation: Basic single-digit multiplication.
 
-Input: num1 = "123", num2 = "456"
-Output: "56088"
-Explanation: Standard multi-digit multiplication.
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["eat","tea","ate"],["tan","nat"],["bat"]]
+Explanation: "eat", "tea", and "ate" are anagrams because after sorting they all become "aet". Similarly, "tan" and "nat" become "ant".
 
-Input: num1 = "0", num2 = "523"
-Output: "0"
-Explanation: Any number multiplied by 0 is 0.
+Input: strs = [""]
+Output: [[""]]
+Explanation: Empty string grouped as a single anagram group.
+
+Input: strs = ["a"]
+Output: [["a"]]
+Explanation: Single character string forms one group.
 
 Constraints
-1 <= num1.length, num2.length <= 200
-num1 and num2 consist of digits only.
-Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+
+1 <= strs.length <= 10000
+0 <= strs[i].length <= 100
+strs[i] consists of lowercase English letters.
 
 Intuition
-We can simulate the standard manual multiplication process taught in elementary school. When multiplying num1 by num2, we multiply each digit of num2 by each digit of num1 and add the results at the correct positional indices. The maximum possible length of the product of two numbers with lengths m and n is m + n.
+
+Two strings are anagrams if their characters and frequencies are identical.
+
+Important observation:
+
+If two strings are sorted and become equal, then they are anagrams.
+
+Example:
+
+"eat" -> "aet"
+"tea" -> "aet"
+"ate" -> "aet"
+
+All become the same sorted string.
+
+So we can use the sorted string as a unique key.
+
+The problem becomes:
+
+Group all original strings having the same sorted representation.
 
 Approach
-We use an integer array called pos of size m + n to store intermediate sums.
-We iterate through both strings from right to left (least significant digit to most significant).
-When we multiply num1 at index i by num2 at index j, the resulting two-digit product affects exactly two positions in our pos array: index i + j (the carry) and index i + j + 1 (the remainder).
-We add the multiplication result to the existing value at pos at i + j + 1.
-We update pos at i + j + 1 with the remainder (modulo 10).
-We add the carry (division by 10) to pos at i + j.
-Finally, we convert the pos array back to a string, taking care to skip any leading zeros.
+
+Use a HashMap where:
+
+Key:
+sorted version of the string
+
+Value:
+list of strings belonging to that anagram group
+
+Steps:
+
+Traverse every string.
+Convert string into char array.
+Sort the char array.
+Convert sorted array back into string.
+Use sorted string as hashmap key.
+Add original string into corresponding group.
+Return all hashmap values.
 
 Dry Run
-Example: num1 = "12", num2 = "34"
-Initial pos array size = 4. Filled with [0, 0, 0, 0].
 
-Step 1: i=1 (digit 2), j=1 (digit 4)
-Multiply: 2 * 4 = 8
-Indices: p1=2, p2=3
-Sum: 8 + pos[3] (0) = 8
-pos updates to: [0, 0, 0, 8]
+Input:
+strs = ["eat","tea","tan","ate","nat","bat"]
 
-Step 2: i=1 (digit 2), j=0 (digit 3)
-Multiply: 2 * 3 = 6
-Indices: p1=1, p2=2
-Sum: 6 + pos[2] (0) = 6
-pos updates to: [0, 0, 6, 8]
+Initial:
+map = {}
 
-Step 3: i=0 (digit 1), j=1 (digit 4)
-Multiply: 1 * 4 = 4
-Indices: p1=1, p2=2
-Sum: 4 + pos[2] (6) = 10
-pos updates: pos[2] becomes 0, carry 1 adds to pos[1]
-pos updates to: [0, 1, 0, 8]
+Iteration 1:
+str = "eat"
 
-Step 4: i=0 (digit 1), j=0 (digit 3)
-Multiply: 1 * 3 = 3
-Indices: p1=0, p2=1
-Sum: 3 + pos[1] (1) = 4
-pos updates to: [0, 4, 0, 8]
+Sort:
+"eat" -> "aet"
 
-Final string generation: skip the leading 0, append 4, 0, 8. Result is 408.
+map:
+"aet" -> ["eat"]
+
+Iteration 2:
+str = "tea"
+
+Sort:
+"tea" -> "aet"
+
+map:
+"aet" -> ["eat","tea"]
+
+Iteration 3:
+str = "tan"
+
+Sort:
+"tan" -> "ant"
+
+map:
+"aet" -> ["eat","tea"]
+"ant" -> ["tan"]
+
+Iteration 4:
+str = "ate"
+
+Sort:
+"ate" -> "aet"
+
+map:
+"aet" -> ["eat","tea","ate"]
+"ant" -> ["tan"]
+
+Iteration 5:
+str = "nat"
+
+Sort:
+"nat" -> "ant"
+
+map:
+"aet" -> ["eat","tea","ate"]
+"ant" -> ["tan","nat"]
+
+Iteration 6:
+str = "bat"
+
+Sort:
+"bat" -> "abt"
+
+Final map:
+"aet" -> ["eat","tea","ate"]
+"ant" -> ["tan","nat"]
+"abt" -> ["bat"]
+
+Return:
+[["eat","tea","ate"],["tan","nat"],["bat"]]
 
 Edge Cases
-One or both of the strings is 0. Handled by checking at the very beginning and returning 0 to avoid generating an output string like 0000.
-Inputs with drastically different lengths (e.g., length 200 and length 1). Handled naturally by the bounds of the nested loops.
+
+Empty string
+Input:
+[""]
+
+Output:
+[[""]]
+
+Single string
+Input:
+["abc"]
+
+Output:
+[["abc"]]
+
+Duplicate strings
+Input:
+["eat","eat"]
+
+Output:
+[["eat","eat"]]
+
+All strings unique
+Every string forms its own group.
+Very large input
+Efficient hashmap grouping is necessary.
 
 Complexity
-Time Complexity: O(m * n) where m is the length of num1 and n is the length of num2. We execute a constant number of operations for each pair of digits.
-Space Complexity: O(m + n) to store the intermediate pos array.
+
+Time: O(n * k log k)
+
+Space: O(n * k)
+
+Where:
+n = number of strings
+k = average string length
+
+Sorting each string costs:
+O(k log k)
 
 Java Code
-class Solution {
-public String multiply(String num1, String num2) {
-if ("0".equals(num1) || "0".equals(num2)) {
-return "0";
-}
 
-    int m = num1.length();
-    int n = num2.length();
-    int[] pos = new int[m + n];
-    
-    for (int i = m - 1; i >= 0; i--) {
-        for (int j = n - 1; j >= 0; j--) {
-            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
-            
-            int p1 = i + j;
-            int p2 = i + j + 1;
-            
-            int sum = mul + pos[p2];
-            
-            pos[p1] += sum / 10;
-            pos[p2] = sum % 10;
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        Map<String, List<String>> map = new HashMap<>();
+
+        for(String str : strs) {
+
+            char[] arr = str.toCharArray();
+
+            Arrays.sort(arr);
+
+            String key = new String(arr);
+
+            map.putIfAbsent(key, new ArrayList<>());
+
+            map.get(key).add(str);
         }
+
+        return new ArrayList<>(map.values());
     }
-    
-    StringBuilder sb = new StringBuilder();
-    for (int p : pos) {
-        if (!(sb.length() == 0 && p == 0)) {
-            sb.append(p);
-        }
-    }
-    
-    return sb.toString();
-}
 }
 
 Key Insights
-The maximum number of digits in the product of two numbers of length m and n is guaranteed to be exactly m + n.
-The relationship between string indices and the product array indices is perfectly predictable: num1 at i multiplied by num2 at j always dictates values at pos at i + j and pos at i + j + 1.  
+
+Anagrams become identical after sorting.
+Sorted string acts as canonical representation.
+HashMap efficiently groups strings with same key.
+Original strings are stored, not sorted strings.
+Multiple strings can map to the same key.
+This is a classic grouping-by-transformation problem.
+Sorting simplifies anagram detection.
+
+Alternative Optimized Approach
+
+Instead of sorting each string, we can use character frequency count as the key.
+
+Example:
+
+"eat"
+
+Frequency:
+a=1
+e=1
+t=1
+
+Key:
+#1#0#0#0#1...
+
+This avoids sorting and improves complexity to:
+
+O(n * k)
+
+The separator "#" is important to avoid ambiguity.
+
+Example:
+
+Without separator:
+[1,11] -> "111"
+[11,1] -> "111"
+
+Collision occurs.
+
+With separator:
+[1,11] -> "#1#11"
+[11,1] -> "#11#1"
+
+Now keys remain unique.
 
 Patterns
-String Manipulation
-Array Simulation
-Elementary Math Simulation  
+
+HashMap Grouping
+Canonical Representation
+Sorting
+String Transformation
+Frequency Counting
 
 Pitfalls
-Failing to handle the 0 edge case properly, which leads to returning empty strings or strings of pure zeros.
-Incorrectly calculating the p1 and p2 index alignments.
-Forgetting to subtract the ASCII value of 0 when extracting character values for math operations.
-Attempting to cast or parse strings to large numbers, which immediately violates the rules of the problem and results in integer overflow errors on large test cases.
+
+Forgetting to convert sorted char array back into String.
+Using char[] directly as hashmap key will not work correctly.
+Forgetting that multiple strings can belong to same group.
+Not initializing list before adding values.
+Forgetting separator while building frequency-based key can cause collisions.
+Confusing sorted string with original string.

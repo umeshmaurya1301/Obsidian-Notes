@@ -1,8 +1,9 @@
 
-| S.No | Question                           | Link                                                                   | Solve Count |
-| ---- | ---------------------------------- | ---------------------------------------------------------------------- | ----------- |
-| 1.   | Continuous SubArray Sum         | [https://leetcode.com/problems/median-of-two-sorted-arrays/description/](https://leetcode.com/problems/continuous-subarray-sum/description/) | 0           |
-| 2.   | LRC Cache                    | https://leetcode.com/problems/lru-cache/description/           | 0           |
+| S.No | Question                | Link                                                                                                                                         | Solve Count |
+| ---- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.   | Continuous SubArray Sum | [https://leetcode.com/problems/median-of-two-sorted-arrays/description/](https://leetcode.com/problems/continuous-subarray-sum/description/) | 0           |
+| 2.   | LRC Cache               | https://leetcode.com/problems/lru-cache/description/                                                                                         | 0           |
+| 3.   | Contains Duplicate 3    | https://leetcode.com/problems/contains-duplicate-iii/                                                                                        |             |
 
 
 
