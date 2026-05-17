@@ -1,0 +1,131 @@
+LT_0043_MULTIPLY_STRINGS
+
+FILE: LT_0043_MULTIPLY_STRINGS
+ID: 43
+Difficulty: Medium
+Tags: Math, String, Simulation
+Source: https://leetcode.com/problems/multiply-strings/
+
+Problem Description
+Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
+
+Examples
+Input: num1 = "2", num2 = "3"
+Output: "6"
+Explanation: Basic single-digit multiplication.
+
+Input: num1 = "123", num2 = "456"
+Output: "56088"
+Explanation: Standard multi-digit multiplication.
+
+Input: num1 = "0", num2 = "523"
+Output: "0"
+Explanation: Any number multiplied by 0 is 0.
+
+Constraints
+1 <= num1.length, num2.length <= 200
+num1 and num2 consist of digits only.
+Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+
+Intuition
+We can simulate the standard manual multiplication process taught in elementary school. When multiplying num1 by num2, we multiply each digit of num2 by each digit of num1 and add the results at the correct positional indices. The maximum possible length of the product of two numbers with lengths m and n is m + n.
+
+Approach
+We use an integer array called pos of size m + n to store intermediate sums.
+We iterate through both strings from right to left (least significant digit to most significant).
+When we multiply num1 at index i by num2 at index j, the resulting two-digit product affects exactly two positions in our pos array: index i + j (the carry) and index i + j + 1 (the remainder).
+We add the multiplication result to the existing value at pos at i + j + 1.
+We update pos at i + j + 1 with the remainder (modulo 10).
+We add the carry (division by 10) to pos at i + j.
+Finally, we convert the pos array back to a string, taking care to skip any leading zeros.
+
+Dry Run
+Example: num1 = "12", num2 = "34"
+Initial pos array size = 4. Filled with [0, 0, 0, 0].
+
+Step 1: i=1 (digit 2), j=1 (digit 4)
+Multiply: 2 * 4 = 8
+Indices: p1=2, p2=3
+Sum: 8 + pos[3] (0) = 8
+pos updates to: [0, 0, 0, 8]
+
+Step 2: i=1 (digit 2), j=0 (digit 3)
+Multiply: 2 * 3 = 6
+Indices: p1=1, p2=2
+Sum: 6 + pos[2] (0) = 6
+pos updates to: [0, 0, 6, 8]
+
+Step 3: i=0 (digit 1), j=1 (digit 4)
+Multiply: 1 * 4 = 4
+Indices: p1=1, p2=2
+Sum: 4 + pos[2] (6) = 10
+pos updates: pos[2] becomes 0, carry 1 adds to pos[1]
+pos updates to: [0, 1, 0, 8]
+
+Step 4: i=0 (digit 1), j=0 (digit 3)
+Multiply: 1 * 3 = 3
+Indices: p1=0, p2=1
+Sum: 3 + pos[1] (1) = 4
+pos updates to: [0, 4, 0, 8]
+
+Final string generation: skip the leading 0, append 4, 0, 8. Result is 408.
+
+Edge Cases
+One or both of the strings is 0. Handled by checking at the very beginning and returning 0 to avoid generating an output string like 0000.
+Inputs with drastically different lengths (e.g., length 200 and length 1). Handled naturally by the bounds of the nested loops.
+
+Complexity
+Time Complexity: O(m * n) where m is the length of num1 and n is the length of num2. We execute a constant number of operations for each pair of digits.
+Space Complexity: O(m + n) to store the intermediate pos array.
+
+Java Code
+class Solution {
+public String multiply(String num1, String num2) {
+if ("0".equals(num1) || "0".equals(num2)) {
+return "0";
+}
+
+    int m = num1.length();
+    int n = num2.length();
+    int[] pos = new int[m + n];
+    
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = n - 1; j >= 0; j--) {
+            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+            
+            int p1 = i + j;
+            int p2 = i + j + 1;
+            
+            int sum = mul + pos[p2];
+            
+            pos[p1] += sum / 10;
+            pos[p2] = sum % 10;
+        }
+    }
+    
+    StringBuilder sb = new StringBuilder();
+    for (int p : pos) {
+        if (!(sb.length() == 0 && p == 0)) {
+            sb.append(p);
+        }
+    }
+    
+    return sb.toString();
+}
+}
+
+Key Insights
+The maximum number of digits in the product of two numbers of length m and n is guaranteed to be exactly m + n.
+The relationship between string indices and the product array indices is perfectly predictable: num1 at i multiplied by num2 at j always dictates values at pos at i + j and pos at i + j + 1.  
+
+Patterns
+String Manipulation
+Array Simulation
+Elementary Math Simulation  
+
+Pitfalls
+Failing to handle the 0 edge case properly, which leads to returning empty strings or strings of pure zeros.
+Incorrectly calculating the p1 and p2 index alignments.
+Forgetting to subtract the ASCII value of 0 when extracting character values for math operations.
+Attempting to cast or parse strings to large numbers, which immediately violates the rules of the problem and results in integer overflow errors on large test cases.
