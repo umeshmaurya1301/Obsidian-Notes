@@ -4,6 +4,31 @@
 
 ---
 
+# 📋 Weekly Targets
+
+## 🗓️ Week of May 19 – May 25, 2026
+
+- [ ] Complete all remaining Week 1 problems (12 left)
+- [ ] Solve Contest 1 unsolved problems (Largest Local Values in a Matrix II, Smallest Unique Subarray)
+- [ ] Participate in Contest 2 (Biweekly — Saturday May 24)
+- [ ] Participate in Contest 3 (Weekly — Sunday May 25)
+- [ ] Solve all unsolved problems from Contest 2 + Contest 3 by Sunday night
+- [ ] Solve every Java problem in Python as well (dual-language practice)
+
+**Daily Breakdown:**
+
+|Day|Focus|Target|
+|---|---|---|
+|Mon|Week 1 remaining + Contest 1 leftovers|4 problems|
+|Tue|Week 1 remaining|3 problems|
+|Wed|Week 1 remaining|3 problems|
+|Thu|Week 1 remaining (finish)|2 problems|
+|Fri|Buffer / revisit ⭐⭐⭐ problems|Review day|
+|Sat|Biweekly Contest + solve unsolved|Contest 2|
+|Sun|Weekly Contest + solve unsolved|Contest 3|
+
+---
+
 ## 📐 How to Use This File
 
 1. Check off problems as you solve them with `- [x]`
@@ -19,8 +44,8 @@
 
 |Week|Focus|Patterns|Target Problems|
 |---|---|---|---|
-|1|Arrays + Hashing|Arrays, Hashing|25|
-|2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|25|
+|1|Arrays + Hashing|Arrays, Hashing|28|
+|2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|27|
 |3|Stack + Monotonic Stack|Stack, Monotonic Stack|22|
 |4|Binary Search|Binary Search, Search on Answer|25|
 |5|Linked List|LL Basics, Fast/Slow, Reverse|22|
@@ -46,40 +71,44 @@
 
 ## Arrays Basics
 
-- [ ] [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/) — Easy ✅ Neetcode
-- [ ] [Valid Anagram](https://leetcode.com/problems/valid-anagram/) — Easy ✅ Neetcode
-- [ ] [Two Sum](https://leetcode.com/problems/two-sum/) — Easy ✅ Neetcode 🔥
+- [x] [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/) — Easy ✅ Neetcode ✅ 2026-05-14
+- [x] [Contains Duplicate 2](https://leetcode.com/problems/contains-duplicate-ii/description/) — Easy ✅ ✅ 2026-05-14
+- [ ] [Contains Duplicate 3](https://leetcode.com/problems/contains-duplicate-iii/description/) — Hard ✅
+- [x] [Valid Anagram](https://leetcode.com/problems/valid-anagram/) — Easy ✅ Neetcode ✅ 2026-05-14
+- [x] [Two Sum](https://leetcode.com/problems/two-sum/) — Easy ✅ Neetcode 🔥 ✅ 2026-05-14
 - [ ] [Group Anagrams](https://leetcode.com/problems/group-anagrams/) — Medium ✅ Neetcode 🔥
-- [ ] [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) — Medium ✅ Neetcode 🔥
-- [ ] [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) — Medium ✅ Neetcode 🔥
-- [ ] [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) — Medium ✅ Neetcode
+- [x] [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-15
+- [x] [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-15
+- [x] [Valid Sudoku](https://leetcode.com/problems/valid-sudoku/) — Medium ✅ Neetcode ✅ 2026-05-15
 - [ ] [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) — Medium ✅ Neetcode
-- [ ] [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) — Medium ✅ Neetcode 🔥
+- [x] [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-16
+- [ ] [Find Three Consecutive Integers That Sum to a Given Number](https://leetcode.com/problems/find-three-consecutive-integers-that-sum-to-a-given-number/) — Medium
 
 ## Prefix Sum
 
-- [ ] [Running Sum of 1d Array](https://leetcode.com/problems/running-sum-of-1d-array/) — Easy
-- [ ] [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) — Easy
-- [ ] [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) — Medium 🔥
+- [x] [Running Sum of 1d Array](https://leetcode.com/problems/running-sum-of-1d-array/) — Easy ✅ 2026-05-16
+- [x] [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) — Easy ✅ 2026-05-16
+- [x] [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) — Medium 🔥 ✅ 2026-05-16
 - [ ] [Contiguous Array](https://leetcode.com/problems/contiguous-array/) — Medium
 - [ ] [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) — Medium
 - [ ] [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/) — Medium
-- [ ] [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) — Medium
+- [x] [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) — Medium ✅ 2026-05-17
 
 ## Hashing Patterns
 
-- [ ] [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) — Easy
+- [x] [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) — Easy ✅ 2026-05-17
 - [ ] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium 🔥
-- [ ] [4Sum II](https://leetcode.com/problems/4sum-ii/) — Medium
-- [ ] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium 🔥
-- [ ] [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) — Medium 🔥
-- [ ] [LRU Cache](https://leetcode.com/problems/lru-cache/) — Medium 🔥 **(MAANG favourite)**
+- [x] [4Sum II](https://leetcode.com/problems/4sum-ii/) — Medium ✅ 2026-05-17
+- [x] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium 🔥 ✅ 2026-05-17
+- [x] [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) — Medium 🔥 ✅ 2026-05-17
+- [x] [LRU Cache](https://leetcode.com/problems/lru-cache/) — Medium 🔥 **(MAANG favourite)** ✅ 2026-05-17
 
 ## Hard Mix
 
 - [ ] [First Missing Positive](https://leetcode.com/problems/first-missing-positive/) — Hard 🔥
 - [ ] [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) — Hard ✅ Neetcode 🔥 **(Google favourite)**
 - [ ] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard
+- [ ] [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) — Hard 🔥
 
 ---
 
@@ -113,6 +142,7 @@
 - [ ] [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) — Medium
 - [ ] [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) — Medium 🔥
 - [ ] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium
+- [ ] [Maximum Erasure Value](https://leetcode.com/problems/maximum-erasure-value/) — Medium
 
 ## Hard
 
@@ -120,6 +150,7 @@
 - [ ] [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) — Hard ✅ Neetcode 🔥
 - [ ] [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) — Hard
 - [ ] [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/) — Medium
+- [ ] [Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/) — Hard 🔥
 
 ---
 
@@ -714,12 +745,20 @@
 
 |Date|Contest|Rank|Problems Solved|Rating Change|
 |---|---|---|---|---|
-||Weekly Contest 1||/ 4||
-||Biweekly Contest 1||/ 4||
+|2026-05-17|Weekly Contest (First)|—|1 / 4|—|
 ||Weekly Contest 2||/ 4||
+||Biweekly Contest 1||/ 4||
 ||Weekly Contest 3||/ 4||
-||Biweekly Contest 2||/ 4||
 ||Weekly Contest 4||/ 4||
+||Biweekly Contest 2||/ 4||
+
+## Contest Problem Practice
+
+> Problems from contests to revisit and solve properly.
+
+- [x] [Count K-th Roots in a Range](https://leetcode.com/problems/count-k-th-roots-in-a-range/) — Solved in contest ✅ 2026-05-17
+- [ ] [Largest Local Values in a Matrix II](https://leetcode.com/problems/largest-local-values-in-a-matrix-ii/) — Medium
+- [ ] [Smallest Unique Subarray](https://leetcode.com/problems/smallest-unique-subarray/) — Medium
 
 > **Target by end of Month 4:** Consistently solving 3/4 problems in Weekly Contest. Rating 1700+.
 
@@ -729,8 +768,8 @@
 
 |Pattern|Total|Solved|%|
 |---|---|---|---|
-|Arrays + Hashing|25|0|0%|
-|Two Pointers + Sliding Window|25|0|0%|
+|Arrays + Hashing|28|16|57%|
+|Two Pointers + Sliding Window|27|0|0%|
 |Stack + Monotonic Stack|22|0|0%|
 |Binary Search|25|0|0%|
 |Linked List|22|0|0%|
@@ -745,7 +784,7 @@
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**372**|**0**|**0%**|
+|**TOTAL**|**397**|**16**|**4%**|
 
 ---
 
