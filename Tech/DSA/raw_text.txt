@@ -1,277 +1,253 @@
-FILE: LT_0049_GROUP_ANAGRAMS
+FILE: LT_0525_CONTIGUOUS_ARRAY
 
-ID: 49
+ID: 525
 
 Difficulty: Medium
 
-Tags: Arrays, Strings, HashMap, Sorting
+Tags: Arrays, PrefixSum, HashMap
 
-Source: https://leetcode.com/problems/group-anagrams/description/
+Source: https://leetcode.com/problems/contiguous-array/description/
 
 Problem Description
 
-Given an array of strings strs, group the anagrams together.
-
-Two strings are anagrams if they contain the same characters with the same frequencies, but the order of characters may differ.
-
-Return the grouped anagrams in any order.
+Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.
 
 Examples
 
-Input: strs = ["eat","tea","tan","ate","nat","bat"]
-Output: [["eat","tea","ate"],["tan","nat"],["bat"]]
-Explanation: "eat", "tea", and "ate" are anagrams because after sorting they all become "aet". Similarly, "tan" and "nat" become "ant".
+Input: nums = [0,1]
+Output: 2
+Explanation: The entire array contains one 0 and one 1.
 
-Input: strs = [""]
-Output: [[""]]
-Explanation: Empty string grouped as a single anagram group.
+Input: nums = [0,1,0]
+Output: 2
+Explanation: The longest contiguous subarray with equal number of 0 and 1 is [0,1].
 
-Input: strs = ["a"]
-Output: [["a"]]
-Explanation: Single character string forms one group.
+Input: nums = [0,0,1,1,0]
+Output: 4
+Explanation: The longest valid subarray is [0,0,1,1].
 
 Constraints
 
-1 <= strs.length <= 10000
-0 <= strs[i].length <= 100
-strs[i] consists of lowercase English letters.
+1 <= nums.length <= 100000
+nums[i] is either 0 or 1
 
 Intuition
 
-Two strings are anagrams if their characters and frequencies are identical.
+The problem asks for a subarray containing equal number of 0s and 1s.
 
-Important observation:
+A useful trick is:
+Convert:
+0 -> -1
+1 -> +1
 
-If two strings are sorted and become equal, then they are anagrams.
+Now the problem becomes:
+Find the longest subarray whose sum is 0.
 
-Example:
+Why?
 
-"eat" -> "aet"
-"tea" -> "aet"
-"ate" -> "aet"
+Because:
 
-All become the same sorted string.
+Equal number of +1 and -1 gives total sum 0
+That directly represents equal number of 1s and 0s
 
-So we can use the sorted string as a unique key.
+We use prefix sum to efficiently detect such subarrays.
 
-The problem becomes:
+If the same prefix sum appears again at two different indices:
+prefixSum[i] == prefixSum[j]
 
-Group all original strings having the same sorted representation.
+Then:
+sum(i+1 ... j) = 0
+
+Meaning:
+The subarray between them contains equal number of 0s and 1s.
 
 Approach
 
-Use a HashMap where:
+Maintain:
 
-Key:
-sorted version of the string
+A running prefix sum
+A HashMap storing:
+prefixSum -> first occurrence index
 
-Value:
-list of strings belonging to that anagram group
+For every element:
 
-Steps:
+If nums[i] == 0, subtract 1
+Else add 1
 
-Traverse every string.
-Convert string into char array.
-Sort the char array.
-Convert sorted array back into string.
-Use sorted string as hashmap key.
-Add original string into corresponding group.
-Return all hashmap values.
+If the current prefix sum has already been seen:
+
+The subarray between previous index and current index has sum 0
+Calculate its length
+Update maximum length
+
+Otherwise:
+
+Store the first occurrence of the prefix sum
+
+Important Initialization:
+
+map.put(0, -1)
+
+Physical significance of this:
+It means:
+"Before the array starts, the prefix sum is already 0."
+
+This creates a virtual starting position before index 0.
+
+Why is this needed?
+
+Example:
+nums = [0,1]
+
+Converted:
+[-1,+1]
+
+Prefix sums:
+index 0 -> -1
+index 1 -> 0
+
+At index 1, prefix sum becomes 0.
+That means:
+sum(0...1) = 0
+
+To calculate length:
+1 - (-1) = 2
+
+Without storing:
+0 -> -1
+
+We would miss valid subarrays starting from index 0.
+
+This is a very common prefix sum trick:
+Initialize the neutral state before traversal begins.
 
 Dry Run
 
 Input:
-strs = ["eat","tea","tan","ate","nat","bat"]
+nums = [0,1,0]
+
+Converted:
+[-1,+1,-1]
 
 Initial:
-map = {}
+map = {0=-1}
+prefixSum = 0
+maxLen = 0
 
-Iteration 1:
-str = "eat"
+i = 0
+nums[0] = 0
+prefixSum = -1
 
-Sort:
-"eat" -> "aet"
+-1 not present
+Store:
+map[-1] = 0
 
-map:
-"aet" -> ["eat"]
+i = 1
+nums[1] = 1
+prefixSum = 0
 
-Iteration 2:
-str = "tea"
+0 already present at index -1
 
-Sort:
-"tea" -> "aet"
+length = 1 - (-1) = 2
+maxLen = 2
 
-map:
-"aet" -> ["eat","tea"]
+i = 2
+nums[2] = 0
+prefixSum = -1
 
-Iteration 3:
-str = "tan"
+-1 already present at index 0
 
-Sort:
-"tan" -> "ant"
+length = 2 - 0 = 2
+maxLen = 2
 
-map:
-"aet" -> ["eat","tea"]
-"ant" -> ["tan"]
-
-Iteration 4:
-str = "ate"
-
-Sort:
-"ate" -> "aet"
-
-map:
-"aet" -> ["eat","tea","ate"]
-"ant" -> ["tan"]
-
-Iteration 5:
-str = "nat"
-
-Sort:
-"nat" -> "ant"
-
-map:
-"aet" -> ["eat","tea","ate"]
-"ant" -> ["tan","nat"]
-
-Iteration 6:
-str = "bat"
-
-Sort:
-"bat" -> "abt"
-
-Final map:
-"aet" -> ["eat","tea","ate"]
-"ant" -> ["tan","nat"]
-"abt" -> ["bat"]
-
-Return:
-[["eat","tea","ate"],["tan","nat"],["bat"]]
+Final Answer = 2
 
 Edge Cases
 
-Empty string
-Input:
-[""]
+Array length is 1
+No valid subarray exists
+Return 0
 
-Output:
-[[""]]
+Entire array is balanced
+Example:
+[0,1,0,1]
+Need map.put(0,-1) to correctly calculate full length
 
-Single string
-Input:
-["abc"]
-
-Output:
-[["abc"]]
-
-Duplicate strings
-Input:
-["eat","eat"]
-
-Output:
-[["eat","eat"]]
-
-All strings unique
-Every string forms its own group.
-Very large input
-Efficient hashmap grouping is necessary.
+All elements same
+Example:
+[0,0,0]
+No balanced subarray
 
 Complexity
 
-Time: O(n * k log k)
+Time: O(n)
 
-Space: O(n * k)
-
-Where:
-n = number of strings
-k = average string length
-
-Sorting each string costs:
-O(k log k)
+Space: O(n)
 
 Java Code
 
 class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
+    public int findMaxLength(int[] nums) {
 
-        Map<String, List<String>> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
-        for(String str : strs) {
+        map.put(0, -1);
 
-            char[] arr = str.toCharArray();
+        int prefixSum = 0;
+        int maxLen = 0;
 
-            Arrays.sort(arr);
+        for (int i = 0; i < nums.length; i++) {
 
-            String key = new String(arr);
+            if (nums[i] == 0) {
+                prefixSum -= 1;
+            } else {
+                prefixSum += 1;
+            }
 
-            map.putIfAbsent(key, new ArrayList<>());
+            if (map.containsKey(prefixSum)) {
 
-            map.get(key).add(str);
+                int len = i - map.get(prefixSum);
+                maxLen = Math.max(maxLen, len);
+
+            } else {
+                map.put(prefixSum, i);
+            }
         }
 
-        return new ArrayList<>(map.values());
+        return maxLen;
     }
 }
 
 Key Insights
 
-Anagrams become identical after sorting.
-Sorted string acts as canonical representation.
-HashMap efficiently groups strings with same key.
-Original strings are stored, not sorted strings.
-Multiple strings can map to the same key.
-This is a classic grouping-by-transformation problem.
-Sorting simplifies anagram detection.
+Convert:
+0 -> -1
+1 -> +1
 
-Alternative Optimized Approach
+Equal number of 0s and 1s becomes:
+Subarray sum = 0
 
-Instead of sorting each string, we can use character frequency count as the key.
+If same prefix sum appears again:
+Subarray between them has sum 0
 
-Example:
+Store only first occurrence of prefix sum to maximize subarray length
 
-"eat"
-
-Frequency:
-a=1
-e=1
-t=1
-
-Key:
-#1#0#0#0#1...
-
-This avoids sorting and improves complexity to:
-
-O(n * k)
-
-The separator "#" is important to avoid ambiguity.
-
-Example:
-
-Without separator:
-[1,11] -> "111"
-[11,1] -> "111"
-
-Collision occurs.
-
-With separator:
-[1,11] -> "#1#11"
-[11,1] -> "#11#1"
-
-Now keys remain unique.
+map.put(0,-1) handles subarrays starting from index 0
 
 Patterns
 
-HashMap Grouping
-Canonical Representation
-Sorting
-String Transformation
-Frequency Counting
+Prefix Sum
+HashMap
+Longest Subarray with Condition
+Running Balance Technique
 
 Pitfalls
 
-Forgetting to convert sorted char array back into String.
-Using char[] directly as hashmap key will not work correctly.
-Forgetting that multiple strings can belong to same group.
-Not initializing list before adding values.
-Forgetting separator while building frequency-based key can cause collisions.
-Confusing sorted string with original string.
+Forgetting:
+map.put(0,-1)
+
+Updating map every time instead of storing first occurrence only
+
+Not converting 0 to -1
+
+Using nested loops leading to O(n^2) TLE

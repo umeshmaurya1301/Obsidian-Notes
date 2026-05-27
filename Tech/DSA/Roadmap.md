@@ -89,15 +89,15 @@
 - [x] [Running Sum of 1d Array](https://leetcode.com/problems/running-sum-of-1d-array/) — Easy ✅ 2026-05-16
 - [x] [Find Pivot Index](https://leetcode.com/problems/find-pivot-index/) — Easy ✅ 2026-05-16
 - [x] [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) — Medium 🔥 ✅ 2026-05-16
-- [ ] [Contiguous Array](https://leetcode.com/problems/contiguous-array/) — Medium
-- [ ] [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) — Medium
-- [ ] [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/) — Medium
+- [x] [Contiguous Array](https://leetcode.com/problems/contiguous-array/) — Medium ✅ 2026-05-22
+- [x] [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/) — Medium ✅ 2026-05-22
+- [x] [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/) — Medium ✅ 2026-05-21
 - [x] [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/) — Medium ✅ 2026-05-17
 
 ## Hashing Patterns
 
 - [x] [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/) — Easy ✅ 2026-05-17
-- [ ] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium 🔥
+- [x] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium 🔥 ✅ 2026-05-21
 - [x] [4Sum II](https://leetcode.com/problems/4sum-ii/) — Medium ✅ 2026-05-17
 - [x] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium 🔥 ✅ 2026-05-17
 - [x] [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) — Medium 🔥 ✅ 2026-05-17
@@ -105,11 +105,11 @@
 
 ## Hard Mix
 
-- [ ] [First Missing Positive](https://leetcode.com/problems/first-missing-positive/) — Hard 🔥
-- [ ] [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) — Hard ✅ Neetcode 🔥 **(Google favourite)**
-- [ ] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard
-- [ ] [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) — Hard 🔥
-- [ ] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard
+- [x] [First Missing Positive](https://leetcode.com/problems/first-missing-positive/) — Hard 🔥 ✅ 2026-05-22
+- [x] [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) — Hard ✅ Neetcode 🔥 **(Google favourite)** ✅ 2026-05-22
+- [x] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard ✅ 2026-05-25
+- [x] [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) — Hard 🔥 ✅ 2026-05-25
+- [x] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard ✅ 2026-05-25
 
 ---
 
@@ -758,6 +758,7 @@
 > Problems from contests to revisit and solve properly.
 
 - [x] [Count K-th Roots in a Range](https://leetcode.com/problems/count-k-th-roots-in-a-range/) — Solved in contest ✅ 2026-05-17
+- [x] [Check Adjacent Digit Differences](https://leetcode.com/problems/check-adjacent-digit-differences/) — Solved in contest ✅ 2026-05-17
 - [ ] [Largest Local Values in a Matrix II](https://leetcode.com/problems/largest-local-values-in-a-matrix-ii/) — Medium
 - [ ] [Smallest Unique Subarray](https://leetcode.com/problems/smallest-unique-subarray/) — Medium
 
