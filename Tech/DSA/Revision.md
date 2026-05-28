@@ -32,3 +32,4 @@
 | 5.   | Count Anagrams              | https://leetcode.com/problems/count-anagrams/                         | 0          |
 | 6.   | Subarray Sums Divisible by K | https://leetcode.com/problems/subarray-sums-divisible-by-k/           | 0          |
 | 7.   | Count K-th Roots in a Range  | https://leetcode.com/problems/count-k-th-roots-in-a-range/description/ | 0          |
+| 8.   | Maximum Erasure Value        | https://leetcode.com/problems/maximum-erasure-value/description/        | 0          |

@@ -117,25 +117,25 @@
 
 ## Two Pointers
 
-- [ ] [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) — Easy ✅ Neetcode
-- [ ] [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) — Medium ✅ Neetcode
-- [ ] [3Sum](https://leetcode.com/problems/3sum/) — Medium ✅ Neetcode 🔥
-- [ ] [4Sum](https://leetcode.com/problems/4sum/) — Medium
-- [ ] [Container With Most Water](https://leetcode.com/problems/container-with-most-water/) — Medium ✅ Neetcode 🔥
-- [ ] [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/) — Easy
-- [ ] [Sort Colors](https://leetcode.com/problems/sort-colors/) — Medium 🔥
-- [ ] [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/) — Medium
-- [ ] [Trapping Rain Water (Two Pointer approach)](https://leetcode.com/problems/trapping-rain-water/) — Hard 🔥
+- [x] [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/) — Easy ✅ Neetcode ✅ 2026-05-28
+- [x] [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/) — Medium ✅ Neetcode ✅ 2026-05-28
+- [x] [3Sum](https://leetcode.com/problems/3sum/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-28
+- [x] [4Sum](https://leetcode.com/problems/4sum/) — Medium ✅ 2026-05-28
+- [x] [Container With Most Water](https://leetcode.com/problems/container-with-most-water/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-28
+- [x] [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/) — Easy ✅ 2026-05-28
+- [x] [Sort Colors](https://leetcode.com/problems/sort-colors/) — Medium 🔥 ✅ 2026-05-28
+- [x] [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/) — Medium ✅ 2026-05-28
+- [x] [Trapping Rain Water (Two Pointer approach)](https://leetcode.com/problems/trapping-rain-water/) — Hard 🔥 ✅ 2026-05-28
 
 ## Sliding Window — Fixed
 
-- [ ] [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) — Easy
-- [ ] [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) — Easy ✅ Neetcode 🔥
-- [ ] [Permutation in String](https://leetcode.com/problems/permutation-in-string/) — Medium ✅ Neetcode
+- [x] [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) — Easy ✅ 2026-05-28
+- [x] [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) — Easy ✅ Neetcode 🔥 ✅ 2026-05-28
+- [x] [Permutation in String](https://leetcode.com/problems/permutation-in-string/) — Medium ✅ Neetcode ✅ 2026-05-28
 
 ## Sliding Window — Variable
 
-- [ ] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium ✅ Neetcode 🔥
+- [x] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-28
 - [ ] [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) — Medium ✅ Neetcode 🔥
 - [ ] [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) — Medium
 - [ ] [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) — Medium 🔥
@@ -143,7 +143,7 @@
 - [ ] [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) — Medium
 - [ ] [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) — Medium 🔥
 - [ ] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium
-- [ ] [Maximum Erasure Value](https://leetcode.com/problems/maximum-erasure-value/) — Medium
+- [x] [Maximum Erasure Value](https://leetcode.com/problems/maximum-erasure-value/) — Medium ✅ 2026-05-29
 
 ## Hard
 
@@ -577,6 +577,8 @@
 ## Stock Problems
 
 - [ ] [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) — Medium
+- [ ] [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/) — Hard 🔥
+- [ ] [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/) — Hard 🔥
 - [ ] [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) — Medium ✅ Neetcode 🔥
 - [ ] [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/) — Medium
 
@@ -771,7 +773,7 @@
 |Pattern|Total|Solved|%|
 |---|---|---|---|
 |Arrays + Hashing|29|16|55%|
-|Two Pointers + Sliding Window|27|0|0%|
+|Two Pointers + Sliding Window|27|1|4%|
 |Stack + Monotonic Stack|22|0|0%|
 |Binary Search|25|0|0%|
 |Linked List|22|0|0%|
@@ -781,12 +783,12 @@
 |Backtracking|20|0|0%|
 |Graphs Basic|25|0|0%|
 |Graphs Advanced|22|0|0%|
-|DP 1D + Knapsack|25|0|0%|
+|DP 1D + Knapsack|27|0|0%|
 |DP 2D + LIS + LCS|25|0|0%|
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**398**|**16**|**4%**|
+|**TOTAL**|**400**|**17**|**4%**|
 
 ---
 
