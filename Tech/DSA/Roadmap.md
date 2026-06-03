@@ -45,7 +45,7 @@
 |Week|Focus|Patterns|Target Problems|
 |---|---|---|---|
 |1|Arrays + Hashing|Arrays, Hashing|29|
-|2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|27|
+|2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|30|
 |3|Stack + Monotonic Stack|Stack, Monotonic Stack|22|
 |4|Binary Search|Binary Search, Search on Answer|25|
 |5|Linked List|LL Basics, Fast/Slow, Reverse|22|
@@ -132,18 +132,21 @@
 - [x] [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/) — Easy ✅ 2026-05-28
 - [x] [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/) — Easy ✅ Neetcode 🔥 ✅ 2026-05-28
 - [x] [Permutation in String](https://leetcode.com/problems/permutation-in-string/) — Medium ✅ Neetcode ✅ 2026-05-28
+- [x] [Find Longest Special Substring That Occurs Thrice I](https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-i/) — Medium ✅ 2026-05-31
+- [x] [Find Longest Special Substring That Occurs Thrice II](https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-ii/) — Medium ✅ 2026-05-31
 
 ## Sliding Window — Variable
 
 - [x] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-28
-- [ ] [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) — Medium ✅ Neetcode 🔥
-- [ ] [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) — Medium
-- [ ] [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) — Medium 🔥
+- [x] [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-30
+- [x] [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) — Medium ✅ 2026-05-31
+- [x] [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) — Medium 🔥 ✅ 2026-05-31
 - [ ] [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/) — Medium 🔥
-- [ ] [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) — Medium
-- [ ] [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) — Medium 🔥
-- [ ] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium
+- [x] [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) — Medium ✅ 2026-06-01
+- [x] [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) — Medium 🔥 ✅ 2026-06-01
+- [x] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium ✅ 2026-05-31
 - [x] [Maximum Erasure Value](https://leetcode.com/problems/maximum-erasure-value/) — Medium ✅ 2026-05-29
+- [x] [Longest Nice SubArray](https://leetcode.com/problems/longest-nice-subarray/) — Medium **(Sliding Window + Bitmask)** ✅ 2026-05-31
 
 ## Hard
 
@@ -231,7 +234,7 @@
 
 ## Hard
 
-- [ ] [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) — Hard ✅ Neetcode 🔥 **(Google asks this often)**
+- [x] [Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/) — Hard ✅ Neetcode 🔥 **(Google asks this often)** ✅ 2026-05-30
 - [ ] [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) — Medium
 - [ ] [Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/) — Hard
 
@@ -773,9 +776,9 @@
 |Pattern|Total|Solved|%|
 |---|---|---|---|
 |Arrays + Hashing|29|16|55%|
-|Two Pointers + Sliding Window|27|1|4%|
+|Two Pointers + Sliding Window|30|2|7%|
 |Stack + Monotonic Stack|22|0|0%|
-|Binary Search|25|0|0%|
+|Binary Search|25|1|4%|
 |Linked List|22|0|0%|
 |Trees BFS/DFS|28|0|0%|
 |Trees Advanced + BST|22|0|0%|
@@ -788,7 +791,7 @@
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**400**|**17**|**4%**|
+|**TOTAL**|**403**|**19**|**5%**|
 
 ---
 

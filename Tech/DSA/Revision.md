@@ -23,13 +23,18 @@
 
 
 
-| S.No | Question                    | Link                                                                   | Solv Count |
-| ---- | --------------------------- | ---------------------------------------------------------------------- | ---------- |
-| 1.   | Regular Expression Matching | https://leetcode.com/problems/regular-expression-matching/description/ | 0          |
-| 2.   | Contiguous Array            | https://leetcode.com/problems/contiguous-array/                        | 0          |
-| 3.   | Maximum Frequency Stack     | https://leetcode.com/problems/maximum-frequency-stack/description/    | 0          |
-| 4.   | Trapping Rain Water II      | https://leetcode.com/problems/trapping-rain-water-ii/description/     | 0          |
-| 5.   | Count Anagrams              | https://leetcode.com/problems/count-anagrams/                         | 0          |
-| 6.   | Subarray Sums Divisible by K | https://leetcode.com/problems/subarray-sums-divisible-by-k/           | 0          |
-| 7.   | Count K-th Roots in a Range  | https://leetcode.com/problems/count-k-th-roots-in-a-range/description/ | 0          |
-| 8.   | Maximum Erasure Value        | https://leetcode.com/problems/maximum-erasure-value/description/        | 0          |
+| S.No | Question                                             | Link                                                                                | Solv Count |
+| ---- | ---------------------------------------------------- | ----------------------------------------------------------------------------------- | ---------- |
+| 1.   | Regular Expression Matching                          | https://leetcode.com/problems/regular-expression-matching/description/              | 0          |
+| 2.   | Contiguous Array                                     | https://leetcode.com/problems/contiguous-array/                                     | 0          |
+| 3.   | Maximum Frequency Stack                              | https://leetcode.com/problems/maximum-frequency-stack/description/                  | 0          |
+| 4.   | Trapping Rain Water II                               | https://leetcode.com/problems/trapping-rain-water-ii/description/                   | 0          |
+| 5.   | Count Anagrams                                       | https://leetcode.com/problems/count-anagrams/                                       | 0          |
+| 6.   | Subarray Sums Divisible by K                         | https://leetcode.com/problems/subarray-sums-divisible-by-k/                         | 0          |
+| 7.   | Count K-th Roots in a Range                          | https://leetcode.com/problems/count-k-th-roots-in-a-range/description/              | 0          |
+| 8.   | Maximum Erasure Value                                | https://leetcode.com/problems/maximum-erasure-value/description/                    | 0          |
+| 9.   | Longest Nice Subarray                                | https://leetcode.com/problems/longest-nice-subarray/                                | 0          |
+| 10.  | Find Longest Special Substring That Occurs Thrice II | https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-ii/ | 0          |
+| 11.  | Fruit Into Baskets                                   | https://leetcode.com/problems/fruit-into-baskets/                                   | 0          |
+| 12.  | Minimum Size Subarray Sum                            | https://leetcode.com/problems/minimum-size-subarray-sum/description/                | 0          |
+| 13.  | Minimum Window Substring                             | https://leetcode.com/problems/minimum-window-substring/                             | 0          |
