@@ -1,4 +1,4 @@
-# 🎯 4-Month DSA Roadmap — MAANG Preparation
+claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 > **For:** Umesh Maurya · Backend Engineer · 3.5 yrs experience **Current state:** 300 problems solved (120E / 160M / 20H) · Neetcode 150 ≈ 60 done **Target:** MAANG SDE-2 interviews by end of Month 4 **Time budget:** 2-3 hrs weekdays · Full days weekends **Total problems in roadmap:** ~400 **Start date:** _________ **Target completion:** _________
 

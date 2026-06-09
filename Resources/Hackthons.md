@@ -1,5 +1,8 @@
 # 🏆 Hackathon Tracker — 2026
 
+> [!note] Migrated
+> Now tracked as per-event notes with a filterable dashboard at [[Events_Dashboard]] (`Tech/Events/`). This file is kept as the original project-mapping reference.
+
 > **Profile:** Backend Developer · 3.5 years experience · Bengaluru, India · Solo Participant **Projects:** AEPO (Autonomous Enterprise Payment Orchestrator) · AEGIS (Counterfactual Shadow Mode Policy Substrate) **Last Updated:** May 13, 2026
 
 ---
