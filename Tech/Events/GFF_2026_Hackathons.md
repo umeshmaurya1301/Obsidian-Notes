@@ -33,8 +33,8 @@ tags:
 The 7th Global Fintech Fest hosts multiple hackathons that showcase at the Mumbai event:
 
 - **PSB Hackathon Series 2026** — DFS × IBA × 12 Public Sector Banks. GenAI, Cybersecurity, Fraud Prevention. (See the open qualifier: [[PSB_Cybersecurity_Fraud_AI_Hackathon_2026]].)
-- **iDEA 2.0** (Union Bank of India) — 350+ teams, ₹13 Lakh pool, mentorship + internship/engagement opportunities. _(Phase 2 prototype round was ~May 31 — verify if a new cycle opens.)_
-- Past editions also ran a **SEBI Securities Market Hackathon** — watch for a 2026 edition.
+- **iDEA 2.0** (Union Bank of India) — ₹13 Lakh pool. _2026-06-10: cycle is mid-flight (Phase 1 closed Mar 29, Phase 2 prototypes May 31, finale TBA) — no new entry possible; watch for the next cycle._
+- **SEBI Securities Market Hackathon** ran at GFF'25 (with BSE/CDSL/NSDL/KFintech) — 2026 edition not announced as of 2026-06-10; watch the GFF hackathons page.
 
 ## 🎯 Why it fits me
 
@@ -49,3 +49,4 @@ Premier India fintech stage; strong networking + domain fit. Good target to land
 ## 🗒️ Notes
 
 - Found via web search (2026-06-09). PCI/FCC members get 25% fest discount.
+- 2026-06-10: GFF page confirms **PSB Hackathon Series 2026 is the 2nd edition** (DFS × IBA × 12 PSBs) — its open qualifier is [[PSB_Cybersecurity_Fraud_AI_Hackathon_2026]] (reg. closes Jun 15).

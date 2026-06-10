@@ -1,15 +1,15 @@
 ---
 created: 2026-06-09
 type: event
-rating: 5
-fit: "Payments/UPI is core fintech fit — but likely a dated edition; verify it's actually live."
-deadline: 
-phase: Verify
-prize: "₹10,00,000"
+rating: 3
+fit: "Dormant — no live cycle in 2026; site still shows the old UPI 2.0 edition (real editions ran 2016/2017/2020). Watch for relaunch only."
+deadline:
+phase: Dormant
+prize: "₹10,00,000 (historical)"
 mode: Online
 location: India
 applied: false
-status: TO_DO
+status: MISSED
 url: https://www.iciciappathon.io/
 tags:
   - event
@@ -22,31 +22,15 @@ tags:
 
 **Link:** [iciciappathon.io](https://www.iciciappathon.io/)
 
-> [!todo] Verify edition is live
-> The site's theme is **UPI 2.0** and prior editions ran 2016 / 2019 — confirm whether a current (2026) cycle is open before committing. Set `deadline` once verified.
-
-> [!info] At a glance
-> - **Deadline:** TBD — verify
-> - **Prize:** ₹10,00,000 (top 3) + potential ICICI Bank engagement + mentorship
-> - **Mode:** Online · **Location:** India
-> - **Team:** up to 5 members
+> [!failure] Verified — no active edition
+> 2026-06-10 verification: no 2026 cycle exists. The site still carries the old **UPI 2.0** content; actual editions ran **2016, 2017 (Season II), and 2020 (API Banking, startup-focused)**. Marked Missed/dormant — revisit only if ICICI announces a relaunch.
 
 ---
 
 ## 📝 What it is
 
-ICICI Bank's payments-innovation challenge. Build on **UPI + Financial Services + Partner APIs** (UPI 2.0 features: mandates, overdraft-on-UPI, signed intent/QR, invoice-in-the-box). Phase 1 = idea + API categories.
-
-## 🎯 Why it fits me
-
-Payments/UPI backend is squarely your fintech domain — API integration + transaction systems play to Java/Spring/Kafka/RDBMS.
-
-## ✅ Action items
-
-- [ ] Confirm a current edition exists + deadline
-- [ ] Pick UPI 2.0 feature + APIs
-- [ ] Register
+ICICI Bank's payments-innovation challenge (UPI + Financial Services + Partner APIs). Payments/UPI backend would be a direct fit *if* it ever returns.
 
 ## 🗒️ Notes
 
-- Found via web search (2026-06-09). Site refused automated fetches — check manually in a browser.
+- Removed from active focus. India payments alternatives: [[PSB_Cybersecurity_Fraud_AI_Hackathon_2026]], [[GFF_2026_Hackathons]], [[RBI_HaRBInger_2026_Watch]] (NPCI also quiet right now).

@@ -42,24 +42,24 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 ## 📅 16-Week Schedule Overview
 
-|Week|Focus|Patterns|Target Problems|
-|---|---|---|---|
-|1|Arrays + Hashing|Arrays, Hashing|29|
-|2|Two Pointers + Sliding Window|Two Pointers, Sliding Window|30|
-|3|Stack + Monotonic Stack|Stack, Monotonic Stack|22|
-|4|Binary Search|Binary Search, Search on Answer|25|
-|5|Linked List|LL Basics, Fast/Slow, Reverse|22|
-|6|Trees (BFS/DFS)|Tree Traversals, Path problems|28|
-|7|Trees (Advanced) + BST|BST, LCA, Serialise|22|
-|8|Heap / Priority Queue|Top K, Two Heaps, K-way|22|
-|9|Backtracking|Subsets, Permutations, NQueen|20|
-|10|Graphs (Basic)|BFS, DFS, Union Find|25|
-|11|Graphs (Advanced)|Dijkstra, Topo Sort, MST|22|
-|12|DP Part 1 — 1D + Knapsack|1D DP, 0/1 Knapsack|25|
-|13|DP Part 2 — 2D + LIS + LCS|Grid DP, LIS, LCS|25|
-|14|DP Part 3 — Interval + Tree + Bitmask|Hard DP|18|
-|15|Greedy + Intervals + Tries|Greedy, Intervals, Tries|20|
-|16|Revision + Mocks + Hard Mix|Mixed|20+mocks|
+| Week | Focus                                 | Patterns                        | Target Problems |
+| ---- | ------------------------------------- | ------------------------------- | --------------- |
+| 1    | Arrays + Hashing                      | Arrays, Hashing                 | 29              |
+| 2    | Two Pointers + Sliding Window         | Two Pointers, Sliding Window    | 30              |
+| 3    | Stack + Monotonic Stack               | Stack, Monotonic Stack          | 22              |
+| 4    | Binary Search                         | Binary Search, Search on Answer | 25              |
+| 5    | Linked List                           | LL Basics, Fast/Slow, Reverse   | 22              |
+| 6    | Trees (BFS/DFS)                       | Tree Traversals, Path problems  | 28              |
+| 7    | Trees (Advanced) + BST                | BST, LCA, Serialise             | 22              |
+| 8    | Heap / Priority Queue                 | Top K, Two Heaps, K-way         | 22              |
+| 9    | Backtracking                          | Subsets, Permutations, NQueen   | 20              |
+| 10   | Graphs (Basic)                        | BFS, DFS, Union Find            | 25              |
+| 11   | Graphs (Advanced)                     | Dijkstra, Topo Sort, MST        | 22              |
+| 12   | DP Part 1 — 1D + Knapsack             | 1D DP, 0/1 Knapsack             | 25              |
+| 13   | DP Part 2 — 2D + LIS + LCS            | Grid DP, LIS, LCS               | 25              |
+| 14   | DP Part 3 — Interval + Tree + Bitmask | Hard DP                         | 18              |
+| 15   | Greedy + Intervals + Tries            | Greedy, Intervals, Tries        | 20              |
+| 16   | Revision + Mocks + Hard Mix           | Mixed                           | 20+mocks        |
 
 **Plus:** Leetcode Weekly Contest every Sunday (mandatory) + Biweekly Contest every other Saturday
 

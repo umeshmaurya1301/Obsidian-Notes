@@ -1,52 +1,41 @@
 ---
 created: 2026-06-09
 type: event
-rating: 7
-fit: "K8s/AEGIS operator fit; registered; confirm exact deadline."
-deadline: 2026-06-15
-phase: Submissions Open
-prize: "~$10,000"
+rating: 4
+fit: "Ended Jun 10 — and this edition never had the Akamai/K8s track (only Tower/Nimble/name.com); planned AEGIS operator angle didn't exist."
+deadline: 2026-06-10
+phase: Completed
+prize: "$8,500+"
 mode: Hybrid
 location: New York / Online
 applied: true
-status: REGISTERED
-url: https://developerweek-2026-hackathon.devpost.com/
+status: MISSED
+url: https://dwny-2026-hackathon.devpost.com/
 tags:
   - event
   - devops
-  - kubernetes
 ---
 # 🗽 DeveloperWeek New York 2026 Hackathon
 
-**Link:** [Devpost](https://developerweek-2026-hackathon.devpost.com/)
+**Link:** [Devpost](https://dwny-2026-hackathon.devpost.com/)
 
-> [!warning] Verify the exact deadline
-> Your tracker listed **~mid-June 2026**. Set provisionally to **2026-06-15** — confirm on Devpost and correct the `deadline` field.
-
-> [!info] At a glance
-> - **Deadline:** ~2026-06-15 (verify)
-> - **Phase:** Submissions Open
-> - **Prize:** ~$10,000 total across sponsor challenges
+> [!info] At a glance — ended
+> - **Online window:** May 25 – **Jun 10, 2026** (in-person TWA Hotel, NYC, Jun 9–10) — **"This hackathon has ended"**, winners announced soon
+> - **Prize:** $8,500+ — name.com Domain Roulette ($2.5K/$1K), Nimble ($500/$250), Tower (services/devices), overall = Echos + DevNetwork passes
 > - **Mode:** Hybrid · **Location:** New York / Online
 
 ---
 
-## 📝 What it is
+## 📝 What it was
 
-DeveloperWeek's challenge-driven hackathon with sponsor tracks (DevOps, Enterprise, IoT, AI tooling). Online participation available globally.
-
-## 🎯 Why it fits me
-
-**AEGIS** on the **Akamai (K8s + Open Source)** track — a K8s operator that mutates HPAs / Istio / NetworkPolicies. Plays to backend + DevOps (Kubernetes) experience.
+DeveloperWeek NY's sponsor-challenge hackathon. **This edition's tracks were Tower (data-to-AI pipelines), Nimble (agentic apps on live web data), and name.com (Domain Roulette)** — the Akamai K8s track from the San Jose edition was *not* offered here, so the planned AEGIS K8s-operator submission had no home.
 
 ## ✅ Action items
 
 - [x] Register
-- [ ] Confirm exact deadline
-- [ ] Build K8s operator
-- [ ] Submit
+- [ ] When winners are announced: nothing to do — marked **Missed** (flip to Submitted if you actually entered something)
 
 ## 🗒️ Notes
 
-- Migrated from `Resources/Hackthons.md`.
-- The main DeveloperWeek 2026 (San Jose) event already ended Feb 2026 — this NY edition is separate; double-check the live Devpost page is the right one.
+- 2026-06-10 verification: the old note pointed at `developerweek-2026-hackathon.devpost.com` — that's the **San Jose** event (ended Feb 20). Correct NY page is `dwny-2026-hackathon.devpost.com`.
+- Was registered but no submission recorded (action items never reached "Submit"). DevNetwork's next online window is [[API_World_2026]] (Aug 17 – Sep 3).

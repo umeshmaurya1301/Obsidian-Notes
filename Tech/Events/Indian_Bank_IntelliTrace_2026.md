@@ -1,16 +1,16 @@
 ---
 created: 2026-06-09
 type: event
-rating: 5
-fit: "Fraud fit but may be student/academic-only — verify eligibility before investing."
-deadline: 
-phase: Verify
+rating: 2
+fit: "Confirmed academic-only (VIT campuses + Anna University students/scholars/startups) and registration closed Mar 1 — not eligible."
+deadline: 2026-03-01
+phase: Completed
 prize: "₹11,00,000"
 mode: Hybrid
 location: Chennai, India
 applied: false
-status: TO_DO
-url: https://x.com/MyIndianBank/status/2023711906566180959
+status: MISSED
+url: https://intellitrace2026.in/
 tags:
   - event
   - fintech
@@ -19,33 +19,17 @@ tags:
 ---
 # 🔎 Indian Bank IntelliTrace Hackathon 2026
 
-**Link:** [Announcement (X)](https://x.com/MyIndianBank/status/2023711906566180959)
+**Link:** [intellitrace2026.in](https://intellitrace2026.in/) · [Announcement (X)](https://x.com/MyIndianBank/status/2023711906566180959)
 
-> [!todo] Verify eligibility & deadline
-> Invites "students, scholars, and innovators" (with VIT Chennai) — confirm whether **working professionals** can enter, and set the `deadline`.
-
-> [!info] At a glance
-> - **Deadline:** TBD — verify
-> - **Prize:** ₹11,00,000 pool
-> - **Mode:** Hybrid (VIT Chennai partner) · **Location:** Chennai, India
-> - **Theme:** Fraud detection, prevention & protection
+> [!failure] Verified — not eligible
+> 2026-06-10 verification: open to **students, research scholars, dropouts, and startups across VIT campuses and Anna University institutions** only — working professionals are not in scope. Registration ran **Feb 16 – Mar 1, 2026** and is closed. No further action.
 
 ---
 
 ## 📝 What it is
 
-Indian Bank's fraud-focused hackathon — "protect, detect, and prevent fraud" — in collaboration with VIT Chennai.
-
-## 🎯 Why it fits me
-
-Fraud detection = direct fintech-backend overlap; AEGIS security filter chain reusable here.
-
-## ✅ Action items
-
-- [ ] Confirm professional eligibility
-- [ ] Find registration link + deadline
-- [ ] Register if eligible
+Indian Bank × VIT Chennai fraud hackathon ("Protect – Detect – Prevent Fraud"), ₹11L pool — part of the PSB Hackathon Series 2026 ecosystem (see [[GFF_2026_Hackathons]]).
 
 ## 🗒️ Notes
 
-- Found via web search (2026-06-09). May lean student/academic — verify before investing time.
+- Domain was a perfect AEGIS match, but eligibility kills it. The professional-friendly equivalent is [[PSB_Cybersecurity_Fraud_AI_Hackathon_2026]] (reg. closes Jun 15) and the [[RBI_HaRBInger_2026_Watch]] watchlist.

@@ -39,8 +39,9 @@ Build production-grade multi-agent systems and AI workflows on **Qwen Cloud** (A
 
 - **Track 1 — MemoryAgent:** agent with persistent cross-session memory & preferences
 - **Track 2 — AI Showrunner:** video-gen agent for short-drama pipeline
+- **Track 3 — Agent Society:** multi-agent collaboration system — distinct agents working together
+- **Track 4 — Autopilot Agent:** automate a real-world business workflow end-to-end
 - **Track 5 — EdgeAgent:** Qwen-powered IoT/robotics/smart hardware (edge sense + cloud reason)
-- _(Tracks 3 & 4 — confirm on Devpost)_
 
 ## 📅 Key Dates
 
@@ -50,16 +51,16 @@ Build production-grade multi-agent systems and AI workflows on **Qwen Cloud** (A
 
 ## 🎯 Why it fits me
 
-**MemoryAgent** is the natural backend play — persistent memory store + multi-turn decisioning maps directly onto AEPO's event-sourced architecture (Kafka + RDBMS/Mongo). Reusable from the Rapid Agent build.
+**MemoryAgent** is the natural backend play — persistent memory store + multi-turn decisioning maps directly onto AEPO's event-sourced architecture (Kafka + RDBMS/Mongo). Reusable from the Rapid Agent build. **Autopilot Agent** (end-to-end business workflow) is the equally strong alternative — AEPO's payment-ops flow nearly as-is.
 
 ## ✅ Action items
 
 - [ ] Register
-- [ ] Pick track (MemoryAgent)
+- [ ] Pick track (MemoryAgent or Autopilot Agent)
 - [ ] Reuse AEPO core for Qwen models
 - [ ] Submit before Jul 9
 
 ## 🗒️ Notes
 
 - Found via web search (2026-06-09). ~2,300 participants already registered.
-- Confirm exact track list and excluded-country list in the rules before committing.
+- 2026-06-10: all 5 tracks confirmed; per-track prize = $7K cash + $3K credits; ~2,800 registered. Still confirm the excluded-country list in the rules before committing.
