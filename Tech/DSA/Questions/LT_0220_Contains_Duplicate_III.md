@@ -59,41 +59,101 @@ review_date:
 
 ## 💡 Solutions
 
-### 🟢 Approach 1: Sliding Window + TreeSet
+### 🟢 Approach: Sliding Window + TreeSet
 
-**Intuition:**
-For every current element `nums[i]`, we need to check whether any recent element falls within the value range `[curr - valueDiff, curr + valueDiff]`.
+---
 
-The index condition `|i - j| <= indexDiff` means we only care about elements within the last `indexDiff` positions — a classic **sliding window**. We maintain a `TreeSet<Long>` of recent elements. Because `TreeSet` stores elements in sorted order, `set.ceiling(x)` gives the smallest element `>= x` in `O(log k)` time.
+#### Step 1: Understand the Conditions
 
-**Why `ceiling()` alone is enough:**
-Given `curr = 10`, `valueDiff = 3` → valid range `[7, 13]`. We call `set.ceiling(7)`:
-- If result `<= 13` → valid pair found.
-- If result `> 13` → no valid pair, because `TreeSet` is sorted and every subsequent element is even larger.
+We need to find indices `i` and `j` such that:
+1. `|i - j| <= indexDiff`
+2. `|nums[i] - nums[j]| <= valueDiff`
 
-One candidate check is sufficient.
+---
 
-**Sliding Window — keeping index condition valid:**
+#### Step 2: Convert the Value Condition into a Range
 
-At index `i`, only indices `[i - indexDiff, i - 1]` matter. We remove `nums[i - indexDiff]` from the set once the window exceeds size `indexDiff`.
+Given `|nums[i] - nums[j]| <= valueDiff`, let `curr = nums[i]`:
 
-Example — `nums = [4, 10, 15, 7]`, `indexDiff = 2`:
+```
+|curr - nums[j]|  <=  valueDiff
+⟹  curr - valueDiff  <=  nums[j]  <=  curr + valueDiff
+```
 
-| i | action | set after |
-|---|--------|-----------|
-| 0 | add `4` | `{4}` |
-| 1 | add `10` | `{4, 10}` |
-| 2 | add `15`, remove `nums[0]=4` | `{10, 15}` |
-| 3 | check against `{10, 15}` (indices 1, 2 only) | — |
+For every `curr`, we look for a previous value lying inside `[curr - valueDiff, curr + valueDiff]`.
+These are simply the **left** and **right** boundaries of the valid range.
 
-**Dry Run — `nums = [1,5,9,1]`, `indexDiff = 3`, `valueDiff = 3`:**
+---
 
-| i | curr | range | `ceiling(L)` | valid? | set after |
-|---|------|-------|--------------|--------|-----------|
-| 0 | `1` | `[-2, 4]` | `null` | — | `{1}` |
-| 1 | `5` | `[2, 8]` | `null` | — | `{1, 5}` |
-| 2 | `9` | `[6, 12]` | `null` | — | `{1, 5, 9}` |
-| 3 | `1` | `[-2, 4]` | `1` | `1 <= 4` ✅ | return `true` |
+#### Step 3: Satisfy the Index Condition
+
+Since we process left to right (`j < i`):
+
+```
+|i - j|  =  i - j  <=  indexDiff
+```
+
+So before checking `nums[i]`, we only keep `nums[i - indexDiff] … nums[i - 1]` inside the TreeSet — this is the **sliding window**.
+
+---
+
+#### Step 4: What Does the TreeSet Contain?
+
+At iteration `i`, the TreeSet holds values whose indices satisfy:
+
+```
+max(0, i - indexDiff)  <=  j  <  i
+```
+
+Every value inside the TreeSet automatically satisfies `|i - j| <= indexDiff`.
+**✅ Index condition is already handled.**
+
+---
+
+#### Step 5 & 6: Checking the Value Condition — Why `ceiling(curr - valueDiff)`?
+
+`ceiling(x)` returns the **smallest element ≥ x** in `O(log k)` time. One call is sufficient:
+
+> [!example]
+> `curr = 20`, `valueDiff = 5` → required range `[15, 25]`
+> TreeSet: `{ 3, 8, 17, 30 }`
+> `set.ceiling(15)` → `17`
+> `17 <= 25` ✅ → valid pair found
+
+> [!example]
+> **No-match case:**
+> TreeSet: `{ 3, 8, 30 }`, range `[15, 25]`
+> `set.ceiling(15)` → `30`
+> `30 <= 25` ❌ → no element in range
+
+---
+
+#### Step 7: Why Is One Candidate Enough?
+
+> [!info]
+> The TreeSet is **sorted**. `ceiling(L)` gives the **minimum** value ≥ L.
+> - If `candidate <= R` → it lies in `[L, R]` → valid pair ✅
+> - If `candidate > R` → every subsequent element is even larger → no pair ❌
+>
+> One check covers all cases.
+
+---
+
+#### Final Mapping
+
+| Condition | Handled by |
+|-----------|------------|
+| `\|i - j\| <= indexDiff` | Sliding window — TreeSet holds only last `indexDiff` elements |
+| `\|nums[i] - nums[j]\| <= valueDiff` | Range query: `ceiling(curr - valueDiff) <= curr + valueDiff` |
+
+**Complete thought process:**
+1. Keep only nearby indices in TreeSet → index condition satisfied
+2. Convert value condition into range `[curr - valueDiff, curr + valueDiff]`
+3. Find first value ≥ left boundary: `ceiling(curr - valueDiff)`
+4. If it is also ≤ right boundary → value condition satisfied
+5. Both satisfied → `return true`
+
+---
 
 **Edge Cases:**
 - `valueDiff = 0` — requires exact duplicates within `indexDiff` distance.

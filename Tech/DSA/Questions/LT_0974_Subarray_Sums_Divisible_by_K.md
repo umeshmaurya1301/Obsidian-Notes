@@ -177,3 +177,30 @@ class Solution {
 ## ⏱️ Complexity
 - **Time:** `O(n)` — single pass; all array/map operations are O(1).
 - **Space:** `O(k)` — exactly `k` buckets for remainders 0 through k-1 (array approach is tighter in practice than HashMap due to no boxing or rehashing).
+
+---
+
+## 🧰 Generalizable Toolkit — Subarray Sum Patterns
+
+> [!info]
+> These four patterns appear constantly across subarray-sum problems on LeetCode. Recognising which one applies is half the solution.
+
+**1. Core algebraic trick**
+Any subarray sum is a difference of two prefix sums: `sum(i..j) = prefixSum[j] - prefixSum[i-1]`. Whenever a problem asks "subarray sum satisfies condition X," translate it into a condition on that difference, then figure out what it implies about the two prefix sums individually.
+
+**2. Divisibility → congruence → equality of remainders**
+Condition: *sum divisible by k.*
+`prefixSum[j] - prefixSum[i-1] ≡ 0 (mod k)`
+→ `prefixSum[j] ≡ prefixSum[i-1] (mod k)`
+→ `prefixSum[j] % k == prefixSum[i-1] % k` (after normalisation)
+**Action:** count pairs of prefix sums with equal remainders using a frequency map/array.
+
+**3. Exact sum → equality of a shifted prefix sum**
+Condition: *sum equals target.* (LC 560 — Subarray Sum Equals K)
+`prefixSum[j] - prefixSum[i-1] = target`
+→ `prefixSum[i-1] = prefixSum[j] - target`
+**Action:** for each `j`, look up how many earlier prefix sums equal `prefixSum[j] - target`. Same skeleton as pattern 2, different lookup value.
+
+**4. Normalisation for negative remainders (Java / C++ only)**
+`((x % k) + k) % k`
+Java/C++ `%` is a *remainder* operator — result has the same sign as the dividend, so negative inputs give negative remainders. A single `+k` shifts the worst case `-(k-1)` to positive before the final `% k`. Python's `%` already returns non-negative results for positive `k`, so this step is unnecessary there.
