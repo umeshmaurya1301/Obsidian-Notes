@@ -107,9 +107,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 - [x] [First Missing Positive](https://leetcode.com/problems/first-missing-positive/) — Hard 🔥 ✅ 2026-05-22
 - [x] [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/) — Hard ✅ Neetcode 🔥 **(Google favourite)** ✅ 2026-05-22
-- [x] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard ✅ 2026-05-25
 - [x] [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) — Hard 🔥 ✅ 2026-05-25
-- [x] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard ✅ 2026-05-25
 
 ---
 
@@ -192,6 +190,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 ## Hard
 
+- [x] [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/) — Hard ✅ 2026-05-25
 - [ ] [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) — Hard ✅ Neetcode 🔥 **(Must master)**
 - [ ] [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/) — Hard 🔥
 - [ ] [Trapping Rain Water (Stack approach)](https://leetcode.com/problems/trapping-rain-water/) — Hard
@@ -768,6 +767,16 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 - [ ] [Smallest Unique Subarray](https://leetcode.com/problems/smallest-unique-subarray/) — Medium
 
 > **Target by end of Month 4:** Consistently solving 3/4 problems in Weekly Contest. Rating 1700+.
+
+---
+
+# 🧮 CP — Competitive Programming
+
+> Problems that require math/combinatorics/number theory knowledge. Low MAANG onsite probability but useful for OA screening rounds and CP-style companies (trading firms, Atlassian, etc.).
+
+## Combinatorics + Modular Arithmetic
+
+- [x] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard ✅ 2026-05-25
 
 ---
 
