@@ -52,7 +52,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 | 6    | Trees (BFS/DFS)                       | Tree Traversals, Path problems  | 28              |
 | 7    | Trees (Advanced) + BST                | BST, LCA, Serialise             | 22              |
 | 8    | Heap / Priority Queue                 | Top K, Two Heaps, K-way         | 22              |
-| 9    | Backtracking                          | Subsets, Permutations, NQueen   | 20              |
+| 9    | Backtracking                          | Subsets, Permutations, NQueen   | 21              |
 | 10   | Graphs (Basic)                        | BFS, DFS, Union Find            | 25              |
 | 11   | Graphs (Advanced)                     | Dijkstra, Topo Sort, MST        | 22              |
 | 12   | DP Part 1 — 1D + Knapsack             | 1D DP, 0/1 Knapsack             | 25              |
@@ -149,10 +149,10 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 ## Hard
 
-- [ ] [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/) — Hard ✅ Neetcode 🔥 **(MAANG classic)**
-- [ ] [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) — Hard
-- [ ] [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/) — Medium
-- [ ] [Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/) — Hard 🔥
+- [x] [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/) — Hard ✅ Neetcode 🔥 **(MAANG classic)** ✅ 2026-06-15
+- [x] [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) — Hard ✅ 2026-06-15
+- [x] [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/) — Medium ✅ 2026-06-15
+- [x] [Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/) — Hard 🔥 ✅ 2026-06-15
 
 ---
 
@@ -162,7 +162,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 ## Stack Basics
 
-- [ ] [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) — Easy ✅ Neetcode 🔥
+- [x] [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) — Easy ✅ Neetcode 🔥 ✅ 2026-06-15
 - [ ] [Min Stack](https://leetcode.com/problems/min-stack/) — Medium ✅ Neetcode 🔥
 - [ ] [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/) — Medium ✅ Neetcode
 - [ ] [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/) — Easy
@@ -457,6 +457,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 - [ ] [N-Queens](https://leetcode.com/problems/n-queens/) — Hard ✅ Neetcode 🔥
 - [ ] [N-Queens II](https://leetcode.com/problems/n-queens-ii/) — Hard
 - [ ] [Rat in a Maze](https://www.geeksforgeeks.org/rat-in-a-maze-backtracking-2/) — Medium (GFG)
+- [ ] [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/description/) — Hard 🔥
 
 ---
 
@@ -801,7 +802,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 |Trees BFS/DFS|28|0|0%|
 |Trees Advanced + BST|22|0|0%|
 |Heap / PQ|22|0|0%|
-|Backtracking|20|0|0%|
+|Backtracking|21|0|0%|
 |Graphs Basic|25|0|0%|
 |Graphs Advanced|22|0|0%|
 |DP 1D + Knapsack|27|0|0%|
@@ -809,7 +810,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**409**|**19**|**5%**|
+|**TOTAL**|**410**|**19**|**5%**|
 
 ---
 

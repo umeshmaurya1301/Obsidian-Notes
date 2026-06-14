@@ -1,13 +1,10 @@
-Lecture 3
-AWS - Global Infrastructure part 2
-Disaster Recovery
-RTO | RPO
-Smaller RTO
-Smaller RPO
-when to choose what
-Disaster Recovery Strategy
-1 Backup and Restore
-2 Pivot Live
-3 Active Passive or warm standby
-4 active
-5 how db resolves
+Lecture 4,5,6 combined
+AWS - IAM
+
+what is IAM
+IAM Entities - USER, POLICY, GROUP, ROLE
+
+- IAM USER
+- - how thie IAM user will login - using usernaem/password  and APIKEY + SECRET
+- IAM POLICY
+- Identity based policy and resource based policy

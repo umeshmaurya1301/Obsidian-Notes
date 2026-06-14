@@ -15,7 +15,7 @@ tags:
 
 - **[[Tech/DSA/DSA_Dashboard|🧮 DSA]]** — solved problems, patterns & review queue
 - **[[Tech/Java/1. Java Program Life Cycle|☕ Java]]** — language & JVM internals
-- **[[Tech/Python/1. Python Program Life Cycle|🐍 Python]]** — internals & Python-vs-Java
+- **[[Tech/Python/0. Foundations & Mental Model|🐍 Python]]** — internals & Python-vs-Java
 - **[[Tech/Concurrency/1. Core Fundamentals|🧵 Concurrency]]** — threads, sync & the JMM
 - **[[Tech/Kafka/1. Kafka Intro|🟧 Kafka]]** — producer, consumer & DLQ enhancements
 - **[[Tech/JUNIT 5 and Mockito/1. Introduction|🧪 Testing]]** — JUnit 5 & Mockito

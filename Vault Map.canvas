@@ -5,7 +5,7 @@
 		{"id":"g-core","type":"group","label":"💻 Core Tech","x":-620,"y":-470,"width":1240,"height":300,"color":"6"},
 		{"id":"n-techdash","type":"file","file":"Tech/Dashboard.md","x":-590,"y":-410,"width":280,"height":60},
 		{"id":"n-java","type":"file","file":"Tech/Java/1. Java Program Life Cycle.md","x":-290,"y":-410,"width":280,"height":60},
-		{"id":"n-python","type":"file","file":"Tech/Python/1. Python Program Life Cycle.md","x":10,"y":-410,"width":280,"height":60},
+		{"id":"n-python","type":"file","file":"Tech/Python/0. Foundations & Mental Model.md","x":10,"y":-410,"width":280,"height":60},
 		{"id":"n-kafka","type":"file","file":"Tech/Kafka/1. Kafka Intro.md","x":310,"y":-410,"width":280,"height":60},
 		{"id":"n-conc","type":"file","file":"Tech/Concurrency/1. Core Fundamentals.md","x":-590,"y":-310,"width":280,"height":60},
 		{"id":"n-test","type":"file","file":"Tech/JUNIT 5 and Mockito/1. Introduction.md","x":-290,"y":-310,"width":280,"height":60},
