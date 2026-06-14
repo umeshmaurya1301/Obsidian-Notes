@@ -1,5 +1,13 @@
 {
-  "accentColor": "",
+  "accentColor": "#7c6df0",
   "cssTheme": "Minimal",
-  "theme": "obsidian"
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "00-cool-focused-theme",
+    "cards",
+    "callouts",
+    "tags",
+    "typography",
+    "dashboards"
+  ]
 }

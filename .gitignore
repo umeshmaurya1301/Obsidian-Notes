@@ -3,6 +3,7 @@
 .obsidian/graph.json
 .obsidian/plugins/obsidian-tasks-plugin/data.json
 .obsidian/plugins/templater-obsidian/data.json
+.obsidian/plugins/obsidian-excalidraw-plugin/data.json
 
 # OS files
 .DS_Store

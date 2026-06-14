@@ -1,0 +1,64 @@
+/* ============================================================
+   Typography — headings & code polish
+   Subtle, theme-friendly accents for the emoji headings and the
+   code-heavy notes. Kept light so it complements Minimal.
+   ============================================================ */
+
+/* ---- headings ---- */
+.markdown-rendered h2 {
+  border-bottom: 1px solid var(--ufocus-border);
+  padding-bottom: .18em;
+  letter-spacing: .2px;
+}
+
+/* dashboard hero: gradient the main title */
+.ufocus-dash .markdown-rendered h1 {
+  background: linear-gradient(90deg, var(--ufocus-accent), #b9aef9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+/* little accent tick before h3 on dashboards */
+.ufocus-dash .markdown-rendered h3::before {
+  content: "";
+  display: inline-block;
+  width: .42em;
+  height: .42em;
+  margin-right: .5em;
+  border-radius: 2px;
+  background: var(--ufocus-accent);
+  vertical-align: middle;
+  opacity: .85;
+}
+
+/* ---- code ---- */
+.markdown-rendered pre {
+  border-radius: var(--ufocus-radius, 12px);
+  border: 1px solid var(--ufocus-border);
+  box-shadow: var(--ufocus-shadow);
+}
+.markdown-rendered pre > code {
+  border-radius: inherit;
+}
+
+/* inline code as a soft pill */
+.markdown-rendered :not(pre) > code {
+  background: var(--ufocus-card-2);
+  border: 1px solid var(--ufocus-border);
+  border-radius: 6px;
+  padding: .08em .42em;
+  font-size: .87em;
+}
+
+/* ---- checkboxes (roadmaps use lots of tasks) ---- */
+.markdown-rendered input[type="checkbox"]:checked {
+  background-color: var(--ufocus-accent);
+  border-color: var(--ufocus-accent);
+}
+
+/* ---- blockquote accent ---- */
+.markdown-rendered blockquote {
+  border-left: 3px solid var(--ufocus-accent);
+}

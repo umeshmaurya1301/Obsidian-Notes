@@ -1,0 +1,55 @@
+/* ============================================================
+   Callouts
+   1. Gentle polish for the callouts already used everywhere
+      (info / example / warning / tip / note).
+   2. Four custom study callouts tuned for these notes:
+        > [!intuition]   the "aha" / mental model
+        > [!complexity]  time & space analysis
+        > [!pattern]     the reusable technique
+        > [!gotcha]      edge cases & traps
+   Existing callouts keep working with or without this snippet.
+   ============================================================ */
+
+/* ---- shared polish ---- */
+.callout {
+  border-radius: var(--ufocus-radius, 12px);
+  border: 1px solid rgba(var(--callout-color), 0.30);
+  box-shadow: var(--ufocus-shadow);
+  padding: 12px 14px;
+}
+.callout-title {
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.callout-icon .svg-icon { stroke-width: 2.1px; }
+
+/* ---- custom: intuition (violet) ---- */
+.callout[data-callout="intuition"] {
+  --callout-color: 124, 109, 240;
+  --callout-icon: lucide-lightbulb;
+}
+
+/* ---- custom: complexity (blue) ---- */
+.callout[data-callout="complexity"] {
+  --callout-color: 91, 157, 240;
+  --callout-icon: lucide-gauge;
+}
+
+/* ---- custom: pattern (teal) ---- */
+.callout[data-callout="pattern"] {
+  --callout-color: 52, 195, 181;
+  --callout-icon: lucide-puzzle;
+}
+
+/* ---- custom: gotcha (rose) ---- */
+.callout[data-callout="gotcha"] {
+  --callout-color: 236, 106, 156;
+  --callout-icon: lucide-alert-triangle;
+}
+
+/* aliases so natural spellings also work */
+.callout[data-callout="aha"]        { --callout-color: 124, 109, 240; --callout-icon: lucide-lightbulb; }
+.callout[data-callout="time"],
+.callout[data-callout="complexity-analysis"] { --callout-color: 91, 157, 240; --callout-icon: lucide-gauge; }
+.callout[data-callout="edge"],
+.callout[data-callout="edge-cases"] { --callout-color: 236, 106, 156; --callout-icon: lucide-alert-triangle; }

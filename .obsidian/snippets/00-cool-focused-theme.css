@@ -1,0 +1,86 @@
+/* ============================================================
+   Cool & Focused — palette & design tokens
+   Vault-wide custom properties used by the other snippets.
+   Pure CSS. Safe to disable. Built on the Minimal theme.
+   ============================================================ */
+
+/* @settings
+name: Cool & Focused
+id: cool-focused
+settings:
+  -
+    id: ufocus-header
+    title: Cool & Focused
+    description: Palette and layout for the vault makeover (indigo/violet on slate).
+    type: heading
+    level: 1
+    collapsed: false
+  -
+    id: ufocus-accent
+    title: Accent colour
+    description: Drives links, headings and card highlights. Defaults to your Obsidian accent.
+    type: variable-color
+    format: hex
+    opacity: false
+    default: '#7c6df0'
+  -
+    id: ufocus-card-min
+    title: Card minimum width
+    description: Cards reflow into fewer columns below this width.
+    type: variable-number-slider
+    default: 220
+    min: 150
+    max: 380
+    step: 10
+    format: px
+  -
+    id: ufocus-radius
+    title: Corner radius
+    description: Roundness of cards, callouts, code blocks and tables.
+    type: variable-number-slider
+    default: 12
+    min: 0
+    max: 20
+    step: 1
+    format: px
+*/
+
+body {
+  /* Accent follows your Obsidian accent setting unless overridden in Style Settings */
+  --ufocus-accent: var(--interactive-accent, #7c6df0);
+  --ufocus-accent-text: var(--text-on-accent, #ffffff);
+  --ufocus-card-min: 220px;
+  --ufocus-radius: 12px;
+
+  /* Category hues — used by tags.css and the dashboards */
+  --cat-dsa:        #8b7cf6; /* violet  */
+  --cat-java:       #f0a45f; /* amber   */
+  --cat-python:     #5b9df0; /* blue    */
+  --cat-kafka:      #34c3b5; /* teal    */
+  --cat-concurrency:#4db6ac; /* teal-green */
+  --cat-testing:    #c98bff; /* lilac   */
+  --cat-finance:    #4cc38a; /* green   */
+  --cat-crypto:     #f2b84b; /* gold    */
+  --cat-events:     #ec6a9c; /* rose    */
+  --cat-aws:        #f0934f; /* orange  */
+  --cat-devops:     #6aa9ec; /* sky     */
+  --cat-default:    var(--ufocus-accent);
+}
+
+/* ---- Dark mode surfaces (slate) ---- */
+.theme-dark {
+  --ufocus-card:    #1f2233;
+  --ufocus-card-2:  #262a3e;
+  --ufocus-border:  #34384f;
+  --ufocus-tag-bg:  #272b3d;
+  --ufocus-shadow:  0 1px 2px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.22);
+}
+
+/* ---- Light mode surfaces ---- */
+.theme-light {
+  --ufocus-card:    #ffffff;
+  --ufocus-card-2:  #f4f3fb;
+  --ufocus-border:  #e4e2f3;
+  --ufocus-tag-bg:  #f1effb;
+  --ufocus-shadow:  0 1px 2px rgba(40,30,90,.06), 0 6px 16px rgba(40,30,90,.08);
+}

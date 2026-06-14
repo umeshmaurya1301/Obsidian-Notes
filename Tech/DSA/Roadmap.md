@@ -46,7 +46,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 | ---- | ------------------------------------- | ------------------------------- | --------------- |
 | 1    | Arrays + Hashing                      | Arrays, Hashing                 | 29              |
 | 2    | Two Pointers + Sliding Window         | Two Pointers, Sliding Window    | 30              |
-| 3    | Stack + Monotonic Stack               | Stack, Monotonic Stack          | 22              |
+| 3    | Stack + Monotonic Stack + Deque       | Stack, Monotonic Stack, Deque   | 28              |
 | 4    | Binary Search                         | Binary Search, Search on Answer | 25              |
 | 5    | Linked List                           | LL Basics, Fast/Slow, Reverse   | 22              |
 | 6    | Trees (BFS/DFS)                       | Tree Traversals, Path problems  | 28              |
@@ -124,6 +124,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 - [x] [Sort Colors](https://leetcode.com/problems/sort-colors/) — Medium 🔥 ✅ 2026-05-28
 - [x] [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/) — Medium ✅ 2026-05-28
 - [x] [Trapping Rain Water (Two Pointer approach)](https://leetcode.com/problems/trapping-rain-water/) — Hard 🔥 ✅ 2026-05-28
+- [x] [3Sum Closest](https://leetcode.com/problems/3sum-closest/) — Medium ✅ 2026-06-13
 
 ## Sliding Window — Fixed
 
@@ -149,7 +150,6 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 ## Hard
 
 - [ ] [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/) — Hard ✅ Neetcode 🔥 **(MAANG classic)**
-- [ ] [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) — Hard ✅ Neetcode 🔥
 - [ ] [Substring with Concatenation of All Words](https://leetcode.com/problems/substring-with-concatenation-of-all-words/) — Hard
 - [ ] [Longest Substring with At Most Two Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/) — Medium
 - [ ] [Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/) — Hard 🔥
@@ -195,6 +195,15 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 - [ ] [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/) — Hard 🔥
 - [ ] [Trapping Rain Water (Stack approach)](https://leetcode.com/problems/trapping-rain-water/) — Hard
 - [ ] [The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/) — Hard
+
+## Deque (Monotonic Queue)
+
+- [ ] [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/) — Hard ✅ Neetcode 🔥
+- [ ] [Jump Game VI](https://leetcode.com/problems/jump-game-vi/) — Medium 🔥 **(Monotonic deque + DP)**
+- [ ] [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) — Hard 🔥 **(Prefix sum + deque)**
+- [ ] [Constrained Subsequence Sum](https://leetcode.com/problems/constrained-subsequence-sum/) — Hard **(Monotonic deque + DP)**
+- [ ] [Continuous Subarrays](https://leetcode.com/problems/continuous-subarrays/) — Medium **(Min + Max deques)**
+- [ ] [Max Value of Equation](https://leetcode.com/problems/max-value-of-equation/) — Hard
 
 ---
 
@@ -786,7 +795,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 |---|---|---|---|
 |Arrays + Hashing|29|16|55%|
 |Two Pointers + Sliding Window|30|2|7%|
-|Stack + Monotonic Stack|22|0|0%|
+|Stack + Monotonic Stack|28|0|0%|
 |Binary Search|25|1|4%|
 |Linked List|22|0|0%|
 |Trees BFS/DFS|28|0|0%|
@@ -800,7 +809,7 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 |DP Advanced|18|0|0%|
 |Greedy + Intervals + Tries|26|0|0%|
 |Revision Mix|20|0|0%|
-|**TOTAL**|**403**|**19**|**5%**|
+|**TOTAL**|**409**|**19**|**5%**|
 
 ---
 

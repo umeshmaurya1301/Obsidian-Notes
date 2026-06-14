@@ -1,0 +1,91 @@
+/* ============================================================
+   Dashboards — tables & progress bars
+   Gentle polish for every table; interactive flourishes (sticky
+   header, row hover, full width) only on dashboard notes
+   (cssclasses: ufocus-dash). Also styles the .ufocus-bar helper
+   that the dataviewjs blocks render for progress.
+   ============================================================ */
+
+/* ---- gentle polish for all tables ---- */
+.markdown-rendered table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--ufocus-border);
+  border-radius: var(--ufocus-radius, 12px);
+  overflow: hidden;
+}
+.markdown-rendered th,
+.markdown-rendered td {
+  border: none;
+  border-bottom: 1px solid var(--ufocus-border);
+  padding: 7px 12px;
+}
+.markdown-rendered thead th {
+  background: var(--ufocus-card-2);
+  font-weight: 700;
+  border-bottom: 2px solid var(--ufocus-border);
+}
+.markdown-rendered tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--ufocus-card-2) 45%, transparent);
+}
+.markdown-rendered tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---- dashboard-only flourishes ---- */
+.ufocus-dash table {
+  width: 100%;
+}
+.ufocus-dash thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.ufocus-dash tbody tr {
+  transition: background .1s ease;
+}
+.ufocus-dash tbody tr:hover {
+  background: color-mix(in srgb, var(--ufocus-accent) 12%, transparent);
+}
+
+/* ---- progress bar helper (emitted by dataviewjs) ----
+   <div class="ufocus-bar"><span style="width:62%"></span></div> */
+.ufocus-bar {
+  height: 9px;
+  background: var(--ufocus-card-2);
+  border: 1px solid var(--ufocus-border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 4px 0;
+}
+.ufocus-bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--ufocus-accent), #57d0bd);
+  border-radius: inherit;
+}
+
+/* ---- stat "pills" used on the Home dashboard ---- */
+.ufocus-stat {
+  display: inline-block;
+  min-width: 64px;
+  text-align: center;
+  padding: 10px 14px;
+  margin: 4px 8px 4px 0;
+  background: var(--ufocus-card);
+  border: 1px solid var(--ufocus-border);
+  border-radius: var(--ufocus-radius, 12px);
+  box-shadow: var(--ufocus-shadow);
+}
+.ufocus-stat b {
+  display: block;
+  font-size: 1.5em;
+  line-height: 1.1;
+  color: var(--ufocus-accent);
+}
+.ufocus-stat small {
+  color: var(--text-muted);
+  font-size: .76em;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}

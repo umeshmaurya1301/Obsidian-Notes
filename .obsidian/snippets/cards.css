@@ -1,0 +1,73 @@
+/* ============================================================
+   Card grid
+   Turns a bold-led bullet list into a responsive card grid.
+   Enable per-note with frontmatter:  cssclasses: ufocus-dash
+   Card list = a list whose items start with **bold** text, e.g.
+     - **[[DSA_Dashboard|🧮 DSA]]** — solved problems & patterns
+   Plain lists and Dataview output are left untouched.
+   Looks best in Reading view.
+   ============================================================ */
+
+.ufocus-dash ul:has(> li > strong:first-child) {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ufocus-card-min, 220px), 1fr));
+  gap: 14px;
+  padding: 2px 0;
+  margin: 0.6em 0 1.4em;
+}
+
+.ufocus-dash ul:has(> li > strong:first-child) > li {
+  list-style: none;
+  margin: 0;
+  padding: 14px 16px 14px 18px;
+  background: var(--ufocus-card);
+  border: 1px solid var(--ufocus-border);
+  border-radius: var(--ufocus-radius, 12px);
+  box-shadow: var(--ufocus-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+
+/* accent strip down the left edge */
+.ufocus-dash ul:has(> li > strong:first-child) > li::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--ufocus-accent);
+  opacity: .9;
+}
+
+.ufocus-dash ul:has(> li > strong:first-child) > li:hover {
+  transform: translateY(-2px);
+  border-color: var(--ufocus-accent);
+  box-shadow: 0 8px 22px rgba(124, 109, 240, .25);
+}
+
+/* the title line (first bold) */
+.ufocus-dash ul:has(> li > strong:first-child) > li > strong:first-child {
+  display: block;
+  font-size: 1.03em;
+  line-height: 1.3;
+  margin-bottom: 3px;
+}
+
+.ufocus-dash ul:has(> li > strong:first-child) > li a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ufocus-dash ul:has(> li > strong:first-child) > li a:hover {
+  color: var(--ufocus-accent);
+}
+
+/* description text after the title reads as muted body copy */
+.ufocus-dash ul:has(> li > strong:first-child) > li {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+.ufocus-dash ul:has(> li > strong:first-child) > li strong:first-child a {
+  color: var(--text-normal);
+}

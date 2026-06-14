@@ -1,0 +1,120 @@
+/* ============================================================
+   Tags — colour-coded pills by category
+   Works in reading view, the tag pane and search.
+   Unknown tags get a neutral pill; known categories get a hue
+   from the palette in 00-cool-focused-theme.css.
+   ============================================================ */
+
+/* ---- base pill ---- */
+.tag,
+a.tag,
+.tag-pane-tag .tag-pane-tag-text {
+  border-radius: 999px;
+}
+a.tag {
+  background: var(--ufocus-tag-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+  padding: 1px 9px 2px;
+  font-size: .76em;
+  font-weight: 600;
+  font-family: var(--font-interface);
+  text-decoration: none;
+  line-height: 1.7;
+}
+a.tag:hover {
+  color: var(--text-normal);
+  border-color: var(--ufocus-accent);
+}
+
+/* ---- helper: a category mixes its hue into bg / text / border ----
+   (color-mix is supported by Obsidian's Chromium runtime)        */
+
+/* DSA family */
+a.tag[href="#dsa" i], a.tag[href^="#dsa/" i],
+a.tag[href="#arrays" i], a.tag[href="#sliding-window" i],
+a.tag[href="#bit-manipulation" i], a.tag[href="#hashing" i],
+a.tag[href="#two-pointers" i], a.tag[href="#dp" i],
+a.tag[href="#binary-search" i], a.tag[href="#prefix-sum" i] {
+  background: color-mix(in srgb, var(--cat-dsa) 16%, transparent);
+  color: var(--cat-dsa);
+  border-color: color-mix(in srgb, var(--cat-dsa) 42%, transparent);
+}
+
+/* Java */
+a.tag[href="#java" i], a.tag[href^="#java/" i] {
+  background: color-mix(in srgb, var(--cat-java) 16%, transparent);
+  color: var(--cat-java);
+  border-color: color-mix(in srgb, var(--cat-java) 42%, transparent);
+}
+
+/* Python */
+a.tag[href="#python" i], a.tag[href^="#python/" i] {
+  background: color-mix(in srgb, var(--cat-python) 16%, transparent);
+  color: var(--cat-python);
+  border-color: color-mix(in srgb, var(--cat-python) 42%, transparent);
+}
+
+/* Kafka */
+a.tag[href="#kafka" i], a.tag[href^="#kafka/" i] {
+  background: color-mix(in srgb, var(--cat-kafka) 16%, transparent);
+  color: var(--cat-kafka);
+  border-color: color-mix(in srgb, var(--cat-kafka) 42%, transparent);
+}
+
+/* Concurrency */
+a.tag[href="#concurrency" i], a.tag[href^="#concurrency/" i],
+a.tag[href="#threads" i], a.tag[href="#multithreading" i] {
+  background: color-mix(in srgb, var(--cat-concurrency) 16%, transparent);
+  color: var(--cat-concurrency);
+  border-color: color-mix(in srgb, var(--cat-concurrency) 42%, transparent);
+}
+
+/* Testing */
+a.tag[href="#testing" i], a.tag[href="#junit" i], a.tag[href="#mockito" i] {
+  background: color-mix(in srgb, var(--cat-testing) 16%, transparent);
+  color: var(--cat-testing);
+  border-color: color-mix(in srgb, var(--cat-testing) 42%, transparent);
+}
+
+/* Finance */
+a.tag[href="#finance" i], a.tag[href^="#finance/" i], a.tag[href="#investing" i] {
+  background: color-mix(in srgb, var(--cat-finance) 16%, transparent);
+  color: var(--cat-finance);
+  border-color: color-mix(in srgb, var(--cat-finance) 42%, transparent);
+}
+
+/* Crypto / Web3 */
+a.tag[href="#crypto" i], a.tag[href="#web3" i], a.tag[href="#blockchain" i] {
+  background: color-mix(in srgb, var(--cat-crypto) 16%, transparent);
+  color: var(--cat-crypto);
+  border-color: color-mix(in srgb, var(--cat-crypto) 42%, transparent);
+}
+
+/* Events / hackathons */
+a.tag[href="#events" i], a.tag[href="#hackathon" i], a.tag[href^="#event" i] {
+  background: color-mix(in srgb, var(--cat-events) 16%, transparent);
+  color: var(--cat-events);
+  border-color: color-mix(in srgb, var(--cat-events) 42%, transparent);
+}
+
+/* AWS / cloud */
+a.tag[href="#aws" i], a.tag[href="#cloud" i] {
+  background: color-mix(in srgb, var(--cat-aws) 16%, transparent);
+  color: var(--cat-aws);
+  border-color: color-mix(in srgb, var(--cat-aws) 42%, transparent);
+}
+
+/* DevOps */
+a.tag[href="#devops" i], a.tag[href="#kubernetes" i], a.tag[href="#docker" i], a.tag[href="#k8s" i] {
+  background: color-mix(in srgb, var(--cat-devops) 16%, transparent);
+  color: var(--cat-devops);
+  border-color: color-mix(in srgb, var(--cat-devops) 42%, transparent);
+}
+
+/* Dashboards / meta */
+a.tag[href="#dashboard" i] {
+  background: color-mix(in srgb, var(--ufocus-accent) 16%, transparent);
+  color: var(--ufocus-accent);
+  border-color: color-mix(in srgb, var(--ufocus-accent) 42%, transparent);
+}
