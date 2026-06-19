@@ -1,4 +1,4 @@
-claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
+ pleasclaude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 > **For:** Umesh Maurya · Backend Engineer · 3.5 yrs experience **Current state:** 300 problems solved (120E / 160M / 20H) · Neetcode 150 ≈ 60 done **Target:** MAANG SDE-2 interviews by end of Month 4 **Time budget:** 2-3 hrs weekdays · Full days weekends **Total problems in roadmap:** ~400 **Start date:** _________ **Target completion:** _________
 
@@ -6,26 +6,25 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 # 📋 Weekly Targets
 
-## 🗓️ Week of May 19 – May 25, 2026
+## 🗓️ Week 3 — Stack + Monotonic Stack (Current)
 
-- [ ] Complete all remaining Week 1 problems (12 left)
-- [ ] Solve Contest 1 unsolved problems (Largest Local Values in a Matrix II, Smallest Unique Subarray)
-- [ ] Participate in Contest 2 (Biweekly — Saturday May 24)
-- [ ] Participate in Contest 3 (Weekly — Sunday May 25)
-- [ ] Solve all unsolved problems from Contest 2 + Contest 3 by Sunday night
-- [ ] Solve every Java problem in Python as well (dual-language practice)
+- [ ] Finish Generating + Parsing (Remove K Digits, Basic Calculator II, Basic Calculator)
+- [ ] Complete Monotonic Stack section (7 problems)
+- [ ] Complete Deque / Monotonic Queue section (6 problems)
+- [ ] Attempt at least 2 Hard problems (Largest Rectangle in Histogram, Maximal Rectangle)
+- [ ] Participate in Weekly Contest (Sunday)
 
 **Daily Breakdown:**
 
 |Day|Focus|Target|
 |---|---|---|
-|Mon|Week 1 remaining + Contest 1 leftovers|4 problems|
-|Tue|Week 1 remaining|3 problems|
-|Wed|Week 1 remaining|3 problems|
-|Thu|Week 1 remaining (finish)|2 problems|
-|Fri|Buffer / revisit ⭐⭐⭐ problems|Review day|
-|Sat|Biweekly Contest + solve unsolved|Contest 2|
-|Sun|Weekly Contest + solve unsolved|Contest 3|
+|Mon|Generating + Parsing|3 problems|
+|Tue|Monotonic Stack basics|4 problems|
+|Wed|Monotonic Stack continued|3 problems|
+|Thu|Deque / Monotonic Queue|3 problems|
+|Fri|Hard problems + ⭐⭐⭐ revisit|2 hard|
+|Sat|Deque remaining + buffer|2 problems|
+|Sun|Weekly Contest|Contest|
 
 ---
 
@@ -42,24 +41,24 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 ## 📅 16-Week Schedule Overview
 
-| Week | Focus                                 | Patterns                        | Target Problems |
-| ---- | ------------------------------------- | ------------------------------- | --------------- |
-| 1    | Arrays + Hashing                      | Arrays, Hashing                 | 29              |
-| 2    | Two Pointers + Sliding Window         | Two Pointers, Sliding Window    | 30              |
-| 3    | Stack + Monotonic Stack + Deque       | Stack, Monotonic Stack, Deque   | 28              |
-| 4    | Binary Search                         | Binary Search, Search on Answer | 25              |
-| 5    | Linked List                           | LL Basics, Fast/Slow, Reverse   | 22              |
-| 6    | Trees (BFS/DFS)                       | Tree Traversals, Path problems  | 28              |
-| 7    | Trees (Advanced) + BST                | BST, LCA, Serialise             | 22              |
-| 8    | Heap / Priority Queue                 | Top K, Two Heaps, K-way         | 22              |
-| 9    | Backtracking                          | Subsets, Permutations, NQueen   | 21              |
-| 10   | Graphs (Basic)                        | BFS, DFS, Union Find            | 25              |
-| 11   | Graphs (Advanced)                     | Dijkstra, Topo Sort, MST        | 22              |
-| 12   | DP Part 1 — 1D + Knapsack             | 1D DP, 0/1 Knapsack             | 25              |
-| 13   | DP Part 2 — 2D + LIS + LCS            | Grid DP, LIS, LCS               | 25              |
-| 14   | DP Part 3 — Interval + Tree + Bitmask | Hard DP                         | 18              |
-| 15   | Greedy + Intervals + Tries            | Greedy, Intervals, Tries        | 20              |
-| 16   | Revision + Mocks + Hard Mix           | Mixed                           | 20+mocks        |
+| Week | Focus                                 | Patterns                        | Target Problems | Status        |
+| ---- | ------------------------------------- | ------------------------------- | --------------- | ------------- |
+| 1    | Arrays + Hashing                      | Arrays, Hashing                 | 29              | ✅ Done       |
+| 2    | Two Pointers + Sliding Window         | Two Pointers, Sliding Window    | 30              | ✅ Done       |
+| 3    | Stack Basics                          | Stack, Queue, Design            | 10              | 🔄 Current    |
+| 4    | DP Part 1 — 1D + Knapsack             | 1D DP, 0/1 Knapsack             | 25              |               |
+| 5    | DP Part 2 — 2D + LIS + LCS            | Grid DP, LIS, LCS               | 25              |               |
+| 6    | DP Part 3 — Interval + Tree + Bitmask | Hard DP                         | 18              |               |
+| 7    | Backtracking                          | Subsets, Permutations, NQueen   | 21              |               |
+| 8    | Linked List                           | LL Basics, Fast/Slow, Reverse   | 22              |               |
+| 9    | Binary Search                         | Binary Search, Search on Answer | 25              |               |
+| 10   | Trees (BFS/DFS)                       | Tree Traversals, Path problems  | 28              | ⚠️ Pain point |
+| 11   | Trees (Advanced) + BST                | BST, LCA, Serialise             | 22              | ⚠️ Pain point |
+| 12   | Heap / Priority Queue                 | Top K, Two Heaps, K-way         | 22              |               |
+| 13   | Monotonic Stack + Deque               | Monotonic Stack, Deque, Sliding | 18              |               |
+| 14   | Graphs (Basic + Advanced)             | BFS, DFS, Union Find, Dijkstra, Topo Sort | 35    |               |
+| 15   | Greedy + Intervals + Tries            | Greedy, Intervals, Tries        | 20              |               |
+| 16   | Revision + Mocks + Hard Mix           | Mixed                           | 20+mocks        |               |
 
 **Plus:** Leetcode Weekly Contest every Sunday (mandatory) + Biweekly Contest every other Saturday
 
@@ -163,17 +162,16 @@ claude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 ## Stack Basics
 
 - [x] [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/) — Easy ✅ Neetcode 🔥 ✅ 2026-06-15
-- [ ] [Min Stack](https://leetcode.com/problems/min-stack/) — Medium ✅ Neetcode 🔥
-- [ ] [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/) — Medium ✅ Neetcode
-- [ ] [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/) — Easy
-- [ ] [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/) — Easy
-- [ ] [Decode String](https://leetcode.com/problems/decode-string/) — Medium 🔥
-- [ ] [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) — Medium 🔥
-- [ ] [Simplify Path](https://leetcode.com/problems/simplify-path/) — Medium
+- [x] [Min Stack](https://leetcode.com/problems/min-stack/) — Medium ✅ Neetcode 🔥 ✅ 2026-06-15
+- [x] [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/) — Medium ✅ Neetcode ✅ 2026-06-15
+- [x] [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/) — Easy ✅ 2026-06-15
+- [x] [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/) — Easy ✅ 2026-06-15
+- [x] [Decode String](https://leetcode.com/problems/decode-string/) — Medium 🔥 ✅ 2026-06-17
+- [x] [Asteroid Collision](https://leetcode.com/problems/asteroid-collision/) — Medium 🔥 ✅ 2026-06-17
+- [x] [Simplify Path](https://leetcode.com/problems/simplify-path/) — Medium ✅ 2026-06-17
 
 ## Generating + Parsing
 
-- [ ] [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/) — Medium ✅ Neetcode 🔥
 - [ ] [Remove K Digits](https://leetcode.com/problems/remove-k-digits/) — Medium
 - [ ] [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/) — Medium 🔥
 - [ ] [Basic Calculator](https://leetcode.com/problems/basic-calculator/) — Hard

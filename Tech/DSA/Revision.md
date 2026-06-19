@@ -23,3 +23,4 @@
 | 20.  | Minimum Window Substring | https://leetcode.com/problems/minimum-window-substring/ | 0 | [ ] |
 | 21.  | Substring with Concatenation of All Words | https://leetcode.com/problems/substring-with-concatenation-of-all-words/ | 0 | [ ] |
 | 22.  | Subarrays with K Different Integers | https://leetcode.com/problems/subarrays-with-k-different-integers/ | 0 | [ ] |
+| 23.  | Decode String | https://leetcode.com/problems/decode-string/description/ | 0 | [ ] |
