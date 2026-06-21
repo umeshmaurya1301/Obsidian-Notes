@@ -547,8 +547,8 @@
 
 ## 1D DP Foundations
 
-- [ ] [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/) — Easy ✅ Neetcode 🔥
-- [ ] [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) — Easy ✅ Neetcode
+- [x] [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/) — Easy ✅ Neetcode 🔥 ✅ 2026-06-21
+- [x] [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) — Easy ✅ Neetcode ✅ 2026-06-21
 - [ ] [House Robber](https://leetcode.com/problems/house-robber/) — Medium ✅ Neetcode 🔥
 - [ ] [House Robber II](https://leetcode.com/problems/house-robber-ii/) — Medium ✅ Neetcode 🔥
 - [ ] [Delete and Earn](https://leetcode.com/problems/delete-and-earn/) — Medium
@@ -759,8 +759,8 @@
 |Date|Contest|Rank|Problems Solved|Rating Change|
 |---|---|---|---|---|
 |2026-05-17|Weekly Contest (First)|—|1 / 4|—|
-||Weekly Contest 2||/ 4||
-||Biweekly Contest 1||/ 4||
+|2026-06-21|Weekly Contest 2||/ 4||
+|2026-06-20|Biweekly Contest 1||/ 4||
 ||Weekly Contest 3||/ 4||
 ||Weekly Contest 4||/ 4||
 ||Biweekly Contest 2||/ 4||
@@ -774,6 +774,18 @@
 - [ ] [Largest Local Values in a Matrix II](https://leetcode.com/problems/largest-local-values-in-a-matrix-ii/) — Medium
 - [ ] [Smallest Unique Subarray](https://leetcode.com/problems/smallest-unique-subarray/) — Medium
 
+**Biweekly Contest 1 — 2026-06-20**
+- [x] [Finish Time of Tasks I](https://leetcode.com/problems/finish-time-of-tasks-i/description/) — Easy ✅ 2026-06-21
+- [x] [Create Grid With Exactly One Path](https://leetcode.com/problems/create-grid-with-exactly-one-path/description/) — Medium ✅ 2026-06-21
+- [x] [Minimum Lights To Illuminate A Road](https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/) — Medium ✅ 2026-06-20
+- [ ] [Count Good Integers in a Range](https://leetcode.com/problems/count-good-integers-in-a-range/description/) — Hard
+
+**Weekly Contest 2 — 2026-06-21**
+- [x] [Maximum Manhattan Distance After All Moves](https://leetcode.com/problems/maximum-manhattan-distance-after-all-moves/description/) — Medium ✅ 2026-06-21
+- [x] [Valid Subarrays With Matching Sum Digits I](https://leetcode.com/problems/valid-subarrays-with-matching-sum-digits-i/description/) — Easy ✅ 2026-06-21
+- [ ] [Shortest Path With At Most K Consecutive Identical Characters](https://leetcode.com/problems/shortest-path-with-at-most-k-consecutive-identical-characters/description/) — Hard
+- [ ] [Maximum Total Value](https://leetcode.com/problems/maximum-total-value/description/) — Hard
+
 > **Target by end of Month 4:** Consistently solving 3/4 problems in Weekly Contest. Rating 1700+.
 
 ---
@@ -785,6 +797,12 @@
 ## Combinatorics + Modular Arithmetic
 
 - [x] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard ✅ 2026-05-25
+
+## Greedy + Heap (Diminishing Returns)
+
+> Greedy "always pick the best available" pattern where repeated picks decay in value. Niche but shows up in OA rounds at trading firms and CP-style companies.
+
+- [ ] [Maximum Total Value](https://leetcode.com/problems/maximum-total-value/description/) — Hard
 
 ---
 
