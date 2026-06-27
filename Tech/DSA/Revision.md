@@ -24,3 +24,5 @@
 | 21.  | Substring with Concatenation of All Words | https://leetcode.com/problems/substring-with-concatenation-of-all-words/ | 0 | [ ] |
 | 22.  | Subarrays with K Different Integers | https://leetcode.com/problems/subarrays-with-k-different-integers/ | 0 | [ ] |
 | 23.  | Decode String | https://leetcode.com/problems/decode-string/description/ | 0 | [ ] |
+| 24.  | Delete and Earn | https://leetcode.com/problems/delete-and-earn/ | 0 | [ ] |
+| 25.  | Decode Ways     | https://leetcode.com/problems/decode-ways/      | 0 | [ ] |

@@ -1,4 +1,4 @@
- pleasclaude# 🎯 4-Month DSA Roadmap — MAANG Preparation
+ pleasclaclaude# 🎯 4-Month DSA Roadmap — MAANG Preparation
 
 > **For:** Umesh Maurya · Backend Engineer · 3.5 yrs experience **Current state:** 300 problems solved (120E / 160M / 20H) · Neetcode 150 ≈ 60 done **Target:** MAANG SDE-2 interviews by end of Month 4 **Time budget:** 2-3 hrs weekdays · Full days weekends **Total problems in roadmap:** ~400 **Start date:** _________ **Target completion:** _________
 
@@ -549,11 +549,11 @@
 
 - [x] [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/) — Easy ✅ Neetcode 🔥 ✅ 2026-06-21
 - [x] [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/) — Easy ✅ Neetcode ✅ 2026-06-21
-- [ ] [House Robber](https://leetcode.com/problems/house-robber/) — Medium ✅ Neetcode 🔥
-- [ ] [House Robber II](https://leetcode.com/problems/house-robber-ii/) — Medium ✅ Neetcode 🔥
-- [ ] [Delete and Earn](https://leetcode.com/problems/delete-and-earn/) — Medium
-- [ ] [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/) — Easy
-- [ ] [N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/) — Easy
+- [x] [House Robber](https://leetcode.com/problems/house-robber/) — Medium ✅ Neetcode 🔥 ✅ 2026-06-22
+- [x] [House Robber II](https://leetcode.com/problems/house-robber-ii/) — Medium ✅ Neetcode 🔥 ✅ 2026-06-22
+- [x] [Delete and Earn](https://leetcode.com/problems/delete-and-earn/) — Medium ✅ 2026-06-22
+- [x] [Fibonacci Number](https://leetcode.com/problems/fibonacci-number/) — Easy ✅ 2026-06-22
+- [x] [N-th Tribonacci Number](https://leetcode.com/problems/n-th-tribonacci-number/) — Easy ✅ 2026-06-22
 
 ## String DP (1D)
 
