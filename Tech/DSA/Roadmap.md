@@ -145,7 +145,7 @@
 - [ ] [Decode Ways](https://leetcode.com/problems/decode-ways/) — Medium ✅ Neetcode 🔥
 - [ ] [Word Break](https://leetcode.com/problems/word-break/) — Medium ✅ Neetcode 🔥
 - [ ] [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) — Medium ✅ Neetcode 🔥
-- [ ] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode
+- [x] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode ✅ 2026-06-28
 
 ## Coin Change Family
 
@@ -780,5 +780,15 @@ By end of Week 15 you should have:
 That's the profile that walks into a Google L4 loop with 50-55% clearance probability instead of 20-25%.
 
 ---
+
+# 🔥 Must Do Questions
+
+> High-priority problems that are frequently asked at MAANG. Solve these regardless of weekly schedule.
+
+| S.No | Question Name | Question Link | Status |
+| ---- | ------------- | ------------- | ------ |
+| 1.   | LFU Cache                | https://leetcode.com/problems/lfu-cache/description/          | ⬜ |
+| 2.   | Maximum Frequency Stack  | https://leetcode.com/problems/maximum-frequency-stack/        | ⬜ |
+
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_

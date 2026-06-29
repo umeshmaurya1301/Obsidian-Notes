@@ -58,6 +58,133 @@ The answer must lie in `[1, n+1]` where `n = nums.length` — if all of `1..n` a
 
 ---
 
+### 🧩 Deep Dive — Deriving `nums[i] != nums[nums[i]-1]` From Scratch
+
+Most explanations say: *"We check `nums[i] != nums[nums[i]-1]` to avoid infinite loops."*
+That is true, but it doesn't answer **how someone invents this condition**. Here's the derivation.
+
+---
+
+#### Step 1 — Forget the code. Think about the goal.
+
+Suppose `nums = [3,4,-1,1]`. If you solved this manually, you'd arrange the positives in order:
+
+```
+1 ✓
+2 ✗  ← answer = 2
+```
+
+The first thought: **if every positive number `x` could be placed at index `x-1`, the answer becomes obvious.**
+
+---
+
+#### Step 2 — This gives us a mapping
+
+Instead of sorting, we invent a **positional mapping**:
+
+| Value | Belongs at index |
+|-------|-----------------|
+| `1`   | `0`             |
+| `2`   | `1`             |
+| `3`   | `2`             |
+| `n`   | `n-1`           |
+
+So whenever we see `nums[i] = x`, its correct home is index `x - 1`.
+
+Hence the swap:
+```java
+swap(nums, i, nums[i] - 1);
+```
+
+---
+
+#### Step 3 — But should we always swap?
+
+Consider `nums = [1,2,3]`. At `i = 0`, value `1` belongs at index `0` — it's already there. Swapping is pointless.
+
+So we add the check: **`nums[i] != i + 1`** (value is not already in its correct slot).
+
+But wait — that still misses something.
+
+---
+
+#### Step 4 — The duplicate problem
+
+Consider `[1,1]`. At `i = 1`, `nums[i] = 1` belongs at index `0`.
+
+```
+Before swap: [1, 1]
+After  swap: [1, 1]   ← nothing changed!
+```
+
+The array is identical after swapping. Next iteration: same condition, same swap, forever. **Infinite loop.**
+
+Why? Because the destination (`index 0`) already holds value `1` — the exact value we're trying to place. Swapping two identical values is a no-op.
+
+---
+
+#### Step 5 — So what do we actually check?
+
+Before swapping, ask: **"Does the destination already hold the correct value?"**
+
+- Destination index = `nums[i] - 1`
+- Value there = `nums[nums[i] - 1]`
+- Value we want to place = `nums[i]`
+
+If `nums[i] == nums[nums[i] - 1]`, the home already contains our value. Swapping is useless.
+
+So we swap **only when**:
+
+```java
+nums[i] != nums[nums[i] - 1]
+```
+
+> [!info] Read it in plain English
+> *"The value I'm trying to place is **not** already sitting at its correct position."*
+> That's it. The infinite-loop prevention is a **consequence** of this deeper idea, not the cause.
+
+---
+
+#### Step 6 — Full condition walkthrough
+
+Before any swap, three things must be true:
+
+```
+1. nums[i] > 0          → only positive numbers have a valid home
+2. nums[i] <= n         → home index must be within bounds
+3. nums[i] != nums[nums[i]-1]  → home doesn't already contain this value
+```
+
+**Example trace** (`nums = [3,4,-1,1]`):
+
+| `i` | `nums[i]` | Home index | `nums[home]` | `nums[i] != nums[home]`? | Action |
+|-----|-----------|------------|--------------|--------------------------|--------|
+| 0   | 3         | 2          | -1           | ✅ 3 ≠ -1                | swap(0,2) → `[-1,4,3,1]` |
+| 0   | -1        | —          | —            | ❌ out of range           | skip   |
+| 1   | 4         | 3          | 1            | ✅ 4 ≠ 1                 | swap(1,3) → `[-1,1,3,4]` |
+| 1   | 1         | 0          | -1           | ✅ 1 ≠ -1                | swap(1,0) → `[1,-1,3,4]` |
+| 1   | -1        | —          | —            | ❌ out of range           | skip   |
+| 2   | 3         | 2          | 3            | ❌ 3 = 3 (already home)  | skip   |
+| 3   | 4         | 3          | 4            | ❌ 4 = 4 (already home)  | skip   |
+
+**Scan:** index 1 has `-1` instead of `2` → **return 2**.
+
+**Duplicate trace** (`nums = [1,1]`):
+
+| `i` | `nums[i]` | Home index | `nums[home]` | `nums[i] != nums[home]`? | Action |
+|-----|-----------|------------|--------------|--------------------------|--------|
+| 1   | 1         | 0          | 1            | ❌ 1 = 1                 | skip (infinite loop avoided) |
+
+---
+
+#### The One-Line Intuition to Remember
+
+> `nums[i] != nums[nums[i]-1]` does not mean *"avoid infinite loops."*
+> It means **"only move a value if its correct position doesn't already contain that value."**
+> The loop prevention is a consequence. The insight is about making *progress*.
+
+---
+
 ## 🧠 Evolution of Solutions
 
 ### ✅ Solution — Cyclic Sort (In-place Index Placement)
@@ -121,7 +248,7 @@ class Solution {
 
 ## 🔑 Key Insights
 - Use `while`, not `if` — one swap may bring another valid number to index `i` that also needs placing. Only stop when `nums[i]` is out of range or already at its correct slot.
-- The guard `nums[i] != nums[nums[i] - 1]` prevents infinite loops on duplicates (e.g. `[1,1]` would otherwise swap forever).
+- The guard `nums[i] != nums[nums[i] - 1]` is not just loop-prevention — it encodes the idea that **we only move a value when moving it makes progress** (its destination doesn't already have it).
 - Total swaps across the entire loop is at most `n`, so despite the nested `while`, overall time is `O(n)`.
 - Same **Cyclic Sort** pattern applies to: Find All Duplicates, Find Missing Numbers, Set Mismatch, Find the Duplicate Number.
 
@@ -130,7 +257,7 @@ class Solution {
 ## ⚠️ Pitfalls
 > [!warning]
 > - Using `if` instead of `while` — misses chained placements and produces wrong answers.
-> - Forgetting the duplicate guard `nums[i] != nums[nums[i] - 1]` — causes an infinite swap loop on arrays like `[1,1]`.
+> - Forgetting the duplicate guard `nums[i] != nums[nums[i]-1]` — causes an infinite swap loop on arrays like `[1,1]`.
 > - Off-by-one: value `v` maps to index `v-1`, not index `v`.
 
 ---

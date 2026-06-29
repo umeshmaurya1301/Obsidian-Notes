@@ -1,28 +1,30 @@
 
-| S.No | Question                       | Link                                                                    | Solv Count | Try Again |
-| ---- | ------------------------------ | ----------------------------------------------------------------------- | ---------- | --------- |
-| 1.   | Contains Duplicate III         | https://leetcode.com/problems/contains-duplicate-iii/description/       | 1          | [ y]      |
-| 2.   | Range Sum Query 2D - Immutable | https://leetcode.com/problems/range-sum-query-2d-immutable/description/ | 1          | [ ]       |
-| 3.   | Continuous Subarray Sum        | https://leetcode.com/problems/continuous-subarray-sum/                  | 1          | [ ]       |
-| 4.   | LRU Cache                      | https://leetcode.com/problems/lru-cache/                                | 1          | [y ]      |
-| 5.   | First Missing Positive         | https://leetcode.com/problems/first-missing-positive/description/       | 1          | [y ]      |
-| 6.   | Trapping Rain Water            | https://leetcode.com/problems/trapping-rain-water/description/          | 0          | [ ]       |
-| 7.   | Maximum Frequency Stack        | https://leetcode.com/problems/maximum-frequency-stack/description/      | 0          | [ ]       |
-| 8.   | Trapping Rain Water II         | https://leetcode.com/problems/trapping-rain-water-ii/description/       | 0          | [ ]       |
-| 9.   | Count Anagrams                 | https://leetcode.com/problems/count-anagrams/description/               | 0          | [ ]       |
-| 10.  | Container With Most Water      | https://leetcode.com/problems/container-with-most-water/                | 0          | [ ]       |
-| 11.  | Boats to Save People           | https://leetcode.com/problems/boats-to-save-people/description/         | 0          | [ ]       |
-| 12.  | Best Time to Buy and Sell Stock | https://leetcode.com/problems/best-time-to-buy-and-sell-stock/         | 0          | [ ]       |
-| 13.  | Find Longest Special Substring That Occurs Thrice I | https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-i/description/ | 0 | [ ] |
-| 14.  | Find Longest Special Substring That Occurs Thrice II | https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-ii/ | 0 | [ ] |
-| 15.  | Longest Repeating Character Replacement | https://leetcode.com/problems/longest-repeating-character-replacement/ | 0 | [ ] |
-| 16.  | Max Consecutive Ones III | https://leetcode.com/problems/max-consecutive-ones-iii/ | 0 | [ ] |
-| 17.  | Fruit Into Baskets | https://leetcode.com/problems/fruit-into-baskets/ | 0 | [ ] |
-| 18.  | Maximum Erasure Value | https://leetcode.com/problems/maximum-erasure-value/description/ | 0 | [ ] |
-| 19.  | Longest Nice Subarray | https://leetcode.com/problems/longest-nice-subarray/ | 0 | [ ] |
-| 20.  | Minimum Window Substring | https://leetcode.com/problems/minimum-window-substring/ | 0 | [ ] |
-| 21.  | Substring with Concatenation of All Words | https://leetcode.com/problems/substring-with-concatenation-of-all-words/ | 0 | [ ] |
-| 22.  | Subarrays with K Different Integers | https://leetcode.com/problems/subarrays-with-k-different-integers/ | 0 | [ ] |
-| 23.  | Decode String | https://leetcode.com/problems/decode-string/description/ | 0 | [ ] |
-| 24.  | Delete and Earn | https://leetcode.com/problems/delete-and-earn/ | 0 | [ ] |
-| 25.  | Decode Ways     | https://leetcode.com/problems/decode-ways/      | 0 | [ ] |
+| S.No | Question                                                                                                               | Link                                                                                           | Solv Count | Try Again |
+| ---- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------- | --------- |
+| 1.   | [[LT_0220_Contains_Duplicate_III\|Contains Duplicate III]]                                                             | https://leetcode.com/problems/contains-duplicate-iii/description/                              | 1          | [ y]      |
+| 2.   | Range Sum Query 2D - Immutable                                                                                         | https://leetcode.com/problems/range-sum-query-2d-immutable/description/                        | 1          | [ ]       |
+| 3.   | [[LT_0523_Continuous_Subarry_Sum\|Continuous Subarray Sum]]                                                            | https://leetcode.com/problems/continuous-subarray-sum/                                         | 1          | [ ]       |
+| 4.   | [[LT_0146_LRU_Cache\|LRU Cache]]                                                                                       | https://leetcode.com/problems/lru-cache/                                                       | 2          | [y ]      |
+| 5.   | [[LT_0041_First_Missing_Positive\|First Missing Positive]]                                                             | https://leetcode.com/problems/first-missing-positive/description/                              | 1          | [y ]      |
+| 6.   | Trapping Rain Water                                                                                                    | https://leetcode.com/problems/trapping-rain-water/description/                                 | 0          | [ ]       |
+| 7.   | Maximum Frequency Stack                                                                                                | https://leetcode.com/problems/maximum-frequency-stack/description/                             | 0          | [ ]       |
+| 8.   | Trapping Rain Water II                                                                                                 | https://leetcode.com/problems/trapping-rain-water-ii/description/                              | 0          | [ ]       |
+| 9.   | Count Anagrams                                                                                                         | https://leetcode.com/problems/count-anagrams/description/                                      | 0          | [ ]       |
+| 10.  | Container With Most Water                                                                                              | https://leetcode.com/problems/container-with-most-water/                                       | 0          | [ ]       |
+| 11.  | Boats to Save People                                                                                                   | https://leetcode.com/problems/boats-to-save-people/description/                                | 0          | [ ]       |
+| 12.  | [[LT_0121_Best_Time_to_Buy_and_Sell_Stock\|Best Time to Buy and Sell Stock]]                                           | https://leetcode.com/problems/best-time-to-buy-and-sell-stock/                                 | 0          | [ ]       |
+| 13.  | [[LT_2981_Find_Longest_Special_Substring_That_Occurs_Thrice_I\|Find Longest Special Substring That Occurs Thrice I]]   | https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-i/description/ | 0          | [ ]       |
+| 14.  | [[LT_2982_Find_Longest_Special_Substring_That_Occurs_Thrice_II\|Find Longest Special Substring That Occurs Thrice II]] | https://leetcode.com/problems/find-longest-special-substring-that-occurs-thrice-ii/            | 0          | [ ]       |
+| 15.  | Longest Repeating Character Replacement                                                                                | https://leetcode.com/problems/longest-repeating-character-replacement/                         | 0          | [ ]       |
+| 16.  | Max Consecutive Ones III                                                                                               | https://leetcode.com/problems/max-consecutive-ones-iii/                                        | 0          | [ ]       |
+| 17.  | [[LT_0904_Fruit_Into_Baskets\|Fruit Into Baskets]]                                                                     | https://leetcode.com/problems/fruit-into-baskets/                                              | 0          | [ ]       |
+| 18.  | [[LT_1695_Maximum_Erasure_Value\|Maximum Erasure Value]]                                                               | https://leetcode.com/problems/maximum-erasure-value/description/                               | 0          | [ ]       |
+| 19.  | [[LT_2401_Longest_Nice_SubArray\|Longest Nice Subarray]]                                                               | https://leetcode.com/problems/longest-nice-subarray/                                           | 0          | [ ]       |
+| 20.  | [[LT_0076_Minimum_Window_Substring\|Minimum Window Substring]]                                                         | https://leetcode.com/problems/minimum-window-substring/                                        | 0          | [ ]       |
+| 21.  | [[LT_0030_Substring_With_Concatenation_Of_All_Words\|Substring with Concatenation of All Words]]                       | https://leetcode.com/problems/substring-with-concatenation-of-all-words/                       | 0          | [ ]       |
+| 22.  | [[LT_992_Subaary_with_K_different_Integers\|Subarrays with K Different Integers]]                                      | https://leetcode.com/problems/subarrays-with-k-different-integers/                             | 0          | [ ]       |
+| 23.  | Decode String                                                                                                          | https://leetcode.com/problems/decode-string/description/                                       | 0          | [ ]       |
+| 24.  | [[LT_0740_Delete_And_Earn\|Delete and Earn]]                                                                           | https://leetcode.com/problems/delete-and-earn/                                                 | 0          | [ ]       |
+| 25.  | Decode Ways                                                                                                            | https://leetcode.com/problems/decode-ways/                                                     | 0          | [ ]       |
+| 26.  | [[LT_0322_Coin_Change\|Coin Change]]                                                                                   | https://leetcode.com/problems/coin-change/                                                     | 0          | [ ]       |
+| 27.  | Coin Change II                                                                                                         | https://leetcode.com/problems/coin-change-ii/                                                  | 0          | [ ]       |

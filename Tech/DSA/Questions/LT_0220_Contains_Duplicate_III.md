@@ -1,30 +1,28 @@
 ---
-created: 2026-05-18 00:00
+created: 2026-06-27 10:00
 tags:
-  - Arrays
-  - SlidingWindow
-  - TreeSet
-  - OrderedSet
-  - BinarySearch
-source: https://leetcode.com/problems/contains-duplicate-iii/
+  - dsa
+  - array
+  - sliding-window
+  - ordered-set
+source: https://leetcode.com/problems/contains-duplicate-iii/description/
 problem_id: "220"
 difficulty: Hard
-status: Completed
+status: Solved
 review_date:
 ---
 # LT_0220 – Contains Duplicate III
 
-**Link:** [Open Problem](https://leetcode.com/problems/contains-duplicate-iii/)
+**Link:** [Open Problem](https://leetcode.com/problems/contains-duplicate-iii/description/)
 
 ---
 
 ## 📝 Problem Description
 > [!info]
 > Given an integer array `nums` and two integers `indexDiff` and `valueDiff`, return `true` if there exist two indices `i` and `j` such that:
->
 > - `i != j`
-> - `|i - j| <= indexDiff`
-> - `|nums[i] - nums[j]| <= valueDiff`
+> - `abs(i - j) <= indexDiff`
+> - `abs(nums[i] - nums[j]) <= valueDiff`
 >
 > Return `false` otherwise.
 
@@ -32,165 +30,64 @@ review_date:
 
 ## 🧪 Examples
 > [!example]
-> **Input:** `nums = [1,2,3,1]`, `indexDiff = 3`, `valueDiff = 0`
+> **Input:** `nums = [1,2,3,1], indexDiff = 3, valueDiff = 0`
 > **Output:** `true`
-> **Explanation:** `nums[0]` and `nums[3]` are equal and their index difference is `3`.
+> **Explanation:** We can choose `i = 0`, `j = 3`. `|0 - 3| = 3 <= 3` and `|1 - 1| = 0 <= 0`.
 
 > [!example]
-> **Input:** `nums = [1,5,9,1,5,9]`, `indexDiff = 2`, `valueDiff = 3`
+> **Input:** `nums = [1,5,9,1,5,9], indexDiff = 2, valueDiff = 3`
 > **Output:** `false`
-> **Explanation:** No valid pair satisfies both the index and value conditions.
-
-> [!example]
-> **Input:** `nums = [1,5,9,1]`, `indexDiff = 3`, `valueDiff = 3`
-> **Output:** `true`
-> **Explanation:** `nums[0] = 1` and `nums[3] = 1` satisfy both conditions.
+> **Explanation:** No pair of indices satisfies both conditions simultaneously.
 
 ---
 
 ## ⚠️ Constraints
 > [!warning]
-> - `2 <= nums.length <= 100000`
-> - `-2147483648 <= nums[i] <= 2147483647`
-> - `0 <= indexDiff <= 100000`
-> - `0 <= valueDiff <= 2147483647`
+> - `2 <= nums.length <= 10^5`
+> - `-10^9 <= nums[i] <= 10^9`
+> - `1 <= indexDiff <= nums.length`
+> - `0 <= valueDiff <= 10^9`
 
 ---
 
-## 💡 Solutions
+## 🔍 Intuition
 
-### 🟢 Approach: Sliding Window + TreeSet
+`|curr - nums[j]| <= valueDiff` is a distance condition — it means `nums[j]` must lie within `valueDiff` of `curr` on the number line, i.e., inside the interval `[curr - valueDiff, curr + valueDiff]`. This converts the absolute-value check into a plain range query: "does my current window contain any element in this interval?" A `TreeSet` is the right tool — its `ceiling(x)` method finds the smallest element ≥ `x` in O(log k) time, so I ask for `ceiling(curr - valueDiff)` and check whether the result is ≤ `curr + valueDiff`. One call, one check, done. The sliding window of size `indexDiff` handles the index constraint by evicting the element at `i - indexDiff` each step.
 
----
-
-#### Step 1: Understand the Conditions
-
-We need to find indices `i` and `j` such that:
-1. `|i - j| <= indexDiff`
-2. `|nums[i] - nums[j]| <= valueDiff`
+> 🟢 *Sliding Window + Ordered Set (TreeSet)*
 
 ---
 
-#### Step 2: Convert the Value Condition into a Range
+## 🧠 Evolution of Solutions
 
-Given `|nums[i] - nums[j]| <= valueDiff`, let `curr = nums[i]`:
+### ✅ Solution — Sliding Window + TreeSet
 
-```
-|curr - nums[j]|  <=  valueDiff
-⟹  curr - valueDiff  <=  nums[j]  <=  curr + valueDiff
-```
+**Why this works:**
+- `|a - b| <= k` ↔ `b ∈ [a - k, a + k]`, converting the value condition into a range membership query.
+- `TreeSet` keeps the window sorted; `ceiling(curr - valueDiff)` finds the smallest candidate in O(log k) — if it is ≤ `curr + valueDiff`, a valid pair exists.
+- Removing `nums[i - indexDiff]` at each step ensures the set always holds exactly the last `indexDiff` elements, satisfying the index constraint automatically.
 
-For every `curr`, we look for a previous value lying inside `[curr - valueDiff, curr + valueDiff]`.
-These are simply the **left** and **right** boundaries of the valid range.
+**Dry Run** (`nums = [1,2,3,1], indexDiff = 3, valueDiff = 0`):
 
----
-
-#### Step 3: Satisfy the Index Condition
-
-Since we process left to right (`j < i`):
-
-```
-|i - j|  =  i - j  <=  indexDiff
-```
-
-So before checking `nums[i]`, we only keep `nums[i - indexDiff] … nums[i - 1]` inside the TreeSet — this is the **sliding window**.
-
----
-
-#### Step 4: What Does the TreeSet Contain?
-
-At iteration `i`, the TreeSet holds values whose indices satisfy:
-
-```
-max(0, i - indexDiff)  <=  j  <  i
-```
-
-Every value inside the TreeSet automatically satisfies `|i - j| <= indexDiff`.
-**✅ Index condition is already handled.**
-
----
-
-#### Step 5 & 6: Checking the Value Condition — Why `ceiling(curr - valueDiff)`?
-
-`ceiling(x)` returns the **smallest element ≥ x** in `O(log k)` time. One call is sufficient:
-
-> [!example]
-> `curr = 20`, `valueDiff = 5` → required range `[15, 25]`
-> TreeSet: `{ 3, 8, 17, 30 }`
-> `set.ceiling(15)` → `17`
-> `17 <= 25` ✅ → valid pair found
-
-> [!example]
-> **No-match case:**
-> TreeSet: `{ 3, 8, 30 }`, range `[15, 25]`
-> `set.ceiling(15)` → `30`
-> `30 <= 25` ❌ → no element in range
-
----
-
-#### Step 7: Why Is One Candidate Enough?
-
-> [!info]
-> The TreeSet is **sorted**. `ceiling(L)` gives the **minimum** value ≥ L.
-> - If `candidate <= R` → it lies in `[L, R]` → valid pair ✅
-> - If `candidate > R` → every subsequent element is even larger → no pair ❌
->
-> One check covers all cases.
-
----
-
-#### Final Mapping
-
-| Condition | Handled by |
-|-----------|------------|
-| `\|i - j\| <= indexDiff` | Sliding window — TreeSet holds only last `indexDiff` elements |
-| `\|nums[i] - nums[j]\| <= valueDiff` | Range query: `ceiling(curr - valueDiff) <= curr + valueDiff` |
-
-**Complete thought process:**
-1. Keep only nearby indices in TreeSet → index condition satisfied
-2. Convert value condition into range `[curr - valueDiff, curr + valueDiff]`
-3. Find first value ≥ left boundary: `ceiling(curr - valueDiff)`
-4. If it is also ≤ right boundary → value condition satisfied
-5. Both satisfied → `return true`
-
----
-
-**Edge Cases:**
-- `valueDiff = 0` — requires exact duplicates within `indexDiff` distance.
-- `indexDiff = 0` — no valid pair can exist (indices must differ).
-- Integer overflow — `curr + valueDiff` can overflow `int`; use `long`.
-- Negative numbers — `TreeSet` handles them correctly.
-
----
-
-### ✅ Java Implementation
+| i | curr | Window (before add) | Query range | `ceiling` result | Found? |
+|---|------|---------------------|-------------|------------------|--------|
+| 0 | 1    | {}                  | [1, 1]      | null             | No     |
+| 1 | 2    | {1}                 | [2, 2]      | null             | No     |
+| 2 | 3    | {1, 2}              | [3, 3]      | null             | No     |
+| 3 | 1    | {1, 2, 3}           | [1, 1]      | 1 ≤ 1            | ✅ Yes |
 
 ```java
 class Solution {
-    public boolean containsNearbyAlmostDuplicate(
-            int[] nums,
-            int indexDiff,
-            int valueDiff
-    ) {
-
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
         TreeSet<Long> set = new TreeSet<>();
 
-        for(int i = 0; i < nums.length; i++) {
-
+        for(int i=0; i<nums.length; i++) {
             long curr = nums[i];
-
-            Long candidate =
-                    set.ceiling(curr - valueDiff);
-
-            if(candidate != null &&
-               candidate <= curr + valueDiff) {
-                return true;
-            }
-
+            Long candidate = set.ceiling(curr-valueDiff);
+            if(candidate!=null && candidate <= curr+valueDiff) return true;
             set.add(curr);
-
-            if(i >= indexDiff) {
-                set.remove((long) nums[i - indexDiff]);
+            if(i>=indexDiff) {
+                set.remove( (long)nums[i-indexDiff] );
             }
         }
 
@@ -202,33 +99,21 @@ class Solution {
 ---
 
 ## 🔑 Key Insights
-- The value condition converts to a range query: `[curr - valueDiff, curr + valueDiff]`.
-- `TreeSet` stores elements in sorted order — `ceiling(x)` finds the smallest valid candidate in `O(log k)`.
-- Checking only one candidate is sufficient because the set is sorted.
-- Sliding window enforces the index condition automatically — only the last `indexDiff` elements stay in the set.
-- Use `long` throughout to prevent integer overflow on `curr + valueDiff`.
-
----
-
-## 🧩 Patterns
-- Sliding Window
-- Ordered Set
-- Range Query
-- Balanced BST
-- Search in Sorted Structure
+- `|a - b| <= k` ↔ `a - k <= b <= a + k` — always convert absolute-value distance conditions into intervals before reaching for a data structure.
+- `ceiling(curr - valueDiff)` is the single O(log k) call that answers the full range query; one candidate is enough because `TreeSet` is sorted.
+- Use `long` throughout — `curr + valueDiff` can exceed `Integer.MAX_VALUE` when both values approach 10^9.
+- Evict at `i >= indexDiff` (not `i > indexDiff`) — at step `i`, index `i - indexDiff` is just outside the allowed window of `indexDiff`.
 
 ---
 
 ## ⚠️ Pitfalls
 > [!warning]
-> - Using `int` instead of `long` causes overflow on large values.
-> - Incorrect sliding window removal — removing the wrong element breaks the index constraint.
-> - Confusing `indexDiff` with window size (window holds `indexDiff` elements, not `indexDiff + 1`).
-> - Using `HashSet` instead of `TreeSet` — unordered sets cannot do range queries.
-> - Forgetting that `ceiling()` can return `null` when no element `>= x` exists.
+> - **Integer overflow:** `curr + valueDiff` overflows `int` for large inputs — always cast to `long` before arithmetic.
+> - **Off-by-one on eviction:** Remove when `i >= indexDiff`, not `i > indexDiff`; the window covers indices `[i - indexDiff, i - 1]`.
+> - **Check before add:** Query the set before inserting `curr`; inserting first lets `curr` match itself and always returns `true` for `valueDiff >= 0`.
 
 ---
 
 ## ⏱️ Complexity
-- **Time:** `O(n log k)` — each `TreeSet` operation (`add`, `remove`, `ceiling`) is `O(log k)`, done `n` times
-- **Space:** `O(k)` — the `TreeSet` holds at most `k = indexDiff` elements
+- **Time:** `O(n log k)` — `n` iterations, each with O(log k) TreeSet operations where `k = indexDiff`.
+- **Space:** `O(k)` — the TreeSet holds at most `indexDiff + 1` elements at any time.
