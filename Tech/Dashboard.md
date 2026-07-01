@@ -21,6 +21,7 @@ tags:
 - **[[Tech/JUNIT 5 and Mockito/1. Introduction|🧪 Testing]]** — JUnit 5 & Mockito
 - **[[Tech/AWS/01. Intro to AWS & Cloud Computing|☁️ AWS]]** — cloud fundamentals
 - **[[Tech/Events/Events_Dashboard|🎯 Events]]** — hackathons & challenges
+- **[[Tech/AEPO/00_START_HERE|🤖 AEPO]]** — RL payment-orchestrator project: architecture, RL/training/inference pipelines, deployment & interview prep
 
 ---
 

@@ -24,6 +24,7 @@ A personal knowledge base maintained in [Obsidian](https://obsidian.md/) by Umes
 | `Kafka/` | Apache Kafka — intro, producer, consumer, enhancements |
 | `JUNIT 5 and Mockito/` | Unit testing with JUnit 5 & Mockito |
 | `Dev Ops/` | Kubernetes and related topics |
+| `AEPO/` | Learning docs for the Autonomous Enterprise Payment Orchestrator hackathon project — RL fundamentals, architecture, source walkthrough, training/inference pipelines, deployment, interview prep |
 | `Dashboard.md` | Top-level index of tech learning areas |
 
 ## The DSA system

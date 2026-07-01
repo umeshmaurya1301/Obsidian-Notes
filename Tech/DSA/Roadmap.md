@@ -17,8 +17,8 @@
 | ---- | --------------------------------------------------------------------------------------- | ----------------------------------------- | --------------- | ------------- |
 | 1    | [[#🗓️ WEEK 1 — Arrays + Hashing\|Arrays + Hashing]]                                   | Arrays, Hashing                           | 29              | ✅ Done       |
 | 2    | [[#🗓️ WEEK 2 — Two Pointers + Sliding Window\|Two Pointers + Sliding Window]]          | Two Pointers, Sliding Window              | 30              | ✅ Done       |
-| 3    | [[#🗓️ WEEK 3 — DP Part 1 (1D + Knapsack)\|DP Part 1 — 1D + Knapsack]]                | 1D DP, 0/1 Knapsack                       | 25              |               |
-| 4    | [[#🗓️ WEEK 4 — DP Part 2 (Grid + LIS + LCS)\|DP Part 2 — 2D + LIS + LCS]]            | Grid DP, LIS, LCS                         | 25              |               |
+| 3    | [[#🗓️ WEEK 3 — DP Part 1 (1D + Knapsack)\|DP Part 1 — 1D + Knapsack]]                | 1D DP, 0/1 Knapsack                       | 29              |               |
+| 4    | [[#🗓️ WEEK 4 — DP Part 2 (Grid + LIS + LCS)\|DP Part 2 — 2D + LIS + LCS]]            | Grid DP, LIS, LCS                         | 24              |               |
 | 5    | [[#🗓️ WEEK 5 — Backtracking\|Backtracking]]                                            | Subsets, Permutations, NQueen             | 21              |               |
 | 6    | [[#🗓️ WEEK 6 — Trees (BFS + DFS)\|Trees (BFS + DFS)]]                                 | Tree Traversals, Path problems            | 28              | ⚠️ Pain point |
 | 7    | [[#🗓️ WEEK 7 — Binary Search\|Binary Search]]                                          | Binary Search, Search on Answer           | 25              |               |
@@ -161,8 +161,8 @@
 - [ ] [Target Sum](https://leetcode.com/problems/target-sum/) — Medium
 - [ ] [Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/) — Medium
 - [ ] [Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/) — Medium
-- [ ] [0/1 Knapsack](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/) — Medium (GFG) 🔥
-- [ ] [Subset Sum Problem](https://www.geeksforgeeks.org/subset-sum-problem-dp-25/) — Medium (GFG)
+- [x] [0/1 Knapsack](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/) — Medium (GFG) 🔥 ✅ 2026-06-30
+- [x] [Subset Sum Problem](https://www.geeksforgeeks.org/subset-sum-problem-dp-25/) — Medium (GFG) ✅ 2026-06-30
 
 ## Maximum Subarray / Product
 
@@ -308,10 +308,10 @@
 
 ## Classic Binary Search
 
-- [ ] [Binary Search](https://leetcode.com/problems/binary-search/) — Easy ✅ Neetcode
-- [ ] [Search Insert Position](https://leetcode.com/problems/search-insert-position/) — Easy
-- [ ] [First Bad Version](https://leetcode.com/problems/first-bad-version/) — Easy
-- [ ] [Sqrt(x)](https://leetcode.com/problems/sqrtx/) — Easy
+- [x] [Binary Search](https://leetcode.com/problems/binary-search/) — Easy ✅ Neetcode ✅ 2026-06-30
+- [x] [Search Insert Position](https://leetcode.com/problems/search-insert-position/) — Easy ✅ 2026-06-30
+- [x] [First Bad Version](https://leetcode.com/problems/first-bad-version/) — Easy ✅ 2026-06-30
+- [x] [Sqrt(x)](https://leetcode.com/problems/sqrtx/) — Easy ✅ 2026-06-30
 - [ ] [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) — Medium ✅ Neetcode 🔥
 - [ ] [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) — Medium 🔥
 - [ ] [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) — Medium ✅ Neetcode 🔥
@@ -736,8 +736,8 @@
 |---|---|---|---|
 |Arrays + Hashing|29|27|93%|
 |Two Pointers + Sliding Window|30|28|93%|
-|DP Part 1 (1D + Knapsack)|25|7|28%|
-|DP Part 2 (Grid + LIS + LCS)|25|0|0%|
+|DP Part 1 (1D + Knapsack)|29|7|24%|
+|DP Part 2 (Grid + LIS + LCS)|24|0|0%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
 |Binary Search|25|1|4%|
@@ -749,7 +749,7 @@
 |Graphs|35|0|0%|
 |Greedy|20|0|0%|
 |Extras / CP|TBD|1|—|
-|**TOTAL**|**~380**|**64**|**~17%**|
+|**TOTAL**|**~383**|**64**|**~17%**|
 
 ---
 
