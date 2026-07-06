@@ -4,12 +4,12 @@ type: event
 rating: 7
 fit: "$80K cash; AWS DBs (Aurora/DynamoDB) = your RDBMS strength + v0 covers frontend gap; but wants a monetizable, shippable product + mandatory content piece."
 deadline: 2026-06-29
-phase: Submissions Open
+phase: Completed
 prize: "$80,000 cash + $80,000 AWS credits"
 mode: Online
 location: Global
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://h01.devpost.com/
 tags:
   - event
@@ -47,3 +47,4 @@ The stack plays to your strengths: serious database/backend design (Aurora Postg
 ## 🗒️ Notes
 
 - Found via Devpost open-hackathons API (2026-06-10). Same deadline as UiPath AgentHack — pick one, don't split the two weeks.
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

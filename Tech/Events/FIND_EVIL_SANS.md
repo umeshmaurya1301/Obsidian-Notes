@@ -4,12 +4,12 @@ type: event
 rating: 8
 fit: "Security/fraud-adjacent to fintech; AEGIS filter chain fits; registered; $22K."
 deadline: 2026-06-15
-phase: Submissions Open
+phase: Completed
 prize: "$22,000+"
 mode: Online
 location: Global
 applied: true
-status: REGISTERED
+status: EXPIRED
 url: https://findevil.devpost.com/
 tags:
   - event
@@ -51,3 +51,4 @@ Security-focused hackathon (SANS) — build detection/response tooling, agents, 
 ## 🗒️ Notes
 
 - Migrated from `Resources/Hackthons.md`.
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

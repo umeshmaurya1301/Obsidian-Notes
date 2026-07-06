@@ -4,12 +4,12 @@ type: event
 rating: 6
 fit: "Live hiring challenge from a known product company (GoDaddy India); 2-hr test, low cost to attempt — but role/experience band unverified and it ends Jun 13."
 deadline: 2026-06-13
-phase: Live
+phase: Completed
 prize: "Job opportunity (GoDaddy India)"
 mode: Online
 location: India
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://www.hackerearth.com/challenges/competitive/go-daddy-hiring-challenge/
 tags:
   - event
@@ -45,3 +45,4 @@ Product company, India, online, 2-hour cost — cheap interview-pipeline shot an
 ## 🗒️ Notes
 
 - Found via HackerEarth events feed (2026-06-10). A "SimplifyX Hiring Challenge 2026" (ends Jun 14) is also live on HackerEarth — company/role obscure, check only if curious.
+- 2026-07-05: window closed without a submission — marked EXPIRED.

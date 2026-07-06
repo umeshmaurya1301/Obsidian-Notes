@@ -4,12 +4,12 @@ type: event
 rating: 8
 fit: "Bullseye demographic (India-only, 3+ yr pros, solo OK); Agent Swarms/Security tracks = AEPO/AEGIS; ₹6L — but only 4 days left."
 deadline: 2026-06-14
-phase: Submissions Open
+phase: Completed
 prize: "₹6,00,000"
 mode: Online
 location: India
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://www.hackerearth.com/challenges/hackathon/microsoft-build-ai-2027/
 tags:
   - event
@@ -55,3 +55,4 @@ Microsoft's India hackathon on HackerEarth — "solve complex, real-world proble
 ## 🗒️ Notes
 
 - Found via HackerEarth events feed (2026-06-10). URL slug oddly says "2027" — it is the 2026 event.
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

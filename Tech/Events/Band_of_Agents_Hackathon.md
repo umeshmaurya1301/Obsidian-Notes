@@ -4,12 +4,12 @@ type: event
 rating: 7
 fit: "Multi-agent (≥3 collaborating) enterprise workflows = AEPO shape; online, $10K+; 1-week sprint colliding with FIND EVIL (Jun 15)."
 deadline: 2026-06-19
-phase: Registration Open
+phase: Completed
 prize: "$10,000+"
 mode: Online
 location: Global
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://lablab.ai/ai-hackathons/band-of-agents-hackathon
 tags:
   - event
@@ -45,3 +45,4 @@ AEPO decomposes naturally into ≥3 collaborating agents (router / risk-scorer /
 ## 🗒️ Notes
 
 - Found via web search (2026-06-10). lablab.ai requires its own platform signup; team formation optional (solo typically allowed — confirm on event page).
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

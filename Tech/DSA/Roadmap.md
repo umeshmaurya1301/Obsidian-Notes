@@ -143,9 +143,10 @@
 ## String DP (1D)
 
 - [ ] [Decode Ways](https://leetcode.com/problems/decode-ways/) — Medium ✅ Neetcode 🔥
+- [ ] [Decode Ways II](https://leetcode.com/problems/decode-ways-ii/) — Hard
 - [ ] [Word Break](https://leetcode.com/problems/word-break/) — Medium ✅ Neetcode 🔥
 - [ ] [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) — Medium ✅ Neetcode 🔥
-- [x] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode ✅ 2026-06-28
+- [ ] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode
 
 ## Coin Change Family
 

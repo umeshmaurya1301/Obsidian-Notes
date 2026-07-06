@@ -4,12 +4,12 @@ type: event
 rating: 6
 fit: "Bullseye fintech-fraud domain & ₹20L — but needs a team of 3–4 (you're solo) + Jun 15 deadline."
 deadline: 2026-06-15
-phase: Registration Open
+phase: Completed
 prize: "₹20,00,000"
 mode: Online
 location: India
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://financialservices.gov.in/beta/en/psb-hackathon
 tags:
   - event
@@ -56,3 +56,4 @@ Fraud/fintech backend is your exact domain (4 yrs Java/Spring/Kafka in fintech).
 ## 🗒️ Notes
 
 - Found via web search (2026-06-09). Culminates in the broader **PSB Hackathon Series 2026** under GFF — see [[GFF_2026_Hackathons]].
+- 2026-07-05: registration window closed without a submission — marked EXPIRED.

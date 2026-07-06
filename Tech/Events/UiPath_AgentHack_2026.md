@@ -4,12 +4,12 @@ type: event
 rating: 8
 fit: "Enterprise process orchestration with exceptions = AEPO's literal domain; solo OK; $50K; ~3 wk runway; cost = learning UiPath platform."
 deadline: 2026-06-29
-phase: Submissions Open
+phase: Completed
 prize: "$50,000"
 mode: Online
 location: Global
 applied: false
-status: TO_DO
+status: EXPIRED
 url: https://uipath-agenthack.devpost.com/
 tags:
   - event
@@ -55,3 +55,4 @@ Model AEPO's payment-ops flow (route → fail → compensate → escalate) as a 
 ## 🗒️ Notes
 
 - Found via Devpost open-hackathons API (2026-06-10).
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

@@ -8,7 +8,7 @@ tags:
 
 > [!info] How this works
 > One note per event lives in this folder (`Tech/Events/`), each with a `status`, `rating` (fit out of 10), and `fit` rationale in its frontmatter. This dashboard reads them live.
-> **Status flow:** `TO_DO` → `REGISTERED` → `SUBMITTED` → `WON` / `REJECTED` / `MISSED`
+> **Status flow:** `TO_DO` → `REGISTERED` → `SUBMITTED` → `WON` / `REJECTED` / `MISSED` / `EXPIRED`
 > **Rating** = composite of profile fit + prize/value + feasibility (open? solo-friendly? eligible?).
 > The **Focus** view shows your actionable events (`REGISTERED` + `TO_DO`); the **Ranked** view sorts everything by fit; **All by status** groups everything.
 
@@ -17,7 +17,7 @@ tags:
 ## 🏆 Ranked by Fit (should I do it?)
 
 ```dataviewjs
-const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛"};
+const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛",EXPIRED:"⏰"};
 const star = r => (r >= 8 ? "🟢" : r >= 6 ? "🟠" : "🔴");
 
 let pages = dv.pages('"Tech/Events"')
@@ -46,7 +46,7 @@ dv.table(
 // Statuses shown in this focus view (edit to taste):
 const FOCUS = ["REGISTERED", "TO_DO"];
 
-const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛"};
+const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛",EXPIRED:"⏰"};
 const today = dv.date("today");
 
 let pages = dv.pages('"Tech/Events"')
@@ -93,8 +93,8 @@ dv.table(
 ## 📊 Status Overview
 
 ```dataviewjs
-const order = ["TO_DO","REGISTERED","SUBMITTED","WON","REJECTED","MISSED"];
-const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛"};
+const order = ["TO_DO","REGISTERED","SUBMITTED","WON","REJECTED","MISSED","EXPIRED"];
+const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛",EXPIRED:"⏰"};
 
 const pages = dv.pages('"Tech/Events"').where(p => p.type == "event" && p.file.name != "_Event_Template");
 const counts = {}; for (const s of order) counts[s] = 0;
@@ -110,8 +110,8 @@ dv.paragraph(`**Total tracked:** ${pages.length}`);
 ## 📂 All Events — grouped by status
 
 ```dataviewjs
-const order = ["REGISTERED","TO_DO","SUBMITTED","WON","REJECTED","MISSED"];
-const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛"};
+const order = ["REGISTERED","TO_DO","SUBMITTED","WON","REJECTED","MISSED","EXPIRED"];
+const icon = {TO_DO:"🔭",REGISTERED:"🟡",SUBMITTED:"✅",WON:"🏆",REJECTED:"❌",MISSED:"⌛",EXPIRED:"⏰"};
 const today = dv.date("today");
 
 const all = dv.pages('"Tech/Events"').where(p => p.type == "event" && p.file.name != "_Event_Template");

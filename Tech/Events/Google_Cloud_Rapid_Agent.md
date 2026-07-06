@@ -4,12 +4,12 @@ type: event
 rating: 9
 fit: "AI-agent fit + already building AEPO/AEGIS; $60K; registered — but deadline Jun 11, act now."
 deadline: 2026-06-11
-phase: Submissions Open
+phase: Completed
 prize: "$60,000"
 mode: Online
 location: Global
 applied: true
-status: REGISTERED
+status: EXPIRED
 url: https://rapid-agent.devpost.com/
 tags:
   - event
@@ -62,3 +62,4 @@ Project **AEPO + AEGIS** on the **MongoDB track** — Gemini agent + MongoDB eve
 ## 🗒️ Notes
 
 - Migrated from `Resources/Hackthons.md`.
+- 2026-07-05: deadline passed without a submission — marked EXPIRED.

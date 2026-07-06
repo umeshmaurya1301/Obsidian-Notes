@@ -9,7 +9,7 @@ prize: ""
 mode: Online
 location: Global
 applied: false
-status: TO_DO   # TO_DO | REGISTERED | SUBMITTED | WON | REJECTED | MISSED
+status: TO_DO   # TO_DO | REGISTERED | SUBMITTED | WON | REJECTED | MISSED | EXPIRED
 url: ""
 tags:
   - event
