@@ -144,16 +144,16 @@
 
 - [ ] [Decode Ways](https://leetcode.com/problems/decode-ways/) — Medium ✅ Neetcode 🔥
 - [ ] [Decode Ways II](https://leetcode.com/problems/decode-ways-ii/) — Hard
-- [ ] [Word Break](https://leetcode.com/problems/word-break/) — Medium ✅ Neetcode 🔥
-- [ ] [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) — Medium ✅ Neetcode 🔥
-- [ ] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode
+- [x] [Word Break](https://leetcode.com/problems/word-break/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-10
+- [x] [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-10
+- [x] [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/) — Medium ✅ Neetcode ✅ 2026-07-10
 
 ## Coin Change Family
 
-- [ ] [Coin Change](https://leetcode.com/problems/coin-change/) — Medium ✅ Neetcode 🔥
-- [ ] [Coin Change II](https://leetcode.com/problems/coin-change-ii/) — Medium ✅ Neetcode
-- [ ] [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) — Medium
-- [ ] [Perfect Squares](https://leetcode.com/problems/perfect-squares/) — Medium 🔥
+- [x] [Coin Change](https://leetcode.com/problems/coin-change/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-10
+- [x] [Coin Change II](https://leetcode.com/problems/coin-change-ii/) — Medium ✅ Neetcode ✅ 2026-07-10
+- [x] [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) — Medium ✅ 2026-07-10
+- [x] [Perfect Squares](https://leetcode.com/problems/perfect-squares/) — Medium 🔥 ✅ 2026-07-10
 - [ ] [Number of Dice Rolls With Target Sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/) — Medium
 
 ## 0/1 Knapsack Pattern
@@ -167,16 +167,16 @@
 
 ## Maximum Subarray / Product
 
-- [ ] [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) — Medium ✅ Neetcode 🔥 **(Kadane's)**
+- [x] [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) — Medium ✅ Neetcode 🔥 **(Kadane's)** ✅ 2026-07-11
 - [ ] [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) — Medium ✅ Neetcode 🔥
 
 ## Stock Problems
 
-- [ ] [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) — Medium
-- [ ] [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/) — Hard 🔥
+- [x] [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) — Medium ✅ 2026-07-11
+- [x] [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/) — Hard 🔥 ✅ 2026-07-11
 - [ ] [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/) — Hard 🔥
-- [ ] [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) — Medium ✅ Neetcode 🔥
-- [ ] [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/) — Medium
+- [x] [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-11
+- [x] [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/) — Medium ✅ 2026-07-11
 
 ---
 
@@ -184,11 +184,11 @@
 
 ## Grid / 2D DP
 
-- [ ] [Unique Paths](https://leetcode.com/problems/unique-paths/) — Medium ✅ Neetcode 🔥
-- [ ] [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) — Medium
-- [ ] [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) — Medium 🔥
-- [ ] [Maximum Path Sum in Matrix](https://www.geeksforgeeks.org/maximum-path-sum-matrix/) — Medium (GFG)
-- [ ] [Triangle](https://leetcode.com/problems/triangle/) — Medium
+- [x] [Unique Paths](https://leetcode.com/problems/unique-paths/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-11
+- [x] [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/) — Medium ✅ 2026-07-11
+- [x] [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) — Medium 🔥 ✅ 2026-07-12
+- [x] [Maximum Path Sum in Matrix](https://www.geeksforgeeks.org/maximum-path-sum-matrix/) — Medium (GFG) ✅ 2026-07-12
+- [x] [Triangle](https://leetcode.com/problems/triangle/) — Medium ✅ 2026-07-12
 - [ ] [Maximal Square](https://leetcode.com/problems/maximal-square/) — Medium
 - [ ] [Dungeon Game](https://leetcode.com/problems/dungeon-game/) — Hard
 - [ ] [Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/) — Hard
