@@ -94,6 +94,19 @@ Very important for backend work:
 - CAP theorem
 - Ordering in Kafka / queues
 
+## 11) Transaction boundaries
+
+Where a rollback stops helping — the most under-taught area, and heavily asked:
+
+- Transaction scope: what one rollback actually undoes
+- Rollback rules and `@Transactional` propagation
+- Safe retries (rebuilding entities, backoff with jitter)
+- The dual-write problem
+- Transactional outbox
+- Saga and compensating transactions
+- Idempotent consumers
+- Two-phase commit (2PC / XA) and why it's avoided
+
 ## What to learn deeply vs lightly
 
 ### Learn deeply
@@ -106,6 +119,8 @@ Very important for backend work:
 - CompletableFuture
 - DB isolation and locking
 - Idempotency
+- `@Transactional` semantics and transaction boundaries
+- Transactional outbox
 
 ### Learn moderately
 
@@ -115,6 +130,7 @@ Very important for backend work:
 - CountDownLatch, CyclicBarrier, Semaphore
 - Redis locking
 - Kafka ordering and consumer concurrency
+- Saga and compensating transactions
 
 ### Just know the basics
 
@@ -124,6 +140,7 @@ Very important for backend work:
 - Virtual threads
 - Structured concurrency
 - Raft, Paxos, STM, CSP, Actor model
+- 2PC / XA (know why it's avoided, not how to run it)
 
 ## Best order to study
 
@@ -133,5 +150,6 @@ Very important for backend work:
 4. Concurrent collections and atomics
 5. CompletableFuture
 6. DB locking and isolation
-7. Redis/Kafka concurrency basics
-8. Modern Java concurrency
+7. Transaction boundaries, outbox, idempotency
+8. Redis/Kafka concurrency basics
+9. Modern Java concurrency
