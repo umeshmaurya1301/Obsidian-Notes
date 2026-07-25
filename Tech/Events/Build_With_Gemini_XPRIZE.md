@@ -39,7 +39,7 @@ XPRIZE × Google (announced at I/O 2026): a 90-day sprint to build an AI-native 
 
 ## 🎯 Why it fits me
 
-**Money & Financial Access** category prize ($50K) is the realistic target — productized AEGIS (policy shadow-testing for payment teams) or an AEPO-derived SMB payment-ops tool. Only worth it if you're ready to actually launch and charge users — and after clearing your employment-contract/IP ground rules (see `Resources/Hackthons.md`).
+**Money & Financial Access** category prize ($50K) is the realistic target — productized AEGIS (policy shadow-testing for payment teams) or an AEPO-derived SMB payment-ops tool. Only worth it if you're ready to actually launch and charge users — and after clearing your employment-contract/IP ground rules (see `Resources/_Hackthons.md`).
 
 ## ✅ Action items
 
@@ -50,3 +50,4 @@ XPRIZE × Google (announced at I/O 2026): a 90-day sprint to build an AI-native 
 ## 🗒️ Notes
 
 - Found via Devpost open-hackathons API (2026-06-10). Highest ceiling of anything tracked, highest commitment too.
+- 2026-07-25: re-confirmed open on Devpost (build window closes **Aug 17**, ~3 weeks left). Still only worth it if you're genuinely launching a product with real users/revenue for the Money & Financial Access category — otherwise skip guilt-free.

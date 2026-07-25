@@ -47,4 +47,4 @@ AEGIS finale — the most complete backend/infra story. With no cash on the tabl
 
 ## 🗒️ Notes
 
-- Migrated from `Resources/Hackthons.md`. 2026-06-10: dates + non-cash prizes verified on Devpost (old "~$10K" estimate was wrong).
+- Migrated from `Resources/_Hackthons.md`. 2026-06-10: dates + non-cash prizes verified on Devpost (old "~$10K" estimate was wrong).

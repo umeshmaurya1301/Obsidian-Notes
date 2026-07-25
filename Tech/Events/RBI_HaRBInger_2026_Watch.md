@@ -42,3 +42,4 @@ The single best domain match that exists for your profile: RBI + fraud/payments 
 ## 🗒️ Notes
 
 - Found via web search (2026-06-10). No NPCI hackathon currently live either (last: UPI cybersecurity edition) — same watch cadence, check npci.org.in events occasionally.
+- 2026-07-25: re-checked — HaRBInger **2025 (4th edition)** remains the latest (496 teams, 15 countries; ₹40L per problem statement); **no 5th edition announced yet**. Still watching ~Oct 2026 per the annual Oct-launch cadence.

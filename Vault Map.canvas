@@ -22,7 +22,7 @@
 		{"id":"g-back","type":"group","label":"🧠 Backlog & Resources","x":-475,"y":240,"width":950,"height":160,"color":"3"},
 		{"id":"n-tolearn","type":"file","file":"Productivity/To Learn.md","x":-440,"y":290,"width":280,"height":60},
 		{"id":"n-res","type":"file","file":"Resources/Tech Resources.md","x":-130,"y":290,"width":280,"height":60},
-		{"id":"n-hack","type":"file","file":"Resources/Hackthons.md","x":180,"y":290,"width":280,"height":60}
+		{"id":"n-hack","type":"file","file":"Resources/_Hackthons.md","x":180,"y":290,"width":280,"height":60}
 	],
 	"edges":[
 		{"id":"e1","fromNode":"home","fromSide":"top","toNode":"n-techdash","toSide":"bottom","color":"6","toEnd":"arrow"},

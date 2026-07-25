@@ -37,5 +37,5 @@ The largest challenge-driven AI/ML hackathon at AI DevSummit 2026.
 
 ## 🗒️ Notes
 
-- Migrated from `Resources/Hackthons.md` (was "In Progress · Already Registered").
+- Migrated from `Resources/_Hackthons.md` (was "In Progress · Already Registered").
 - Deadline has passed — **update `status` to `Won` / `Rejected`** once results are known.

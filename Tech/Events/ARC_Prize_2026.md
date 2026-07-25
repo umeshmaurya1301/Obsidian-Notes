@@ -66,3 +66,4 @@ Strongest *skills* match in the tracker: PyTorch RL + Gymnasium env design is AE
 ## 🗒️ Notes
 
 - Found via web search (2026-07-05). Prize/date structure verified on arcprize.org the same day; re-check Kaggle rules page for country/compute fine print before first submission.
+- 2026-07-25: re-confirmed live on Kaggle — Milestone #1 (Jun 30) passed; **Milestone #2 Sep 30**, final **Nov 2**, results Dec 4; $2M+ pool intact.
