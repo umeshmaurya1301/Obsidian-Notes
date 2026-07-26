@@ -111,7 +111,7 @@ if (ev.length === 0) {
 
 - 🧮 [[Tech/DSA/Roadmap|DSA Roadmap]] · [[Tech/DSA/Revision|Revision Queue]]
 - 🐍 [[Tech/Python/Roadmap|Python Roadmap]]
-- 🧵 [[Tech/Concurrency/Roadmap|Concurrency Roadmap]]
+- 🧵 [[Tech/Concurrency/_Roadmap|Concurrency Roadmap]]
 - 🤖 [[Quick/Gen AI Roadmap|Gen AI Roadmap]]
 
 ---

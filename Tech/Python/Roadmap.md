@@ -115,7 +115,7 @@
 - **GIL Outlook:** Free-threaded / no-GIL CPython (3.13+ experimental)
 
 > [!tip] See also
-> [[Tech/Concurrency/Roadmap|Concurrency Roadmap]] for the deeper concurrency theory.
+> [[Tech/Concurrency/_Roadmap|Concurrency Roadmap]] for the deeper concurrency theory.
 
 ---
 
