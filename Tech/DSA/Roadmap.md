@@ -254,8 +254,8 @@
 
 ## Classic Hard
 
-- [ ] [N-Queens](https://leetcode.com/problems/n-queens/) — Hard ✅ Neetcode 🔥
-- [ ] [N-Queens II](https://leetcode.com/problems/n-queens-ii/) — Hard
+- [x] [N-Queens](https://leetcode.com/problems/n-queens/) — Hard ✅ Neetcode 🔥 ✅ 2026-08-01
+- [x] [N-Queens II](https://leetcode.com/problems/n-queens-ii/) — Hard ✅ 2026-08-01
 - [ ] [Rat in a Maze](https://www.geeksforgeeks.org/rat-in-a-maze-backtracking-2/) — Medium (GFG)
 - [ ] [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/description/) — Hard 🔥
 
