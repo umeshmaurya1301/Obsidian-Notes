@@ -1,1112 +1,451 @@
-# ACID, Isolation, MVCC & Concurrency Control — Complete Notes
+Yes, I understand exactly what you want.
+
+You **don't** want examples that already introduce race conditions, synchronization, locks, or advanced concurrency.
+
+You want to first build an intuition for:
+
+* What is a `Thread`?
+* What is a `Runnable`?
+* What does `start()` actually do?
+* What happens if we call `run()` directly?
+* Why do we even need `Runnable` if `Thread` already exists?
+* What mistakes beginners make with `Thread` and `Runnable`.
+
+That's actually the right order.
 
 ---
 
-# Why ACID Came Into Picture
+# Learning Roadmap
 
-Before ACID, databases had four major problems:
+## Example 1 — Normal Java Program (No Threads)
 
-## 1. Partial Updates (Atomicity)
+Understand that everything runs on the **main thread**.
 
-Transfer ₹300 from Alice to Bob.
+```java
+public class Main {
 
-```sql
-UPDATE accounts
-SET balance = balance - 300
-WHERE id = 'Alice';
+    public static void main(String[] args) {
 
--- Crash
-
-UPDATE accounts
-SET balance = balance + 300
-WHERE id = 'Bob';
+        System.out.println("Step 1");
+        System.out.println("Step 2");
+        System.out.println("Step 3");
+    }
+}
 ```
 
-Result
+Question:
 
-```
-Alice = 700
-Bob = 500
-```
-
-₹300 disappeared.
-
-Solution:
-
-> Atomicity (All or Nothing)
+* How many threads are running?
+* Answer: Only the `main` thread.
 
 ---
 
-## 2. Invalid Data (Consistency)
+# Example 2 — Extending Thread
 
-Examples
+```java
+class MyThread extends Thread {
 
+    @Override
+    public void run() {
+        System.out.println("Child Thread");
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.start();
+
+        System.out.println("Main Thread");
+    }
+}
 ```
-Balance = -500
 
-Account Type = Unknown
+Learn:
 
-Duplicate Primary Keys
-```
-
-Need database rules.
-
-Solution:
-
-> Consistency
+* `run()` contains the task.
+* `start()` creates a **new thread**.
+* JVM eventually calls `run()` on that new thread.
 
 ---
 
-## 3. Concurrent Users (Isolation)
+# Example 3 — What `start()` Actually Does
 
-Two users update same account simultaneously.
+```java
+class MyThread extends Thread {
 
-Both read
+    @Override
+    public void run() {
 
-```
-1000
-```
+        System.out.println(
+                Thread.currentThread().getName());
+    }
+}
 
-One writes
+public class Main {
 
-```
-700
-```
+    public static void main(String[] args) {
 
-Another writes
+        MyThread t = new MyThread();
 
-```
-500
-```
+        t.start();
 
-Final balance
-
-```
-500
-```
-
-Correct should be
-
-```
-200
+        System.out.println(
+                Thread.currentThread().getName());
+    }
+}
 ```
 
-Solution:
+Possible Output
 
-> Isolation
+```
+main
+Thread-0
+```
+
+Question:
+Who executed `run()`?
+
+Answer:
+`Thread-0`
 
 ---
 
-## 4. Crash after Commit (Durability)
+# Example 4 — Calling `run()` Directly
 
-Database says
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        System.out.println(
+                Thread.currentThread().getName());
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        t.run();
+    }
+}
+```
+
+Output
 
 ```
-Commit Successful
+main
 ```
 
-Immediately power failure.
+Notice:
 
-After restart
+No new thread was created.
 
-```
-Transaction Lost
-```
-
-Solution
-
-> Durability
+`run()` became just another normal method call.
 
 ---
 
-# ACID
+# Example 5 — `run()` vs `start()`
 
-| Property    | Purpose                                  |
-| ----------- | ---------------------------------------- |
-| Atomicity   | All or Nothing                           |
-| Consistency | Valid State → Valid State                |
-| Isolation   | Concurrent transactions behave correctly |
-| Durability  | Committed data survives crash            |
+```java
+class MyThread extends Thread {
+
+    @Override
+    public void run() {
+
+        System.out.println(
+                "Running on "
+                + Thread.currentThread().getName());
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        MyThread t = new MyThread();
+
+        // t.run();
+
+        t.start();
+    }
+}
+```
+
+Output if using `run()`
+
+```
+Running on main
+```
+
+Output if using `start()`
+
+```
+Running on Thread-0
+```
+
+This is probably **the most asked interview question**.
 
 ---
 
-# Why Interviews Focus on Isolation
+# Example 6 — Calling `start()` Twice
 
-Atomicity
+```java
+class MyThread extends Thread {
 
-Consistency
+    @Override
+    public void run() {
 
-Durability
+        System.out.println("Running...");
+    }
+}
 
-are mostly handled internally by the database.
+public class Main {
 
-Backend engineers mostly deal with
+    public static void main(String[] args) {
 
-* concurrent users
-* race conditions
-* locking
-* deadlocks
-* performance
+        MyThread t = new MyThread();
 
-Hence interviews focus heavily on Isolation.
+        t.start();
+
+        t.start();
+    }
+}
+```
+
+Output
+
+```
+Running...
+
+Exception in thread "main"
+
+java.lang.IllegalThreadStateException
+```
+
+Question:
+Why?
+
+Answer:
+
+A `Thread` object represents one execution.
+
+Once started, it cannot be started again.
+
+Create a new `Thread` object instead.
 
 ---
 
-# Isolation Means
+# Example 7 — Runnable
 
-Transactions should behave
+```java
+class MyTask implements Runnable {
 
-> As if they are executing alone
+    @Override
+    public void run() {
 
-even when hundreds execute together.
+        System.out.println("Task Executing");
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Runnable task = new MyTask();
+
+        Thread t = new Thread(task);
+
+        t.start();
+    }
+}
+```
+
+Learn:
+
+`Runnable` only defines **what work should be done**.
+
+`Thread` decides **where that work runs**.
 
 ---
 
-# Why Not Run Transactions One By One?
+# Example 8 — Calling Runnable's `run()` Directly
 
-Suppose
+```java
+class MyTask implements Runnable {
 
-```
-10000 users
-```
+    @Override
+    public void run() {
 
-Serial execution
+        System.out.println(
+                Thread.currentThread().getName());
+    }
+}
 
-```
-T1
+public class Main {
 
-↓
+    public static void main(String[] args) {
 
-T2
+        Runnable task = new MyTask();
 
-↓
-
-T3
-```
-
-Very slow.
-
-Need
-
-```
-Correctness
-
-+
-
-Concurrency
+        task.run();
+    }
+}
 ```
 
-Isolation is the balance.
+Output
+
+```
+main
+```
+
+Again,
+
+No thread was created.
 
 ---
 
-# Isolation Anomalies
+# Example 9 — Runnable with Thread
 
-These came first.
+```java
+class MyTask implements Runnable {
 
-Isolation Levels were designed later to solve them.
+    @Override
+    public void run() {
 
----
+        System.out.println(
+                Thread.currentThread().getName());
+    }
+}
 
-## 1. Dirty Read
+public class Main {
 
-T1 updates
+    public static void main(String[] args) {
 
-```
-Balance = 500
-```
+        Runnable task = new MyTask();
 
-Not committed.
+        Thread t = new Thread(task);
 
-T2 reads
-
-```
-500
-```
-
-Later
-
-T1 Rollback
-
-Actual balance
-
-```
-1000
+        t.start();
+    }
+}
 ```
 
-T2 read invalid data.
-
----
-
-## 2. Non Repeatable Read
-
-T1
+Output
 
 ```
-Read Salary
-
-1000
-```
-
-T2
-
-```
-Update Salary
-
-1500
-
-Commit
-```
-
-T1 reads again
-
-```
-1500
-```
-
-Same row changed.
-
----
-
-## 3. Phantom Read
-
-T1
-
-```
-SELECT
-
-Employees
-
-Salary > 5000
-
-5 rows
-```
-
-T2 inserts
-
-```
-Salary = 8000
-```
-
-Commit
-
-T1 executes same query
-
-Gets
-
-```
-6 rows
-```
-
-New row appeared.
-
----
-
-## 4. Lost Update
-
-T1
-
-```
-Read
-
-1000
-```
-
-T2
-
-```
-Read
-
-1000
-```
-
-Both update.
-
-Last writer wins.
-
-One update lost.
-
----
-
-# Isolation Levels
-
-| Isolation Level  | Dirty Read | Non Repeatable | Phantom       | Lost Update* |
-| ---------------- | ---------- | -------------- | ------------- | ------------ |
-| Read Uncommitted | ❌          | ❌              | ❌             | ❌            |
-| Read Committed   | ✅          | ❌              | ❌             | Depends      |
-| Repeatable Read  | ✅          | ✅              | Depends on DB | Usually      |
-| Serializable     | ✅          | ✅              | ✅             | ✅            |
-
-*Lost update handling depends on the database implementation and SQL pattern.
-
----
-
-# Repeatable Read
-
-Guarantee
-
-> Same row always returns same value inside one transaction.
-
-Example
-
-```
-Balance = 1000
-```
-
-T1 reads
-
-```
-1000
-```
-
-T2
-
-updates
-
-```
-300
-
-Commit
-```
-
-T1 reads again
-
-Still gets
-
-```
-1000
-```
-
-Reason
-
-Snapshot.
-
----
-
-# Serializable
-
-Guarantee
-
-Transactions behave
-
-```
-T1
-
-↓
-
-T2
-
-↓
-
-T3
-```
-
-Even if database internally runs them concurrently.
-
-May abort transactions.
-
-Highest correctness.
-
-Lowest concurrency.
-
----
-
-# How Databases Implement Isolation
-
-There are two major techniques
-
-```
-Locks
-
-+
-
-MVCC
+Thread-0
 ```
 
 ---
 
-# Locks
+# Example 10 — One Runnable, Multiple Threads
 
-Oldest mechanism.
+```java
+class MyTask implements Runnable {
 
----
+    @Override
+    public void run() {
 
-## Shared Lock
+        System.out.println(
+                Thread.currentThread().getName()
+                + " is executing the task");
+    }
+}
 
-Used for Reads.
+public class Main {
 
-```
-T1 Read
+    public static void main(String[] args) {
 
-T2 Read
+        Runnable task = new MyTask();
 
-T3 Read
-```
+        Thread t1 = new Thread(task, "Payment");
+        Thread t2 = new Thread(task, "Settlement");
 
-Allowed simultaneously.
-
----
-
-## Exclusive Lock
-
-Used for Updates.
-
-```
-T1 Update
-
-↓
-
-Lock
-
-↓
-
-T2 Wait
-
-↓
-
-T3 Wait
+        t1.start();
+        t2.start();
+    }
+}
 ```
 
-Only one writer.
+Possible Output
+
+```
+Payment is executing the task
+Settlement is executing the task
+```
+
+This shows that the **same task** (`Runnable`) can be executed by multiple threads.
 
 ---
 
-# Lock Compatibility
+# Example 11 — A Common Beginner Mistake
 
-| Existing  | New Read | New Write |
-| --------- | -------- | --------- |
-| Shared    | ✅        | ❌         |
-| Exclusive | ❌        | ❌         |
+```java
+Runnable task = new MyTask();
+
+Thread t = new Thread(task);
+
+task.run();
+```
+
+Question:
+
+Did we create a new thread?
+
+No.
+
+Output
+
+```
+main
+```
+
+Why?
+
+Because we called `run()` ourselves.
 
 ---
 
-# Problems with Locks
+# Example 12 — Another Common Mistake
 
-Readers wait.
+```java
+Runnable task = new MyTask();
 
-Writers wait.
+Thread t = new Thread(task);
 
-Deadlocks.
+// Forgot to call start()
+```
 
-Lower throughput.
+Output
 
-Needed better solution.
+```
+Nothing happens.
+```
+
+Reason:
+
+Creating a `Thread` object does **not** start execution. The thread begins only when `start()` is invoked.
 
 ---
 
-# MVCC
-
-Multi Version Concurrency Control.
-
-Idea
-
-Never overwrite immediately.
-
-Create multiple versions.
-
-Example
-
-```
-Version 1
-
-Balance = 1000
-```
-
-Update
-
-Instead of replacing
-
-Create
-
-```
-Version 2
-
-Balance = 300
-```
-
-Readers can still see Version 1.
-
----
-
-# Snapshot
-
-When transaction starts
-
-Database remembers
-
-```
-Current visible versions
-```
-
-Like taking a photograph.
-
-Future updates don't change your photograph.
-
----
-
-# Timeline
-
-```
-10:00
-
-T1 Starts
-
-Snapshot
-
-Balance = 1000
-
-----------------
-
-10:01
-
-T2
-
-Updates
-
-300
-
-Commit
-
-----------------
-
-10:02
-
-T1 Reads
-
-Still sees
-
-1000
-```
-
----
-
-# Important
-
-MVCC is only for Reads.
-
-Not Writes.
-
-Many people misunderstand this.
-
----
-
-# Three Transactions Example
-
-Initial
-
-```
-Balance = 1000
-```
-
-```
-T1 Reads 1000
-
-T2 Reads 1000
-
-T3 Reads 1000
-```
-
-All want
-
-```
-Withdraw 700
-```
-
----
-
-Without protection
-
-Everyone computes
-
-```
-300
-```
-
-Writes
-
-```
-300
-
-300
-
-300
-```
-
-Final balance
-
-```
-300
-```
-
-Three withdrawals happened.
-
-Wrong.
-
----
-
-# What PostgreSQL Actually Does
-
-All three read
-
-```
-1000
-```
-
-using snapshots.
-
-No problem.
-
-When T2 reaches UPDATE
-
-It acquires
-
-```
-Exclusive Row Lock
-```
-
-T1
-
-```
-WAIT
-```
-
-T3
-
-```
-WAIT
-```
-
-T2 commits.
-
-Balance
-
-```
-300
-```
-
-Now T1 wakes.
-
-Database **does not blindly update using the old snapshot**.
-
-It checks the current row before applying the update.
-
----
-
-# PostgreSQL Protection Mechanisms
-
-## 1. MVCC
-
-Readers never block writers.
-
----
-
-## 2. Row Level Lock
-
-Only one writer.
-
----
-
-## 3. Row Recheck (EvalPlanQual)
-
-Waiting transaction rechecks latest row version before updating.
-
-Prevents lost updates.
-
----
-
-## 4. UPDATE Uses Current Row
-
-Instead of
-
-```
-1000 - 700
-```
-
-Database effectively uses
-
-```
-300 - 700
-```
-
-after the waiting transaction resumes.
-
----
-
-## 5. Business Condition
-
-Best production solution.
-
-```sql
-UPDATE account
-SET balance = balance - 700
-WHERE id = 1
-AND balance >= 700;
-```
-
-If balance becomes
-
-```
-300
-```
-
-Rows updated
-
-```
-0
-```
-
-Application knows
-
-```
-Insufficient Balance
-```
-
----
-
-## 6. CHECK Constraint
-
-```sql
-CHECK(balance >= 0)
-```
-
-Database rejects
-
-```
--400
-```
-
----
-
-## 7. Serializable Isolation
-
-Conflicting transaction
-
-```
-Serialization Failure
-```
-
-Application retries.
-
----
-
-## 8. SELECT ... FOR UPDATE
-
-Locks row immediately.
-
-Other transactions wait before modifying.
-
----
-
-## 9. Optimistic Locking
-
-Application layer.
-
-Version column.
-
-```sql
-UPDATE account
-SET version = version + 1
-WHERE version = 5;
-```
-
-If
-
-```
-0 rows updated
-```
-
-Retry.
-
----
-
-# MVCC vs Optimistic vs Pessimistic Locking
-
-This is a common interview question.
-
----
-
-## MVCC
-
-Purpose
-
-Consistent Reads.
-
-Readers don't wait.
-
-Built into database.
-
----
-
-## Optimistic Locking
-
-Purpose
-
-Detect write conflicts.
-
-No waiting.
-
-Version column.
-
-Retry if conflict.
-
-Good for
-
-* User Profile
-* CMS
-* Product Details
-
----
-
-## Pessimistic Locking
-
-Purpose
-
-Prevent write conflicts.
-
-Acquire lock first.
-
-Others wait.
-
-Good for
-
-* Banking
-* Wallet
-* Ticket Booking
-* Inventory
-
----
-
-# Relationship
-
-```
-MVCC
-
-↓
-
-Makes Reads Fast
-
--------------------
-
-Optimistic Locking
-
-↓
-
-Detect Conflicts
-
--------------------
-
-Pessimistic Locking
-
-↓
-
-Prevent Conflicts
-```
-
-They are complementary, not competitors.
-
----
-
-# MySQL Uses MVCC?
-
-Yes.
-
-More accurate statement
-
-> **MySQL's InnoDB storage engine uses MVCC.**
-
-Not every MySQL storage engine supports MVCC.
-
----
-
-# Storage Engines
-
-MySQL has multiple storage engines.
-
-Examples
-
-```
-InnoDB
-
-MyISAM
-
-Memory
-```
-
-Storage engine is responsible for
-
-* storing data
-* indexes
-* locks
-* transactions
-* crash recovery
-
----
-
-# InnoDB
-
-Default MySQL Storage Engine.
-
-Provides
-
-* ACID
-* MVCC
-* Row Locks
-* Foreign Keys
-* Crash Recovery
-* Undo Logs
-* Redo Logs
-
----
-
-# PostgreSQL vs MySQL MVCC
-
-## PostgreSQL
-
-Stores multiple row versions.
-
-```
-1000
-
-↓
-
-300
-```
-
-Old version remains until VACUUM removes it.
-
----
-
-## MySQL InnoDB
-
-Stores current row.
-
-Previous version stored in
-
-```
-Undo Logs
-```
-
-Old transaction reconstructs previous value.
-
----
-
-# Do Both Use Locks?
-
-Yes.
-
-MVCC does NOT eliminate locks.
-
-```
-Reads
-
-↓
-
-MVCC
-
-Writes
-
-↓
-
-Exclusive Row Locks
-```
-
----
-
-# Major Databases
-
-| Database     | MVCC                        | Row Locks |
-| ------------ | --------------------------- | --------- |
-| PostgreSQL   | ✅                           | ✅         |
-| MySQL InnoDB | ✅                           | ✅         |
-| Oracle       | ✅                           | ✅         |
-| SQL Server   | Optional Snapshot Isolation | ✅         |
-
----
-
-# Interview One-Liners
-
-### What is MVCC?
-
-> MVCC allows multiple versions of a row so readers can access a consistent snapshot without blocking writers.
-
----
-
-### Does MVCC eliminate locks?
-
-> No. MVCC removes most read-write blocking. Conflicting writes still require row-level locks.
-
----
-
-### What is Snapshot?
-
-> A snapshot is the consistent view of the database that a transaction sees throughout its execution, depending on the isolation level.
-
----
-
-### What is InnoDB?
-
-> InnoDB is MySQL's default transactional storage engine. It implements ACID, MVCC, row-level locking, crash recovery, foreign keys, undo logs, and redo logs.
-
----
-
-### Difference Between MVCC and Optimistic Locking?
-
-> MVCC provides consistent reads inside the database. Optimistic locking is an application-level strategy that detects concurrent update conflicts using a version field.
-
----
-
-### Difference Between MVCC and Pessimistic Locking?
-
-> MVCC improves read concurrency. Pessimistic locking prevents conflicting writes by locking resources before modification.
-
----
-
-# Final Mental Model
-
-```text
-                    Client Request
-                          │
-                          ▼
-                 BEGIN TRANSACTION
-                          │
-                          ▼
-                Read Operations
-                          │
-                 Uses MVCC Snapshot
-                          │
-          Readers Don't Block Writers
-                          │
-                          ▼
-                UPDATE / DELETE
-                          │
-          Acquire Exclusive Row Lock
-                          │
-                          ▼
-       Waiting Transactions Queue Here
-                          │
-                          ▼
-      Recheck Latest Row Version (if needed)
-                          │
-                          ▼
-      Business Rules / Constraints Evaluated
-                          │
-                          ▼
-                    COMMIT / ROLLBACK
-                          │
-                          ▼
-            Redo Logs Persist Changes
-            Undo Logs Support Rollback/MVCC
-```
-
----
-
-# Key Takeaways
-
-1. **ACID** was introduced to solve failures, invalid data, concurrency issues, and crash recovery.
-2. **Isolation** is the most discussed ACID property because concurrent transactions are common in real-world systems.
-3. Learn **anomalies first**, then **isolation levels**.
-4. **MVCC** is a read concurrency mechanism, **not** a replacement for locking.
-5. **Writes still use row-level locks** in MVCC databases.
-6. **PostgreSQL** stores multiple row versions; **MySQL InnoDB** reconstructs old versions using undo logs.
-7. **Optimistic locking** detects conflicts after they occur, while **pessimistic locking** prevents conflicts by locking first.
-8. Production financial systems typically combine **transactions, row locks, SQL conditions (`WHERE balance >= ?`), constraints, and retries** to ensure correctness under heavy concurrency.
+# Before Moving to Synchronization, You Should Clearly Understand
+
+You should be able to answer these confidently:
+
+1. What is a `Thread` object?
+2. What is a `Runnable` object?
+3. Why does `start()` create a new thread but `run()` doesn't?
+4. Why can `start()` be called only once?
+5. Can I call `run()` directly? (Yes, but it's just a normal method call.)
+6. Why is `Runnable` preferred over extending `Thread`?
+7. Can multiple `Thread` objects execute the same `Runnable` instance? (Yes.)
+
+Once these concepts are clear, the next natural step is to see **what goes wrong when multiple threads access the same data**, which leads into synchronization and related concurrency topics.

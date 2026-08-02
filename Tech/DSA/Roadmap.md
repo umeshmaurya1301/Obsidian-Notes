@@ -313,17 +313,18 @@
 - [x] [Search Insert Position](https://leetcode.com/problems/search-insert-position/) — Easy ✅ 2026-06-30
 - [x] [First Bad Version](https://leetcode.com/problems/first-bad-version/) — Easy ✅ 2026-06-30
 - [x] [Sqrt(x)](https://leetcode.com/problems/sqrtx/) — Easy ✅ 2026-06-30
-- [ ] [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) — Medium ✅ Neetcode 🔥
-- [ ] [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) — Medium 🔥
-- [ ] [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) — Medium ✅ Neetcode 🔥
-- [ ] [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/) — Medium ✅ Neetcode 🔥
-- [ ] [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/) — Medium
-- [ ] [Find Peak Element](https://leetcode.com/problems/find-peak-element/) — Medium 🔥
+- [x] [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-01
+- [x] [Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/) — Medium 🔥 ✅ 2026-08-01
+- [x] [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/) — Medium 🔥 ✅ 2026-08-02
+- [x] [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-02
+- [x] [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-02
+- [x] [Search in Rotated Sorted Array II](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/) — Medium ✅ 2026-08-02
+- [x] [Find Peak Element](https://leetcode.com/problems/find-peak-element/) — Medium 🔥 ✅ 2026-08-02
 
 ## Binary Search on Answer — MAANG LOVES THIS
 
-- [ ] [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) — Medium ✅ Neetcode 🔥
-- [ ] [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) — Medium 🔥
+- [x] [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-02
+- [x] [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/) — Medium 🔥 ✅ 2026-08-02
 - [ ] [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/) — Hard 🔥
 - [ ] [Find K Closest Elements](https://leetcode.com/problems/find-k-closest-elements/) — Medium
 - [ ] [Minimum Number of Days to Make m Bouquets](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/) — Medium
@@ -741,7 +742,7 @@
 |DP Part 2 (Grid + LIS + LCS)|24|0|0%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
-|Binary Search|25|1|4%|
+|Binary Search|26|7|27%|
 |Linked List|22|0|0%|
 |Stack + Queue|28|0|0%|
 |Trees Advanced + BST|22|0|0%|
@@ -750,7 +751,7 @@
 |Graphs|35|0|0%|
 |Greedy|20|0|0%|
 |Extras / CP|TBD|1|—|
-|**TOTAL**|**~383**|**64**|**~17%**|
+|**TOTAL**|**~384**|**70**|**~18%**|
 
 ---
 
