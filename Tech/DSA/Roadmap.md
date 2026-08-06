@@ -660,7 +660,7 @@
 
 - [ ] [Insert Interval](https://leetcode.com/problems/insert-interval/) — Medium ✅ Neetcode 🔥
 - [ ] [Merge Intervals](https://leetcode.com/problems/merge-intervals/) — Medium ✅ Neetcode 🔥
-- [ ] [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/) — Medium ✅ Neetcode 🔥
+- [x] [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-04
 - [ ] [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/) — Easy
 - [ ] [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) — Medium 🔥
 - [ ] [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/) — Medium
@@ -749,9 +749,9 @@
 |DP Part 3 (Interval + Tree + Bitmask)|18|0|0%|
 |Heap / PQ|22|0|0%|
 |Graphs|35|0|0%|
-|Greedy|20|0|0%|
+|Greedy|20|1|5%|
 |Extras / CP|TBD|1|—|
-|**TOTAL**|**~384**|**70**|**~18%**|
+|**TOTAL**|**~384**|**71**|**~18%**|
 
 ---
 
