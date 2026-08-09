@@ -154,13 +154,13 @@
 - [x] [Coin Change II](https://leetcode.com/problems/coin-change-ii/) — Medium ✅ Neetcode ✅ 2026-07-10
 - [x] [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/) — Medium ✅ 2026-07-10
 - [x] [Perfect Squares](https://leetcode.com/problems/perfect-squares/) — Medium 🔥 ✅ 2026-07-10
-- [ ] [Number of Dice Rolls With Target Sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/) — Medium
+- [x] [Number of Dice Rolls With Target Sum](https://leetcode.com/problems/number-of-dice-rolls-with-target-sum/) — Medium ✅ 2026-08-09
 
 ## 0/1 Knapsack Pattern
 
-- [ ] [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/) — Medium ✅ Neetcode 🔥
-- [ ] [Target Sum](https://leetcode.com/problems/target-sum/) — Medium
-- [ ] [Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/) — Medium
+- [x] [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-09
+- [x] [Target Sum](https://leetcode.com/problems/target-sum/) — Medium ✅ 2026-08-09
+- [x] [Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/) — Medium ✅ 2026-07-01
 - [ ] [Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/) — Medium
 - [x] [0/1 Knapsack](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/) — Medium (GFG) 🔥 ✅ 2026-06-30
 - [x] [Subset Sum Problem](https://www.geeksforgeeks.org/subset-sum-problem-dp-25/) — Medium (GFG) ✅ 2026-06-30
@@ -168,7 +168,7 @@
 ## Maximum Subarray / Product
 
 - [x] [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/) — Medium ✅ Neetcode 🔥 **(Kadane's)** ✅ 2026-07-11
-- [ ] [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) — Medium ✅ Neetcode 🔥
+- [x] [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-11
 
 ## Stock Problems
 
@@ -738,7 +738,7 @@
 |---|---|---|---|
 |Arrays + Hashing|29|27|93%|
 |Two Pointers + Sliding Window|30|28|93%|
-|DP Part 1 (1D + Knapsack)|29|7|24%|
+|DP Part 1 (1D + Knapsack)|30|26|87%|
 |DP Part 2 (Grid + LIS + LCS)|24|0|0%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
@@ -751,7 +751,7 @@
 |Graphs|35|0|0%|
 |Greedy|20|1|5%|
 |Extras / CP|TBD|1|—|
-|**TOTAL**|**~384**|**71**|**~18%**|
+|**TOTAL**|**~384**|**120**|**~31%**|
 
 ---
 
