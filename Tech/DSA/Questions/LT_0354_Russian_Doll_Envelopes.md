@@ -61,7 +61,7 @@ This is Longest Increasing Subsequence wearing a disguise — the trick is entir
 
 ## 🧠 Evolution of Solutions
 
-### ✅ Solution — Sort (asc width, desc height tie-break) + LIS via Binary Search (Patience Sorting)
+### ✅ Solution 1 — Sort (asc width, desc height tie-break) + LIS via Binary Search (Patience Sorting)
 
 **Why this works:**
 - Sorting by width ascending means any valid nesting chain automatically has non-decreasing width as you scan left to right — the width constraint is handled by sort order, not by LIS logic.
@@ -149,6 +149,70 @@ class Solution {
 }
 ```
 
+- **Time:** `O(n log n)` · **Space:** `O(n)`
+
+### ❌ Solution 2 — Same Sort, but Quadratic LIS on Heights (TLE)
+
+**Why it's bad:** identical sort, identical reduction — only the LIS engine is swapped for the textbook `O(n²)` `dp[i] = max(dp[j] + 1)` pairwise scan. With `n` up to `10^5` that's `~5 × 10^9` comparisons, so it **times out**. Worth keeping precisely because it isolates the lesson: the sort trick is the *insight*, but the LIS implementation is what decides whether the solution passes.
+
+**Dry Run** (`envelopes = [[5,4],[6,4],[6,7],[2,3]]` → heights `[3, 4, 7, 4]` after the same sort):
+
+| `i` | height | inner `j` scan | `dp[i]` |
+|---|---|---|---|
+| 0 | `3` | — | `1` |
+| 1 | `4` | `j=0`: `3 < 4` → `dp[0]+1 = 2` | `2` |
+| 2 | `7` | `j=0`: → `2`; `j=1`: `4 < 7` → `dp[1]+1 = 3` | `3` |
+| 3 | `4` | `j=0`: `3 < 4` → `2`; `j=1`: `4 < 4` ✗; `j=2`: `7 < 4` ✗ | `2` |
+
+`max(dp) = 3` — the right answer, just far too slowly.
+
+```java
+class Solution {
+    public int maxEnvelopes(int[][] envelopes) {
+        /*
+        1  4
+        2  2
+        3  3
+        4  4
+        5  7
+        5  6
+        5  5
+        6  9
+        */
+        Arrays.sort(envelopes, (a,b) -> {
+            if (a[0]==b[0]) {
+                return b[1] - a[1];
+            } else {
+                return a[0] - b[0];
+            }
+        });
+
+        return lis(envelopes);
+
+    }
+
+    private int lis (int[][] nums) {
+        int row = nums.length;
+        int col = nums[0].length;;
+
+        int[] dp = new int[row];
+
+        for (int i=0; i<row; i++) {
+            dp[i] = 1;
+            for (int j=0; j<i; j++) {
+                if (nums[i][col-1] > nums[j][col-1]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+
+        return Arrays.stream(dp).max().orElse(0);
+    }
+}
+```
+
+- **Time:** `O(n²)` — **TLE** at `n = 10^5` · **Space:** `O(n)`
+
 ---
 
 ## 🔑 Key Insights
@@ -156,6 +220,7 @@ class Solution {
 - **Descending tie-break is the whole trick.** It converts same-width groups into strictly decreasing runs, which LIS structurally cannot chain through, enforcing the strict `<` on width without LIS needing to know widths exist at all.
 - **The binary search returns an insertion *position*, not a value.** `left == tail.size()` means "every current tail is smaller" → append (sequence grows). Any other `left` means "found the first tail `>= num`" → replace at that index (tighten, length unchanged).
 - **`tail` is not an actual valid envelope chain** — like in plain LIS, its contents mix values from different candidate subsequences. Only its length is meaningful; reconstructing the actual chain needs parent pointers.
+- **The sort and the LIS engine are independent choices.** Solution 2 proves it: same sort, same correct answer, but `O(n²)` LIS blows the time limit. Compare with [[LT_0300_Longest_Increasing_Subsequence]], where `n <= 2500` makes the quadratic version perfectly acceptable — here the constraint is what forces patience sorting.
 
 ---
 

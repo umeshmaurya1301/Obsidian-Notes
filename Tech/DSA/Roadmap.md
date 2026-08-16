@@ -174,7 +174,7 @@
 
 - [x] [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/) — Medium ✅ 2026-07-11
 - [x] [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/description/) — Hard 🔥 ✅ 2026-07-11
-- [ ] [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/) — Hard 🔥
+- [x] [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/) — Hard 🔥 ✅ 2026-08-10
 - [x] [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) — Medium ✅ Neetcode 🔥 ✅ 2026-07-11
 - [x] [Best Time to Buy and Sell Stock with Transaction Fee](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/) — Medium ✅ 2026-07-11
 
@@ -189,32 +189,32 @@
 - [x] [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/) — Medium 🔥 ✅ 2026-07-12
 - [x] [Maximum Path Sum in Matrix](https://www.geeksforgeeks.org/maximum-path-sum-matrix/) — Medium (GFG) ✅ 2026-07-12
 - [x] [Triangle](https://leetcode.com/problems/triangle/) — Medium ✅ 2026-07-12
-- [ ] [Maximal Square](https://leetcode.com/problems/maximal-square/) — Medium
-- [ ] [Dungeon Game](https://leetcode.com/problems/dungeon-game/) — Hard
-- [ ] [Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/) — Hard
+- [x] [Maximal Square](https://leetcode.com/problems/maximal-square/) — Medium ✅ 2026-08-10
+- [x] [Dungeon Game](https://leetcode.com/problems/dungeon-game/) — Hard ✅ 2026-08-10
+- [x] [Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/) — Hard ✅ 2026-08-10
 
 ## LIS — Longest Increasing Subsequence
 
-- [ ] [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) — Medium ✅ Neetcode 🔥 **(O(n log n) version too)**
-- [ ] [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) — Medium
-- [ ] [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) — Hard 🔥
-- [ ] [Longest Arithmetic Subsequence](https://leetcode.com/problems/longest-arithmetic-subsequence/) — Medium
-- [ ] [Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/) — Medium
+- [x] [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) — Medium ✅ Neetcode 🔥 **(O(n log n) version too)** ✅ 2026-08-03
+- [x] [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/) — Medium ✅ 2026-08-10
+- [x] [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/) — Hard 🔥 ✅ 2026-08-10
+- [x] [Longest Arithmetic Subsequence](https://leetcode.com/problems/longest-arithmetic-subsequence/) — Medium ✅ 2026-08-10
+- [x] [Wiggle Subsequence](https://leetcode.com/problems/wiggle-subsequence/) — Medium ✅ 2026-08-08
 
 ## LCS — Longest Common Subsequence
 
-- [ ] [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/) — Medium ✅ Neetcode 🔥
-- [ ] [Edit Distance](https://leetcode.com/problems/edit-distance/) — Medium ✅ Neetcode 🔥 **(MAANG classic)**
-- [ ] [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/) — Hard ✅ Neetcode
-- [ ] [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/) — Medium
-- [ ] [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/) — Medium
+- [x] [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-10
+- [x] [Edit Distance](https://leetcode.com/problems/edit-distance/) — Medium ✅ Neetcode 🔥 **(MAANG classic)** ✅ 2026-08-10
+- [x] [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/) — Hard ✅ Neetcode ✅ 2026-08-10
+- [x] [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/) — Medium ✅ 2026-08-10
+- [x] [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/) — Medium ✅ 2026-08-10
 - [ ] [Shortest Common Supersequence](https://leetcode.com/problems/shortest-common-supersequence/) — Hard
-- [ ] [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) — Medium 🔥
+- [x] [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) — Medium 🔥 ✅ 2026-08-10
 - [ ] [Minimum Insertion Steps to Make a String Palindrome](https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/) — Hard
 
 ## Pattern Matching DP
 
-- [ ] [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) — Hard ✅ Neetcode 🔥
+- [x] [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/) — Hard ✅ Neetcode 🔥 ✅ 2026-08-10
 - [ ] [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/) — Hard 🔥
 - [ ] [Interleaving String](https://leetcode.com/problems/interleaving-string/) — Medium ✅ Neetcode
 
@@ -362,7 +362,7 @@
 
 - [ ] [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/) — Easy ✅ Neetcode
 - [ ] [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/) — Medium 🔥
-- [ ] [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) — Medium ✅ Neetcode 🔥
+- [x] [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/) — Medium ✅ Neetcode 🔥 ✅ 2026-08-16
 - [ ] [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/) — Easy
 - [ ] [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/) — Medium ✅ Neetcode 🔥
 
@@ -685,6 +685,7 @@
 ## Combinatorics + Modular Arithmetic
 
 - [x] [Count Anagrams](https://leetcode.com/problems/count-anagrams/) — Hard ✅ 2026-05-25
+- [x] [Minimum Operations to Make a Rotated Palindrome I](https://leetcode.com/problems/minimum-operations-to-make-a-rotated-palindrome-i/) — Medium **(Rotation Enumeration + Cyclic Distance)** ✅ 2026-08-16
 
 ## Greedy + Heap (Diminishing Returns)
 
@@ -738,11 +739,11 @@
 |---|---|---|---|
 |Arrays + Hashing|29|27|93%|
 |Two Pointers + Sliding Window|30|28|93%|
-|DP Part 1 (1D + Knapsack)|30|26|87%|
-|DP Part 2 (Grid + LIS + LCS)|24|0|0%|
+|DP Part 1 (1D + Knapsack)|30|27|90%|
+|DP Part 2 (Grid + LIS + LCS)|24|20|83%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
-|Binary Search|26|7|27%|
+|Binary Search|26|8|31%|
 |Linked List|22|0|0%|
 |Stack + Queue|28|0|0%|
 |Trees Advanced + BST|22|0|0%|
@@ -750,8 +751,8 @@
 |Heap / PQ|22|0|0%|
 |Graphs|35|0|0%|
 |Greedy|20|1|5%|
-|Extras / CP|TBD|1|—|
-|**TOTAL**|**~384**|**120**|**~31%**|
+|Extras / CP|TBD|2|—|
+|**TOTAL**|**~384**|**143**|**~37%**|
 
 ---
 
@@ -789,8 +790,8 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 
 | S.No | Question Name | Question Link | Status |
 | ---- | ------------- | ------------- | ------ |
-| 1.   | LFU Cache                | https://leetcode.com/problems/lfu-cache/description/          | ⬜ |
-| 2.   | Maximum Frequency Stack  | https://leetcode.com/problems/maximum-frequency-stack/        | ⬜ |
+| 1.   | LFU Cache                | https://leetcode.com/problems/lfu-cache/description/          | ✅ 2026-08-16 |
+| 2.   | Maximum Frequency Stack  | https://leetcode.com/problems/maximum-frequency-stack/        | ✅ 2026-08-16 |
 
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_
