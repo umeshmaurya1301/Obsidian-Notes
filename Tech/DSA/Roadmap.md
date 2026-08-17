@@ -28,7 +28,7 @@
 | 11   | [[#🗓️ WEEK 11 — DP Part 3 (Interval + Tree + Bitmask)\|DP Part 3 — Interval + Tree + Bitmask]] | Hard DP                          | 18              |               |
 | 12   | [[#🗓️ WEEK 12 — Heap / Priority Queue\|Heap / Priority Queue]]                         | Top K, Two Heaps, K-way                   | 22              |               |
 | 13   | [[#🗓️ WEEK 13 — Graphs\|Graphs]]                                                       | BFS, DFS, Union Find, Dijkstra, Topo Sort | 35              |               |
-| 14   | [[#🗓️ WEEK 14 — Greedy\|Greedy]]                                                       | Greedy, Intervals                         | 20              |               |
+| 14   | [[#🗓️ WEEK 14 — Greedy\|Greedy]]                                                       | Greedy, Intervals                         | 21              |               |
 | 15   | [[#🗓️ WEEK 15 — Extras (CP Patterns)\|Extras — CP Patterns]]                          | Math, Combinatorics, Bitmask, etc.        | TBD             |               |
 
 **Plus:** Leetcode Weekly Contest every Sunday (mandatory) + Biweekly Contest every other Saturday
@@ -665,6 +665,7 @@
 - [ ] [Merge Triplets to Form Target Triplet](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) — Medium
 - [ ] [Partition Labels](https://leetcode.com/problems/partition-labels/) — Medium ✅ Neetcode 🔥
 - [ ] [Valid Parenthesis String](https://leetcode.com/problems/valid-parenthesis-string/) — Medium ✅ Neetcode
+- [ ] [Maximum Bags With Full Capacity of Rocks](https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks/description/) — Medium
 - [ ] [Candy](https://leetcode.com/problems/candy/) — Hard 🔥
 - [ ] [Boats to Save People](https://leetcode.com/problems/boats-to-save-people/) — Medium
 
@@ -762,9 +763,9 @@
 |DP Part 3 (Interval + Tree + Bitmask)|18|0|0%|
 |Heap / PQ|22|0|0%|
 |Graphs|35|0|0%|
-|Greedy|20|1|5%|
+|Greedy|21|1|5%|
 |Extras / CP|TBD|2|—|
-|**TOTAL**|**~393**|**143**|**~36%**|
+|**TOTAL**|**~394**|**143**|**~36%**|
 
 ---
 
@@ -809,7 +810,7 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 
 # 🎯 Interview Questions
 
-> Curated matrix / grid simulation set — rotation and spiral traversal patterns come up repeatedly in MAANG onsite rounds.
+> Curated cross-topic set of problems flagged for interview prep — matrix/grid simulation, sliding window, string DP, and graph topo-sort patterns that come up repeatedly in MAANG onsite rounds.
 
 | S.No | Question Name             | Question Link                                                          | Status |
 | ---- | -------------------------- | ------------------------------------------------------------------------ | ------ |
@@ -830,5 +831,22 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 15.  | Delete Operation for Two Strings | https://leetcode.com/problems/delete-operation-for-two-strings/description/ | ✅ 2026-08-10 |
 | 16.  | Minimum ASCII Delete Sum for Two Strings | https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/description/ | ✅ 2026-08-10 |
 | 17.  | Strange Printer | https://leetcode.com/problems/strange-printer/description/ |        |
+| 18.  | Course Schedule | https://leetcode.com/problems/course-schedule/description/ |        |
+| 19.  | Course Schedule II | https://leetcode.com/problems/course-schedule-ii/description/ |        |
+| 20.  | Course Schedule III | https://leetcode.com/problems/course-schedule-iii/description/ |        |
+| 21.  | Capacity To Ship Packages Within D Days | https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/ | ✅ 2026-08-02 |
+| 22.  | Maximum Bags With Full Capacity of Rocks | https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks/description/ |        |
+| 23.  | Split Array Largest Sum | https://leetcode.com/problems/split-array-largest-sum/description/ |        |
+
+---
+
+# 🗄️ DB / SQL Questions
+
+> LeetCode SQL 50 study plan — joins, aggregations, window functions. Interviewers use these to check hands-on SQL, separate from the DSA rounds.
+
+| S.No | Question Name | Question Link | Status |
+| ---- | -------------- | -------------- | ------ |
+| 1.   | Confirmation Rate | https://leetcode.com/problems/confirmation-rate/description/?envType=study-plan-v2&envId=top-sql-50 |        |
+| 2.   | Managers with at Least 5 Direct Reports | https://leetcode.com/problems/managers-with-at-least-5-direct-reports/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_
