@@ -15,15 +15,15 @@
 
 | Week | Focus                                                                                   | Patterns                                  | Target Problems | Status        |
 | ---- | --------------------------------------------------------------------------------------- | ----------------------------------------- | --------------- | ------------- |
-| 1    | [[#🗓️ WEEK 1 — Arrays + Hashing\|Arrays + Hashing]]                                   | Arrays, Hashing                           | 29              | ✅ Done       |
-| 2    | [[#🗓️ WEEK 2 — Two Pointers + Sliding Window\|Two Pointers + Sliding Window]]          | Two Pointers, Sliding Window              | 30              | ✅ Done       |
+| 1    | [[#🗓️ WEEK 1 — Arrays + Hashing\|Arrays + Hashing]]                                   | Arrays, Hashing                           | 35              | ✅ Done       |
+| 2    | [[#🗓️ WEEK 2 — Two Pointers + Sliding Window\|Two Pointers + Sliding Window]]          | Two Pointers, Sliding Window              | 32              | ✅ Done       |
 | 3    | [[#🗓️ WEEK 3 — DP Part 1 (1D + Knapsack)\|DP Part 1 — 1D + Knapsack]]                | 1D DP, 0/1 Knapsack                       | 29              |               |
 | 4    | [[#🗓️ WEEK 4 — DP Part 2 (Grid + LIS + LCS)\|DP Part 2 — 2D + LIS + LCS]]            | Grid DP, LIS, LCS                         | 24              |               |
 | 5    | [[#🗓️ WEEK 5 — Backtracking\|Backtracking]]                                            | Subsets, Permutations, NQueen             | 21              |               |
 | 6    | [[#🗓️ WEEK 6 — Trees (BFS + DFS)\|Trees (BFS + DFS)]]                                 | Tree Traversals, Path problems            | 28              | ⚠️ Pain point |
 | 7    | [[#🗓️ WEEK 7 — Binary Search\|Binary Search]]                                          | Binary Search, Search on Answer           | 25              |               |
 | 8    | [[#🗓️ WEEK 8 — Linked List\|Linked List]]                                              | LL Basics, Fast/Slow, Reverse             | 22              |               |
-| 9    | [[#🗓️ WEEK 9 — Stack + Queue\|Stack + Queue]]                                          | Stack, Queue, Monotonic, Deque            | 28              | 🔄 Current    |
+| 9    | [[#🗓️ WEEK 9 — Stack + Queue\|Stack + Queue]]                                          | Stack, Queue, Monotonic, Deque            | 29              | 🔄 Current    |
 | 10   | [[#🗓️ WEEK 10 — Trees Advanced + BST\|Trees Advanced + BST]]                          | BST, LCA, Serialise                       | 22              | ⚠️ Pain point |
 | 11   | [[#🗓️ WEEK 11 — DP Part 3 (Interval + Tree + Bitmask)\|DP Part 3 — Interval + Tree + Bitmask]] | Hard DP                          | 18              |               |
 | 12   | [[#🗓️ WEEK 12 — Heap / Priority Queue\|Heap / Priority Queue]]                         | Top K, Two Heaps, K-way                   | 22              |               |
@@ -53,6 +53,7 @@
 - [ ] [Encode and Decode Strings](https://leetcode.com/problems/encode-and-decode-strings/) — Medium ✅ Neetcode
 - [x] [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-16
 - [x] [Find Three Consecutive Integers That Sum to a Given Number](https://leetcode.com/problems/find-three-consecutive-integers-that-sum-to-a-given-number/) — Medium ✅ 2026-05-18
+- [ ] [Global and Local Inversions](https://leetcode.com/problems/global-and-local-inversions/description/) — Medium
 
 ## Prefix Sum
 
@@ -72,6 +73,14 @@
 - [x] [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/) — Medium 🔥 ✅ 2026-05-17
 - [x] [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) — Medium 🔥 ✅ 2026-05-17
 - [x] [LRU Cache](https://leetcode.com/problems/lru-cache/) — Medium 🔥 **(MAANG favourite)** ✅ 2026-05-17
+
+## Matrix / Grid Simulation
+
+- [ ] [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/description/) — Medium ✅ Neetcode 🔥
+- [ ] [Spiral Matrix II](https://leetcode.com/problems/spiral-matrix-ii/description/) — Medium
+- [ ] [Spiral Matrix III](https://leetcode.com/problems/spiral-matrix-iii/description/) — Medium
+- [ ] [Rotate Image](https://leetcode.com/problems/rotate-image/description/) — Medium ✅ Neetcode 🔥
+- [ ] [Cyclically Rotating a Grid](https://leetcode.com/problems/cyclically-rotating-a-grid/description/) — Medium
 
 ## Hard Mix
 
@@ -116,6 +125,8 @@
 - [x] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium ✅ 2026-05-31
 - [x] [Maximum Erasure Value](https://leetcode.com/problems/maximum-erasure-value/) — Medium ✅ 2026-05-29
 - [x] [Longest Nice SubArray](https://leetcode.com/problems/longest-nice-subarray/) — Medium **(Sliding Window + Bitmask)** ✅ 2026-05-31
+- [ ] [Length of the Longest Alphabetical Continuous Substring](https://leetcode.com/problems/length-of-the-longest-alphabetical-continuous-substring/description/) — Medium
+- [ ] [Longer Contiguous Segments of Ones than Zeros](https://leetcode.com/problems/longer-contiguous-segments-of-ones-than-zeros/description/) — Easy
 
 ## Hard
 
@@ -408,6 +419,7 @@
 - [ ] [Remove K Digits](https://leetcode.com/problems/remove-k-digits/) — Medium
 - [ ] [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/) — Medium 🔥
 - [ ] [Basic Calculator](https://leetcode.com/problems/basic-calculator/) — Hard
+- [ ] [Create Maximum Number](https://leetcode.com/problems/create-maximum-number/description/) — Hard **(Monotonic stack + greedy merge)**
 
 ## Monotonic Stack — THE KEY PATTERN
 
@@ -737,22 +749,22 @@
 
 |Pattern|Total|Solved|%|
 |---|---|---|---|
-|Arrays + Hashing|29|27|93%|
-|Two Pointers + Sliding Window|30|28|93%|
+|Arrays + Hashing|35|27|77%|
+|Two Pointers + Sliding Window|32|28|88%|
 |DP Part 1 (1D + Knapsack)|30|27|90%|
 |DP Part 2 (Grid + LIS + LCS)|24|20|83%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
 |Binary Search|26|8|31%|
 |Linked List|22|0|0%|
-|Stack + Queue|28|0|0%|
+|Stack + Queue|29|0|0%|
 |Trees Advanced + BST|22|0|0%|
 |DP Part 3 (Interval + Tree + Bitmask)|18|0|0%|
 |Heap / PQ|22|0|0%|
 |Graphs|35|0|0%|
 |Greedy|20|1|5%|
 |Extras / CP|TBD|2|—|
-|**TOTAL**|**~384**|**143**|**~37%**|
+|**TOTAL**|**~393**|**143**|**~36%**|
 
 ---
 
@@ -793,5 +805,30 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 1.   | LFU Cache                | https://leetcode.com/problems/lfu-cache/description/          | ✅ 2026-08-16 |
 | 2.   | Maximum Frequency Stack  | https://leetcode.com/problems/maximum-frequency-stack/        | ✅ 2026-08-16 |
 
+---
+
+# 🎯 Interview Questions
+
+> Curated matrix / grid simulation set — rotation and spiral traversal patterns come up repeatedly in MAANG onsite rounds.
+
+| S.No | Question Name             | Question Link                                                          | Status |
+| ---- | -------------------------- | ------------------------------------------------------------------------ | ------ |
+| 1.   | Cyclically Rotating a Grid | https://leetcode.com/problems/cyclically-rotating-a-grid/description/   |        |
+| 2.   | Spiral Matrix               | https://leetcode.com/problems/spiral-matrix/description/                |        |
+| 3.   | Spiral Matrix II            | https://leetcode.com/problems/spiral-matrix-ii/description/             |        |
+| 4.   | Rotate Image                 | https://leetcode.com/problems/rotate-image/description/                |        |
+| 5.   | Spiral Matrix III           | https://leetcode.com/problems/spiral-matrix-iii/description/            |        |
+| 6.   | Length of the Longest Alphabetical Continuous Substring | https://leetcode.com/problems/length-of-the-longest-alphabetical-continuous-substring/description/ |        |
+| 7.   | Longer Contiguous Segments of Ones than Zeros | https://leetcode.com/problems/longer-contiguous-segments-of-ones-than-zeros/description/ |        |
+| 8.   | Longest Substring Without Repeating Characters | https://leetcode.com/problems/longest-substring-without-repeating-characters/description/ | ✅ 2026-05-28 |
+| 9.   | Interleaving String | https://leetcode.com/problems/interleaving-string/description/ |        |
+| 10.  | Count of Smaller Numbers After Self | https://leetcode.com/problems/count-of-smaller-numbers-after-self/description/ |        |
+| 11.  | Global and Local Inversions | https://leetcode.com/problems/global-and-local-inversions/description/ |        |
+| 12.  | Create Maximum Number | https://leetcode.com/problems/create-maximum-number/description/ |        |
+| 13.  | Shortest Common Supersequence | https://leetcode.com/problems/shortest-common-supersequence/description/ |        |
+| 14.  | Distinct Subsequences | https://leetcode.com/problems/distinct-subsequences/description/ | ✅ 2026-08-10 |
+| 15.  | Delete Operation for Two Strings | https://leetcode.com/problems/delete-operation-for-two-strings/description/ | ✅ 2026-08-10 |
+| 16.  | Minimum ASCII Delete Sum for Two Strings | https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/description/ | ✅ 2026-08-10 |
+| 17.  | Strange Printer | https://leetcode.com/problems/strange-printer/description/ |        |
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_
