@@ -483,3 +483,31 @@ This is a very common **SDE-2 Backend Java interview pattern**. The next round f
 * HLD of payment/notification/order systems
 
 Those are the areas I'd prioritize after this question set.
+
+
+
+Pessimistic Locking & Deadlocks:
+
+"If Transaction A locks Account 1 then Account 2, and Transaction B locks Account 2 then Account 1 using SELECT ... FOR UPDATE, a deadlock occurs. How does the DB engine detect it, and how would you redesign the application logic to prevent deadlocks completely?"
+
+"What is the difference between SELECT ... FOR UPDATE, SELECT ... FOR SHARE, and SELECT ... FOR UPDATE SKIP LOCKED? In what scenario would you use SKIP LOCKED (e.g., job queues)?"
+
+
+
+
+High-Contention & System Design Scenarios
+The "Flash Sale / Hot Wallet" Problem:
+
+"Design a balance deduction system for an enterprise merchant wallet receiving 20,000 TPS on a single account ID. Why will a single-row pessimistic or optimistic lock fail, and what architecture (sharded counters, in-memory Lua + write-behind, or event streaming) would you propose?"
+
+"If you use balance sharding across 10 slots, how do you handle an atomic deduction when the user requests an amount greater than any single slot's balance, but less than the total sum?"
+
+Ledger & Double-Entry Accounting:
+
+"Why do financial systems avoid mutable balance columns in favor of append-only ledgers? How do you guarantee zero drift between ledger journal entries and point-in-time account balance snapshots?"
+
+"How do you implement reconciliation mechanisms to detect anomalies between async write-behind caches (e.g., Redis) and persistent DB ledgers?"
+
+
+
+
