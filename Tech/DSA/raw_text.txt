@@ -1,253 +1,204 @@
-FILE: LT_0525_CONTIGUOUS_ARRAY
+LC 362 Design Hit Counter
+https://leetcode.com/problems/design-hit-counter/description/
 
-ID: 525
 
-Difficulty: Medium
+362. Design Hit Counter
+Medium
+Topics
+conpanies icon
+Companies
+Design a hit counter which counts the number of hits received in the past 5 minutes (i.e., the past 300 seconds).
 
-Tags: Arrays, PrefixSum, HashMap
+Your system should accept a timestamp parameter (in seconds granularity), and you may assume that calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing). Several hits may arrive roughly at the same time.
 
-Source: https://leetcode.com/problems/contiguous-array/description/
+Implement the HitCounter class:
 
-Problem Description
+HitCounter() Initializes the object of the hit counter system.
+void hit(int timestamp) Records a hit that happened at timestamp (in seconds). Several hits may happen at the same timestamp.
+int getHits(int timestamp) Returns the number of hits in the past 5 minutes from timestamp (i.e., the past 300 seconds).
 
-Given a binary array nums, return the maximum length of a contiguous subarray with an equal number of 0 and 1.
 
-Examples
+Example 1:
 
-Input: nums = [0,1]
+Input
+["HitCounter", "hit", "hit", "hit", "getHits", "hit", "getHits", "getHits"]
+[[], [1], [2], [3], [4], [300], [300], [301]]
+Output
+[null, null, null, null, 3, null, 4, 3]
+
+Explanation
+HitCounter hitCounter = new HitCounter();
+hitCounter.hit(1);       // hit at timestamp 1.
+hitCounter.hit(2);       // hit at timestamp 2.
+hitCounter.hit(3);       // hit at timestamp 3.
+hitCounter.getHits(4);   // get hits at timestamp 4, return 3.
+hitCounter.hit(300);     // hit at timestamp 300.
+hitCounter.getHits(300); // get hits at timestamp 300, return 4.
+hitCounter.getHits(301); // get hits at timestamp 301, return 3.
+
+
+Constraints:
+
+1 <= timestamp <= 2 * 109
+All the calls are being made to the system in chronological order (i.e., timestamp is monotonically increasing).
+At most 300 calls will be made to hit and getHits.
+
+
+Follow up: What if the number of hits per second could be huge? Does your design scale?
+
+
+----------------------------------------------
+LC 359 Logger Rate Limiter
+https://leetcode.com/problems/moving-average-from-data-stream/description/
+359. Logger Rate Limiter
+Easy
+Topics
+conpanies icon
+Companies
+Design a logger system that receives a stream of messages along with their timestamps. Each unique message should only be printed at most every 10 seconds (i.e. a message printed at timestamp t will prevent other identical messages from being printed until timestamp t + 10).
+
+All messages will come in chronological order. Several messages may arrive at the same timestamp.
+
+Implement the Logger class:
+
+Logger() Initializes the logger object.
+bool shouldPrintMessage(int timestamp, string message) Returns true if the message should be printed in the given timestamp, otherwise returns false.
+
+
+Example 1:
+
+Input
+["Logger", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage", "shouldPrintMessage"]
+[[], [1, "foo"], [2, "bar"], [3, "foo"], [8, "bar"], [10, "foo"], [11, "foo"]]
+Output
+[null, true, true, false, false, false, true]
+
+Explanation
+Logger logger = new Logger();
+logger.shouldPrintMessage(1, "foo");  // return true, next allowed timestamp for "foo" is 1 + 10 = 11
+logger.shouldPrintMessage(2, "bar");  // return true, next allowed timestamp for "bar" is 2 + 10 = 12
+logger.shouldPrintMessage(3, "foo");  // 3 < 11, return false
+logger.shouldPrintMessage(8, "bar");  // 8 < 12, return false
+logger.shouldPrintMessage(10, "foo"); // 10 < 11, return false
+logger.shouldPrintMessage(11, "foo"); // 11 >= 11, return true, next allowed timestamp for "foo" is 11 + 10 = 21
+
+
+Constraints:
+
+0 <= timestamp <= 109
+Every timestamp will be passed in non-decreasing order (chronological order).
+1 <= message.length <= 30
+At most 104 calls will be made to shouldPrintMessage.
+
+
+---------------------------
+346. Moving Average from Data Stream
+Easy
+Topics
+conpanies icon
+Companies
+Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
+
+Implement the MovingAverage class:
+
+MovingAverage(int size) Initializes the object with the size of the window size.
+double next(int val) Returns the moving average of the last size values of the stream.
+
+
+Example 1:
+
+Input
+["MovingAverage", "next", "next", "next", "next"]
+[[3], [1], [10], [3], [5]]
+Output
+[null, 1.0, 5.5, 4.66667, 6.0]
+
+Explanation
+MovingAverage movingAverage = new MovingAverage(3);
+movingAverage.next(1); // return 1.0 = 1 / 1
+movingAverage.next(10); // return 5.5 = (1 + 10) / 2
+movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3
+movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3
+
+
+Constraints:
+
+1 <= size <= 1000
+-105 <= val <= 105
+At most 104 calls will be made to next.
+
+
+---------------------------------
+https://leetcode.com/problems/meeting-rooms-ii/description/
+
+253. Meeting Rooms II
+Medium
+Topics
+conpanies icon
+Companies
+Hint
+Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+
+
+
+Example 1:
+
+Input: intervals = [[0,30],[5,10],[15,20]]
 Output: 2
-Explanation: The entire array contains one 0 and one 1.
+Example 2:
 
-Input: nums = [0,1,0]
-Output: 2
-Explanation: The longest contiguous subarray with equal number of 0 and 1 is [0,1].
+Input: intervals = [[7,10],[2,4]]
+Output: 1
 
-Input: nums = [0,0,1,1,0]
-Output: 4
-Explanation: The longest valid subarray is [0,0,1,1].
 
-Constraints
+Constraints:
 
-1 <= nums.length <= 100000
-nums[i] is either 0 or 1
+1 <= intervals.length <= 104
+0 <= starti < endi <= 106
 
-Intuition
 
-The problem asks for a subarray containing equal number of 0s and 1s.
 
-A useful trick is:
-Convert:
-0 -> -1
-1 -> +1
+---------------------
+649. Dota2 Senate
+Medium
+Topics
+conpanies icon
+Companies
+In the world of Dota2, there are two parties: the Radiant and the Dire.
 
-Now the problem becomes:
-Find the longest subarray whose sum is 0.
+The Dota2 senate consists of senators coming from two parties. Now the Senate wants to decide on a change in the Dota2 game. The voting for this change is a round-based procedure. In each round, each senator can exercise one of the two rights:
 
-Why?
+Ban one senator's right: A senator can make another senator lose all his rights in this and all the following rounds.
+Announce the victory: If this senator found the senators who still have rights to vote are all from the same party, he can announce the victory and decide on the change in the game.
+Given a string senate representing each senator's party belonging. The character 'R' and 'D' represent the Radiant party and the Dire party. Then if there are n senators, the size of the given string will be n.
 
-Because:
+The round-based procedure starts from the first senator to the last senator in the given order. This procedure will last until the end of voting. All the senators who have lost their rights will be skipped during the procedure.
 
-Equal number of +1 and -1 gives total sum 0
-That directly represents equal number of 1s and 0s
+Suppose every senator is smart enough and will play the best strategy for his own party. Predict which party will finally announce the victory and change the Dota2 game. The output should be "Radiant" or "Dire".
 
-We use prefix sum to efficiently detect such subarrays.
 
-If the same prefix sum appears again at two different indices:
-prefixSum[i] == prefixSum[j]
 
-Then:
-sum(i+1 ... j) = 0
+Example 1:
 
-Meaning:
-The subarray between them contains equal number of 0s and 1s.
+Input: senate = "RD"
+Output: "Radiant"
+Explanation:
+The first senator comes from Radiant and he can just ban the next senator's right in round 1.
+And the second senator can't exercise any rights anymore since his right has been banned.
+And in round 2, the first senator can just announce the victory since he is the only guy in the senate who can vote.
+Example 2:
 
-Approach
+Input: senate = "RDD"
+Output: "Dire"
+Explanation:
+The first senator comes from Radiant and he can just ban the next senator's right in round 1.
+And the second senator can't exercise any rights anymore since his right has been banned.
+And the third senator comes from Dire and he can ban the first senator's right in round 1.
+And in round 2, the third senator can just announce the victory since he is the only guy in the senate who can vote.
 
-Maintain:
 
-A running prefix sum
-A HashMap storing:
-prefixSum -> first occurrence index
+Constraints:
 
-For every element:
-
-If nums[i] == 0, subtract 1
-Else add 1
-
-If the current prefix sum has already been seen:
-
-The subarray between previous index and current index has sum 0
-Calculate its length
-Update maximum length
-
-Otherwise:
-
-Store the first occurrence of the prefix sum
-
-Important Initialization:
-
-map.put(0, -1)
-
-Physical significance of this:
-It means:
-"Before the array starts, the prefix sum is already 0."
-
-This creates a virtual starting position before index 0.
-
-Why is this needed?
-
-Example:
-nums = [0,1]
-
-Converted:
-[-1,+1]
-
-Prefix sums:
-index 0 -> -1
-index 1 -> 0
-
-At index 1, prefix sum becomes 0.
-That means:
-sum(0...1) = 0
-
-To calculate length:
-1 - (-1) = 2
-
-Without storing:
-0 -> -1
-
-We would miss valid subarrays starting from index 0.
-
-This is a very common prefix sum trick:
-Initialize the neutral state before traversal begins.
-
-Dry Run
-
-Input:
-nums = [0,1,0]
-
-Converted:
-[-1,+1,-1]
-
-Initial:
-map = {0=-1}
-prefixSum = 0
-maxLen = 0
-
-i = 0
-nums[0] = 0
-prefixSum = -1
-
--1 not present
-Store:
-map[-1] = 0
-
-i = 1
-nums[1] = 1
-prefixSum = 0
-
-0 already present at index -1
-
-length = 1 - (-1) = 2
-maxLen = 2
-
-i = 2
-nums[2] = 0
-prefixSum = -1
-
--1 already present at index 0
-
-length = 2 - 0 = 2
-maxLen = 2
-
-Final Answer = 2
-
-Edge Cases
-
-Array length is 1
-No valid subarray exists
-Return 0
-
-Entire array is balanced
-Example:
-[0,1,0,1]
-Need map.put(0,-1) to correctly calculate full length
-
-All elements same
-Example:
-[0,0,0]
-No balanced subarray
-
-Complexity
-
-Time: O(n)
-
-Space: O(n)
-
-Java Code
-
-class Solution {
-    public int findMaxLength(int[] nums) {
-
-        Map<Integer, Integer> map = new HashMap<>();
-
-        map.put(0, -1);
-
-        int prefixSum = 0;
-        int maxLen = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-
-            if (nums[i] == 0) {
-                prefixSum -= 1;
-            } else {
-                prefixSum += 1;
-            }
-
-            if (map.containsKey(prefixSum)) {
-
-                int len = i - map.get(prefixSum);
-                maxLen = Math.max(maxLen, len);
-
-            } else {
-                map.put(prefixSum, i);
-            }
-        }
-
-        return maxLen;
-    }
-}
-
-Key Insights
-
-Convert:
-0 -> -1
-1 -> +1
-
-Equal number of 0s and 1s becomes:
-Subarray sum = 0
-
-If same prefix sum appears again:
-Subarray between them has sum 0
-
-Store only first occurrence of prefix sum to maximize subarray length
-
-map.put(0,-1) handles subarrays starting from index 0
-
-Patterns
-
-Prefix Sum
-HashMap
-Longest Subarray with Condition
-Running Balance Technique
-
-Pitfalls
-
-Forgetting:
-map.put(0,-1)
-
-Updating map every time instead of storing first occurrence only
-
-Not converting 0 to -1
-
-Using nested loops leading to O(n^2) TLE
+n == senate.length
+1 <= n <= 104
+senate[i] is either 'R' or 'D'.

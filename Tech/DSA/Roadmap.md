@@ -119,7 +119,7 @@
 - [x] [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/) — Medium ✅ Neetcode 🔥 ✅ 2026-05-30
 - [x] [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/) — Medium ✅ 2026-05-31
 - [x] [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/) — Medium 🔥 ✅ 2026-05-31
-- [ ] [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/) — Medium 🔥
+- [x] [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/) — Medium 🔥 ✅ 2026-08-22
 - [x] [Subarray Product Less Than K](https://leetcode.com/problems/subarray-product-less-than-k/) — Medium ✅ 2026-06-01
 - [x] [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/) — Medium 🔥 ✅ 2026-06-01
 - [x] [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) — Medium ✅ 2026-05-31
@@ -751,7 +751,7 @@
 |Pattern|Total|Solved|%|
 |---|---|---|---|
 |Arrays + Hashing|35|27|77%|
-|Two Pointers + Sliding Window|32|28|88%|
+|Two Pointers + Sliding Window|32|29|91%|
 |DP Part 1 (1D + Knapsack)|30|27|90%|
 |DP Part 2 (Grid + LIS + LCS)|24|20|83%|
 |Backtracking|21|0|0%|
@@ -765,7 +765,7 @@
 |Graphs|35|0|0%|
 |Greedy|21|1|5%|
 |Extras / CP|TBD|2|—|
-|**TOTAL**|**~394**|**143**|**~36%**|
+|**TOTAL**|**~394**|**144**|**~37%**|
 
 ---
 
@@ -837,6 +837,11 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 21.  | Capacity To Ship Packages Within D Days | https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/description/ | ✅ 2026-08-02 |
 | 22.  | Maximum Bags With Full Capacity of Rocks | https://leetcode.com/problems/maximum-bags-with-full-capacity-of-rocks/description/ |        |
 | 23.  | Split Array Largest Sum | https://leetcode.com/problems/split-array-largest-sum/description/ |        |
+| 24.  | Design Hit Counter | https://leetcode.com/problems/design-hit-counter/description/ |        |
+| 25.  | Logger Rate Limiter | https://leetcode.com/problems/logger-rate-limiter/description/ |        |
+| 26.  | Moving Average from Data Stream | https://leetcode.com/problems/moving-average-from-data-stream/description/ |        |
+| 27.  | Meeting Rooms II | https://leetcode.com/problems/meeting-rooms-ii/description/ |        |
+| 28.  | Dota2 Senate | https://leetcode.com/problems/dota2-senate/description/ |        |
 
 ---
 
