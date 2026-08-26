@@ -510,4 +510,8 @@ Ledger & Double-Entry Accounting:
 
 
 
+What is UNION and related stuff
+What in N+1 Problem
+
+
 
