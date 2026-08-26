@@ -856,6 +856,7 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 3.   | Percentage of Users Attended a Contest | https://leetcode.com/problems/percentage-of-users-attended-a-contest/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 | 4.   | Queries Quality and Percentage | https://leetcode.com/problems/queries-quality-and-percentage/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 | 5.   | Monthly Transactions I | https://leetcode.com/problems/monthly-transactions-i/description/?envType=study-plan-v2&envId=top-sql-50 |        |
-| 6.   | Immediate Food Delivery II | https://leetcode.com/problems/immediate-food-delivery-ii/description/?envType=study-plan-v2&envId=top-sql-50 |        |
+| 6.   | Immediate Food Delivery II | https://leetcode.com/problems/immediate-food-delivery-ii/description/?envType=study-plan-v2&envId=top-sql-50 | ✅      |
+| 7.   | Game Play Analysis IV | https://leetcode.com/problems/game-play-analysis-iv/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_
