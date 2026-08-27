@@ -1,2804 +1,3145 @@
-This is one of the most important Spring Security topics because everything in Spring Security is built around filters.
-First Understand: What is a Filter?
-A filter is a component that executes before the request reaches the DispatcherServlet.
-Normal Spring Boot flow:
-Request
-   |
-   v
-Tomcat
-   |
-   v
-DispatcherServlet
-   |
-   v
-Controller
-With Spring Security:
-Request
-   |
-   v
-Tomcat
-   |
-   v
-Security Filters
-   |
-   v
-DispatcherServlet
-   |
-   v
-Controller
-Every incoming request passes through a chain of filters.
+Phase 7 is where OAuth becomes practical for backend engineers.
+Most Java backend engineers are not building Google, Keycloak, or Auth0.
+Instead, they're building APIs that need to trust tokens issued by someone else.
+That's exactly what an OAuth2 Resource Server does.
 
-Why Filters?
-Because security concerns need to happen before the controller executes.
-Examples:
-Is the user authenticated?
-Is JWT valid?
-Does the user have permission?
-Is this request CSRF safe?
-Is the session expired?
-All these checks happen before your controller method runs.
-
-What is SecurityFilterChain?
-A SecurityFilterChain is simply:
-Filter1
-   ->
-Filter2
-   ->
-Filter3
-   ->
-Filter4
-Spring Security bundles many filters together into a chain.
+First: What is a Resource Server?
+A Resource Server is simply:
+An API that protects resources
+and accepts access tokens.
 Example:
+GET /orders
+GET /payments
+GET /customers
+These APIs contain protected business data.
+
+Architecture
+Imagine:
+Frontend
+    |
+    | Login
+    v
+Keycloak
+    |
+    | Access Token
+    v
+Frontend
+    |
+    | Bearer Token
+    v
+Order Service
+Who authenticated the user?
+Keycloak
+Who issued the token?
+Keycloak
+Who verifies the token?
+Order Service
+Who serves business data?
+Order Service
+The Order Service is the Resource Server.
+
+Why Not Authenticate Again?
+A common beginner question:
+Why doesn't Order Service
+call UserDetailsService?
+Because authentication already happened.
+The token already says:
+{
+  "sub": "umesh",
+  "roles": ["ADMIN"]
+}
+The Resource Server only needs to verify:
+1. Token is genuine
+2. Token is not expired
+3. Token issuer is trusted
+4. User has required permissions
+
+Spring Resource Server Configuration
+Typical configuration:
 @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http)
+SecurityFilterChain securityFilterChain(
+        HttpSecurity http)
         throws Exception {
 
     http
         .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated()
+            .anyRequest()
+            .authenticated()
         )
-        .httpBasic();
-
-    return http.build();
-}
-When Spring sees:
-http.build()
-it creates a SecurityFilterChain containing many security filters.
-
-Real Request Flow
-Suppose:
-GET /api/users
-Request arrives:
-Request
-   |
-   v
-Filter A
-   |
-   v
-Filter B
-   |
-   v
-Filter C
-   |
-   v
-Controller
-Each filter decides:
-doFilter(request, response, chain)
-Either:
-Continue
-chain.doFilter(request, response);
-or
-Stop
-response.sendError(401);
-If a filter stops the chain:
-Request
-   |
-Filter A
-   |
-Filter B
-   |
-401
-Controller never executes.
-
-Important Built-In Filters
-Spring Security has many filters.
-Common ones:
-SecurityContextHolderFilter
-LogoutFilter
-UsernamePasswordAuthenticationFilter
-BearerTokenAuthenticationFilter
-AnonymousAuthenticationFilter
-ExceptionTranslationFilter
-AuthorizationFilter
-You don't need to memorize all of them initially.
-Understand their responsibilities.
-
-SecurityContextHolderFilter
-One of the earliest filters.
-Purpose:
-Load SecurityContext
-Creates or loads:
-SecurityContextHolder
-which stores:
-Authentication
-for the current request.
-Think:
-Thread Local Storage
-for security information.
-
-UsernamePasswordAuthenticationFilter
-Used for form login.
-Example:
-POST /login
-with:
-{
-  "username":"umesh",
-  "password":"123"
-}
-This filter:
-Reads username/password
-Creates Authentication object
-Calls AuthenticationManager
-authenticationManager.authenticate(...)
-If success:
-SecurityContext populated
-If failure:
-401 Unauthorized
-
-BearerTokenAuthenticationFilter
-Used for JWT.
-Example:
-Authorization: Bearer eyJhb...
-This filter:
-Extracts JWT
-Validates JWT
-Creates Authentication
-Stores Authentication into SecurityContext
-After this:
-SecurityContextHolder.getContext()
-contains the logged-in user.
-
-AnonymousAuthenticationFilter
-Suppose no login happened.
-Without this filter:
-SecurityContextHolder.getContext()
-would be empty.
-Instead Spring creates:
-AnonymousAuthenticationToken
-representing:
-anonymousUser
-This simplifies authorization logic.
-
-AuthorizationFilter
-One of the last filters.
-Checks:
-.hasRole("ADMIN")
-.hasRole("USER")
-.authenticated()
-Example:
-.requestMatchers("/admin/**")
-.hasRole("ADMIN")
-Flow:
-Request
-  |
-JWT Filter
-  |
-Authentication Created
-  |
-AuthorizationFilter
-  |
-Allowed ?
-If not:
-403 Forbidden
-
-ExceptionTranslationFilter
-Handles security exceptions.
-Converts:
-AuthenticationException
-into:
-401 Unauthorized
-and
-AccessDeniedException
-into:
-403 Forbidden
-Without this filter you'd see stack traces instead of proper HTTP responses.
-
-How Does Spring Know Filter Order?
-Every filter has a predefined order.
-Internally Spring maintains:
-1. SecurityContextHolderFilter
-2. LogoutFilter
-3. UsernamePasswordAuthenticationFilter
-4. BearerTokenAuthenticationFilter
-5. AnonymousAuthenticationFilter
-6. ExceptionTranslationFilter
-7. AuthorizationFilter
-(actual chain is longer)
-Order is critical.
-Example:
-Bad order:
-AuthorizationFilter
-     |
-JWT Filter
-Authorization runs before authentication.
-Result:
-403
-for every request.
-Correct order:
-JWT Filter
-    |
-AuthorizationFilter
-Authentication first, authorization later.
-
-Custom JWT Filter
-Most interview questions focus here.
-You create:
-public class JwtAuthenticationFilter
-        extends OncePerRequestFilter {
-}
-and register:
-http.addFilterBefore(
-        jwtAuthenticationFilter,
-        UsernamePasswordAuthenticationFilter.class
-);
-Meaning:
-JwtAuthenticationFilter
-      |
-UsernamePasswordAuthenticationFilter
-Spring inserts your filter at the correct position.
-
-Why Before UsernamePasswordAuthenticationFilter?
-Because:
-Request
-   |
-JWT Filter
-   |
-User authenticated
-   |
-Authorization
-Most APIs don't use form login.
-JWT should authenticate user before authorization checks.
-
-What Happens Internally?
-Suppose:
-GET /api/orders
-Authorization: Bearer abc.xyz
-Flow:
-SecurityContextHolderFilter
-      |
-JwtAuthenticationFilter
-      |
-AuthorizationFilter
-      |
-Controller
-JWT Filter
-String token = extractToken();
-Validate:
-jwtService.validate(token);
-Create:
-UsernamePasswordAuthenticationToken auth
-Store:
-SecurityContextHolder
-       .getContext()
-       .setAuthentication(auth);
-Continue:
-chain.doFilter(...)
-
-Authorization Filter
-Reads:
-SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-Checks:
-ROLE_ADMIN ?
-If yes:
-Controller executes
-Else:
-403
-
-Multiple SecurityFilterChains
-Advanced but important.
-You can have:
-@Bean
-SecurityFilterChain apiChain(...)
-@Bean
-SecurityFilterChain adminChain(...)
-Example:
-@Order(1)
-securityMatcher("/api/**")
-@Order(2)
-securityMatcher("/admin/**")
-Request:
-/api/users
-matches:
-API SecurityFilterChain
-Request:
-/admin/users
-matches:
-Admin SecurityFilterChain
-Only one matching chain executes.
-
-Interview-Level Summary
-When a request enters a Spring Boot application:
-Request
-  |
-DelegatingFilterProxy
-  |
-FilterChainProxy
-  |
-SecurityFilterChain
-  |
-Multiple Security Filters
-  |
-DispatcherServlet
-  |
-Controller
-Key idea:
-SecurityFilterChain = ordered list of security filters.
-Every request passes through filters before reaching controllers.
-Authentication filters populate SecurityContextHolder.
-Authorization filters read SecurityContextHolder.
-Custom JWT filters are usually inserted using:
-addFilterBefore(...)
-Understanding this flow makes topics like @Transactional, OAuth2, JWT, Method Security, and custom authentication providers much easier to understand because they all plug into the same filter-based architecture.
-
-
-
-
-Now explain me these
-AuthenticationManager
-AuthenticationProvider
-UserDetailsService
-UserDetails
-PasswordEncoder
-
-
-These 5 components form the authentication pipeline in Spring Security.
-When somebody logs in, Spring Security roughly does:
-Username + Password
-        |
-        v
-AuthenticationManager
-        |
-        v
-AuthenticationProvider
-        |
-        v
-UserDetailsService
-        |
-        v
-UserDetails
-        |
-        v
-PasswordEncoder
-        |
-        v
-Authenticated User
-Let's go step by step.
-
-1. AuthenticationManager
-Think of it as the orchestrator.
-Its job is:
-Authentication authenticate(Authentication authentication);
-When a login request comes:
-{
-  "username": "umesh",
-  "password": "secret"
-}
-Spring creates:
-UsernamePasswordAuthenticationToken
-containing:
-username = umesh
-password = secret
-authenticated = false
-and sends it to:
-authenticationManager.authenticate(token);
-
-What AuthenticationManager does
-It does not verify passwords itself.
-It delegates to one or more AuthenticationProviders.
-AuthenticationManager
-        |
-        +---- Provider A
-        |
-        +---- Provider B
-        |
-        +---- Provider C
-Think:
-AuthenticationManager = Team Lead
-AuthenticationProvider = Actual Engineer doing the work
-
-2. AuthenticationProvider
-This is where authentication actually happens.
-Interface:
-public interface AuthenticationProvider {
-
-    Authentication authenticate(
-        Authentication authentication);
-
-    boolean supports(Class<?> authentication);
-}
-
-Responsibilities
-Given:
-username
-password
-it must:
-Load user
-Validate password
-Create authenticated token
-
-Example
-Input:
-UsernamePasswordAuthenticationToken
-contains:
-umesh
-secret123
-Provider executes:
-Load user
-Compare password
-Create authenticated token
-If successful:
-new UsernamePasswordAuthenticationToken(
-        user,
-        null,
-        authorities
-);
-Notice:
-authenticated = true
-now.
-
-Most Common Provider
-Spring usually uses:
-DaoAuthenticationProvider
-Internally:
-DaoAuthenticationProvider
-        |
-        +--> UserDetailsService
-        |
-        +--> PasswordEncoder
-This is the provider you'll see most often.
-
-3. UserDetailsService
-Its only responsibility:
-loadUserByUsername()
-Interface:
-public interface UserDetailsService {
-
-    UserDetails loadUserByUsername(
-        String username
-    );
-}
-
-What does it do?
-It fetches user information.
-Usually from:
-Database
-LDAP
-External Service
-Example:
-@Service
-public class CustomUserDetailsService
-        implements UserDetailsService {
-
-    @Override
-    public UserDetails loadUserByUsername(
-            String email) {
-
-        User user =
-                userRepository
-                .findByEmail(email);
-
-        return new CustomUserDetails(user);
-    }
-}
-
-What it DOES NOT do
-A common mistake:
-People think:
-UserDetailsService validates password
-Wrong.
-It only loads user information.
-Password verification is done by:
-AuthenticationProvider
-+
-PasswordEncoder
-
-4. UserDetails
-Represents a user loaded by Spring Security.
-Interface:
-public interface UserDetails {
-}
-Contains:
-getUsername()
-getPassword()
-getAuthorities()
-isEnabled()
-isAccountNonLocked()
-isAccountNonExpired()
-
-Example
-Database:
-id = 1
-email = umesh@gmail.com
-password = bcrypt_hash
-role = ADMIN
-Converted into:
-public class CustomUserDetails
-        implements UserDetails {
-
-    private User user;
-
-}
-Spring Security does not understand your entity.
-It understands:
-UserDetails
-Therefore:
-Entity
-   |
-   v
-UserDetails
-conversion happens.
-
-Why UserDetails?
-Spring needs a standard format.
-Regardless of whether user comes from:
-PostgreSQL
-MySQL
-LDAP
-MongoDB
-Spring works with:
-UserDetails
-only.
-
-5. PasswordEncoder
-Responsible for hashing and password matching.
-Interface:
-public interface PasswordEncoder {
-}
-Methods:
-encode()
-matches()
-
-During Registration
-User enters:
-secret123
-Never store:
-secret123
-Store:
-passwordEncoder.encode("secret123")
-Result:
-$2a$10$sdjfhjksdhf...
-Stored in database.
-
-During Login
-User enters:
-secret123
-Database contains:
-$2a$10$sdjfhjksdhf...
-Provider executes:
-passwordEncoder.matches(
-    rawPassword,
-    storedHash
-);
-Result:
-true
-or
-false
-
-Why Not Compare Strings?
-Wrong:
-rawPassword.equals(dbPassword)
-Because:
-secret123
-should never be stored in DB.
-Passwords must be hashed.
-
-BCryptPasswordEncoder
-Most common encoder.
-@Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-}
-Features:
-Salt generated automatically
-Slow hashing
-Resistant to rainbow table attacks
-
-Complete Login Flow
-Suppose:
-username = umesh
-password = secret123
-Request reaches:
-UsernamePasswordAuthenticationFilter
-Creates:
-UsernamePasswordAuthenticationToken
-↓
-Calls:
-AuthenticationManager
-↓
-Delegates to:
-DaoAuthenticationProvider
-↓
-Calls:
-UserDetailsService
-↓
-Loads:
-UserDetails
-↓
-Compares:
-PasswordEncoder.matches()
-↓
-If valid:
-Authentication
-authenticated = true
-↓
-Stored into:
-SecurityContextHolder
-↓
-Request continues
-↓
-Controller executes
-
-One-Line Mental Model
-AuthenticationManager
-    = Traffic Controller
-
-AuthenticationProvider
-    = Authenticator
-
-UserDetailsService
-    = User Fetcher
-
-UserDetails
-    = Standard User Object
-
-PasswordEncoder
-    = Password Verifier
-For senior-level interviews, the most important thing to remember is:
-AuthenticationManager
-        |
-        v
-AuthenticationProvider
-        |
-        +--> UserDetailsService
-        |
-        +--> PasswordEncoder
-        |
-        v
-Authenticated UserDetails
-        |
-        v
-SecurityContextHolder
-If you can explain that flow clearly, you can answer a large percentage of Spring Security authentication questions.
-
-
-
-explain more about the password encoder specifically the bcrypt .
-then the SecurityContext
-SecurityContextHolder
-
-
-These are two topics interviewers often go deeper into because they reveal whether you understand how authentication actually works rather than just using annotations.
-Part 1: BCryptPasswordEncoder
-Why do we hash passwords?
-Suppose a user registers:
-password = secret123
-Never store:
-id | email            | password
-1  | umesh@gmail.com  | secret123
-If the database is leaked, every password is exposed.
-Instead:
-id | email            | password
-1  | umesh@gmail.com  | $2a$10$...
-Store a hash.
-
-What is a Hash?
-A hash function converts:
-secret123
-into:
-abcxyz123...
-Properties:
-One-way
-You can do:
-secret123
-    ->
-hash
-But not:
-hash
-    ->
-secret123
-
-Same Input → Same Output
-secret123
-always becomes the same hash.
-This creates a problem.
-Suppose two users have:
-password = password123
-Both hashes become identical.
-Attackers can exploit this using precomputed tables.
-
-What is Salt?
-A salt is a random value added before hashing.
-Example:
-password = secret123
-
-salt = x7d9k2
-Combined:
-secret123x7d9k2
-Then hashed.
-Another user:
-password = secret123
-
-salt = p9m4z1
-Produces a completely different hash.
-So:
-secret123
-may generate:
-$2a$10$ABC...
-and
-$2a$10$XYZ...
-even though the original password is identical.
-
-Why BCrypt?
-Old algorithms:
-MD5
-SHA1
-SHA256
-are very fast.
-Fast hashing is bad for passwords.
-Attackers can try billions of passwords per second.
-
-BCrypt is intentionally slow.
-Example:
-new BCryptPasswordEncoder(10);
-The 10 is the cost factor.
-BCrypt repeatedly hashes the password.
-Higher cost:
-10 -> slower
-12 -> slower
-14 -> even slower
-This makes brute-force attacks expensive.
-
-What's Stored in BCrypt Hash?
-Example:
-$2a$10$N9qo8uLOickgx2ZMRZoMye...
-Contains:
-Algorithm
-Cost Factor
-Salt
-Hash
-All inside one string.
-That's why Spring only stores:
-$2a$10$N9qo8uLOickgx2ZMRZoMye...
-No separate salt column is needed.
-
-Registration Flow
-User enters:
-secret123
-Code:
-String hash =
-    passwordEncoder.encode("secret123");
-Result:
-$2a$10$ABCD...
-Store in DB.
-
-Login Flow
-User enters:
-secret123
-Database:
-$2a$10$ABCD...
-Spring does:
-passwordEncoder.matches(
-    "secret123",
-    "$2a$10$ABCD..."
-);
-Internally:
-Extract salt from stored hash
-Hash incoming password again
-Compare results
-If same:
-Authentication Success
-
-Common Interview Question
-Why can't we do this?
-encode(rawPassword)
-    .equals(storedHash)
-Because BCrypt generates a new random salt every time.
-Example:
-encode("secret123")
-Result 1:
-$2a$10$AAA...
-Result 2:
-$2a$10$BBB...
-Different hashes.
-Therefore:
-matches()
-must be used.
-
-Part 2: SecurityContext
-Think of SecurityContext as:
-Container holding current logged-in user
-Spring Security needs somewhere to store:
-Who is the current user?
-What roles does he have?
-Is he authenticated?
-That's SecurityContext.
-
-Structure:
-SecurityContext
-        |
-        v
-Authentication
-        |
-        +--> Principal (User)
-        +--> Authorities
-        +--> Authenticated?
-
-Example:
-Logged-in user:
-umesh@gmail.com
-ROLE_ADMIN
-SecurityContext contains:
-SecurityContext
-    |
-    v
-Authentication
-    |
-    +--> Principal
-    |       umesh@gmail.com
-    |
-    +--> ROLE_ADMIN
-    |
-    +--> authenticated=true
-
-SecurityContextHolder
-This is the class used to access SecurityContext.
-SecurityContextHolder
-Think:
-SecurityContextHolder
-        |
-        v
-SecurityContext
-        |
-        v
-Authentication
-
-Why Do We Need SecurityContextHolder?
-Suppose you're inside:
-OrderService
-You want:
-current user
-You don't want to pass:
-User user
-through 20 methods.
-Instead:
-Authentication auth =
-    SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-Spring gives you the current authenticated user from anywhere in the request.
-
-Where Is It Stored?
-Interview favorite.
-By default:
-SecurityContextHolder
-stores data in:
-ThreadLocal
-Meaning:
-Request A
-    Thread 1
-    User A
-
-Request B
-    Thread 2
-    User B
-Each request thread has its own security data.
-
-Visualization:
-Thread 1
-   |
-   +--> SecurityContext
-           |
-           +--> User A
-
-Thread 2
-   |
-   +--> SecurityContext
-           |
-           +--> User B
-Users never see each other's authentication information.
-
-How Does SecurityContext Get Populated?
-Suppose:
-Authorization: Bearer JWT
-Request enters:
-JwtAuthenticationFilter
-Filter validates token.
-Then:
-Authentication auth =
-        new UsernamePasswordAuthenticationToken(
-                user,
-                null,
-                authorities
+        .oauth2ResourceServer(
+            oauth -> oauth.jwt()
         );
-Store:
-SecurityContextHolder
-    .getContext()
-    .setAuthentication(auth);
-Now the entire request knows who the user is.
-
-Later Authorization Uses It
-When Spring reaches:
-.hasRole("ADMIN")
-or
-@PreAuthorize("hasRole('ADMIN')")
-it reads:
-SecurityContextHolder
-    .getContext()
-    .getAuthentication();
-to determine permissions.
-
-Access Current User
-Very common.
-Authentication auth =
-    SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-Get username:
-String username =
-    auth.getName();
-Get roles:
-auth.getAuthorities();
-Get principal:
-auth.getPrincipal();
-
-Complete Request Flow
-Request
-   |
-   v
-JwtAuthenticationFilter
-   |
-   v
-Validate JWT
-   |
-   v
-Create Authentication
-   |
-   v
-SecurityContextHolder
-      .getContext()
-      .setAuthentication(...)
-   |
-   v
-AuthorizationFilter
-   |
-   v
-Controller
-   |
-   v
-Service
-At any point:
-SecurityContextHolder
-    .getContext()
-    .getAuthentication();
-returns the current user.
-
-Senior Interview Summary
-BCrypt
-Password
-    |
-    +--> Random Salt
-    |
-    +--> BCrypt Hash
-    |
-Stored in DB
-Advantages:
-One-way
-Salted
-Slow
-Resistant to brute force
-
-SecurityContextHolder
-ThreadLocal
-      |
-      v
-SecurityContext
-      |
-      v
-Authentication
-      |
-      +--> Principal
-      +--> Authorities
-      +--> Authenticated
-The single most important line to remember is:
-SecurityContextHolder
-    .getContext()
-    .getAuthentication();
-because almost every authentication and authorization mechanism in Spring Security eventually revolves around populating and reading that Authentication object.
-
-
-
-
-
-
-this salt,
-is it random , meaning
-suppose passwrd = 1234 and initial salt = ABC
-then when again the password = 1234 comes then salt used must be ABC, other wise password matching will faile.
-
-second suppose while storing the password there was some cofiguraion like hash passord 10 times.
-Now after some time this chanegs, now old passwords won't work rigth?
-
-
-
-
-Excellent questions. These are exactly the kinds of things that help you understand how BCrypt really works.
-Question 1: If salt is random, how can login work later?
-You're thinking:
-Registration:
-Password = 1234
-Salt = ABC
-Hash = XYZ
-Later:
-Login:
-Password = 1234
-Salt = ???
-If a different salt is used:
-Salt = PQR
-then:
-hash(1234 + PQR)
-will be different from:
-hash(1234 + ABC)
-So how does BCrypt know the original salt?
-Answer
-BCrypt stores the salt inside the hash string itself.
-Example:
-$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
-This string contains:
-Algorithm = 2a
-Cost = 10
-Salt = N9qo8uLOickgx2ZMRZoMye
-Hash = remaining part
-So the database stores:
-password_hash =
-$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
-not just the hash.
-
-During login
-User enters:
-1234
-Spring executes:
-passwordEncoder.matches(
-    "1234",
-    storedHash
-);
-Internally BCrypt:
-Reads the stored hash
-Extracts the original salt
-Extracts the original cost factor
-Re-hashes the entered password using those values
-Compares the result
-Conceptually:
-stored hash
-     |
-     +--> extract salt = ABC
-     +--> extract cost = 10
-     |
-recalculate hash(1234 + ABC)
-     |
-compare
-So the salt is random per user, but it is not lost.
-
-Example
-Two users choose the same password:
-Password = 1234
-User 1:
-Salt = ABC
-Hash = HASH1
-User 2:
-Salt = XYZ
-Hash = HASH2
-Database:
-User1 -> $2a$10$ABC...
-User2 -> $2a$10$XYZ...
-Both can still log in because BCrypt retrieves the correct salt from each stored hash.
-
-Question 2: What if the cost factor changes from 10 to 12?
-Suppose initially:
-new BCryptPasswordEncoder(10);
-User registers.
-Stored hash:
-$2a$10$...
-Notice:
-10
-is embedded in the hash.
-Later you deploy:
-new BCryptPasswordEncoder(12);
-Will old passwords stop working?
-Answer: No
-Because BCrypt also stores the cost factor inside the hash.
-During login:
-passwordEncoder.matches(
-    rawPassword,
-    storedHash
-);
-BCrypt reads:
-stored hash:
-$2a$10$...
-      ^^
-and sees:
-cost = 10
-Then it uses cost 10 for verification.
-So old users still authenticate successfully.
-
-Example
-Database contains:
-$2a$10$ABC...
-Application now uses:
-new BCryptPasswordEncoder(12);
-User logs in.
-BCrypt sees:
-stored hash says cost=10
-and verifies using 10.
-Login succeeds.
-
-Then how do users get upgraded to cost 12?
-Very common production strategy:
-Old user logs in
-Stored hash:
-$2a$10$...
-Application target:
-cost=12
-After successful login:
-if (passwordEncoder.upgradeEncoding(storedHash)) {
-    // re-hash password with stronger settings
-}
-Then store:
-$2a$12$...
-Now the user has been migrated automatically.
-No password reset needed.
-
-Same logic for algorithm changes
-Suppose you move from:
-BCrypt
-to
-Argon2
-You generally don't invalidate everyone.
-Typical flow:
-User logs in with BCrypt hash
-Verify using BCrypt
-Re-hash password with Argon2
-Save new hash
-This is called password hash migration.
-
-Mental Model
-Think of a BCrypt hash as:
-[algorithm][cost][salt][hash]
-Something like:
-BCrypt | 10 | ABC123 | encrypted-result
-all packed into one string.
-That's why BCrypt can still verify passwords years later even if:
-the salt was random
-the cost factor changed
-new users are using stronger settings
-because the information needed to verify the old password travels with the stored hash itself.
-
-
-Now Explain me the Phase 2 | Spring Security Basics
-
-
-
-
-Great. Now that you understand:
-Filters
-SecurityFilterChain
-AuthenticationManager
-AuthenticationProvider
-UserDetailsService
-UserDetails
-PasswordEncoder
-SecurityContextHolder
-Phase 2 becomes much easier because you'll understand what Spring Security is actually doing behind the scenes.
-
-Phase 2: Spring Security Basics
-The goal is to understand:
-How does a request become an authenticated user?
-There are two classic ways:
-Form Login
-HTTP Basic
-Both eventually use the same authentication pipeline.
-
-Part 1: Form Login
-Most traditional web applications use this.
-Example:
-GET /login
-Spring shows:
-Username: ______
-
-Password: ______
-
-[Login]
-User enters:
-Username = umesh
-Password = secret123
-Browser sends:
-POST /login
-
-username=umesh
-password=secret123
-
-Configuration
-@Bean
-SecurityFilterChain securityFilterChain(HttpSecurity http)
-        throws Exception {
-
-    http
-        .authorizeHttpRequests(auth ->
-                auth.anyRequest().authenticated())
-        .formLogin();
 
     return http.build();
 }
 This tells Spring:
-Every request requires login.
-Use Form Login authentication.
+Expect Bearer Tokens.
+Validate JWTs.
+Create Authentication.
+Perform Authorization.
 
-Behind the Scenes
+Request Flow
 Request:
-POST /login
-hits:
-UsernamePasswordAuthenticationFilter
-This filter specifically listens for:
-POST /login
-
-Step 1
-Filter extracts:
-username=umesh
-password=secret123
-Creates:
-UsernamePasswordAuthenticationToken
-Initially:
-authenticated = false
-
-Step 2
-Filter calls:
-authenticationManager.authenticate(token);
-
-Step 3
-AuthenticationManager delegates to:
-DaoAuthenticationProvider
-
-Step 4
-Provider calls:
-userDetailsService.loadUserByUsername(
-        "umesh");
-
-Step 5
-UserDetailsService loads:
-User:
-    username=umesh
-    password=$2a$10$....
-    role=ADMIN
-Returns:
-UserDetails
-
-Step 6
-Provider validates password:
-passwordEncoder.matches(
-    "secret123",
-    storedHash
-);
-
-Step 7
-If password is valid:
-Creates:
-UsernamePasswordAuthenticationToken
-Now:
-authenticated = true
-
-Step 8
-Stores it:
-SecurityContextHolder
-      .getContext()
-      .setAuthentication(auth);
-
-Step 9
-User is now logged in.
-Future requests can access:
-SecurityContextHolder
-      .getContext()
-      .getAuthentication();
-
-Complete Form Login Flow
-POST /login
-       |
-       v
-UsernamePasswordAuthenticationFilter
-       |
-       v
-AuthenticationManager
-       |
-       v
-DaoAuthenticationProvider
-       |
-       v
-UserDetailsService
-       |
-       v
-PasswordEncoder
-       |
-       v
-SecurityContextHolder
-       |
-       v
-Logged In
-This diagram is interview gold.
-
-What Happens After Login?
-Question:
-How does Spring remember the user?
-Answer:
-Session
-After successful login:
-Spring creates:
-JSESSIONID
-Browser stores:
-Set-Cookie: JSESSIONID=abc123
-
-Next request:
 GET /orders
 
-Cookie: JSESSIONID=abc123
-Spring:
-Reads Session
-Restores SecurityContext
-User remains logged in
-This is called:
-Stateful Authentication
-because server stores state.
-
-Part 2: HTTP Basic Authentication
-Very common for APIs.
-
-Configuration
-@Bean
-SecurityFilterChain securityFilterChain(
-        HttpSecurity http)
-        throws Exception {
-
-    http
-        .authorizeHttpRequests(auth ->
-                auth.anyRequest()
-                        .authenticated())
-        .httpBasic();
-
-    return http.build();
-}
-
-Client sends:
-Authorization: Basic dW1lc2g6c2VjcmV0MTIz
-This is:
-Base64(username:password)
-Example:
-umesh:secret123
-encoded.
-
-Important
-Many developers think:
-Base64 = Encryption
-Wrong.
-Base64 is just encoding.
-Anyone can decode it.
-Example:
-Base64.decode(...)
-immediately reveals:
-umesh:secret123
-Therefore HTTP Basic should only be used over HTTPS.
-
-Behind the Scenes
-Request:
-Authorization: Basic ...
-hits:
-BasicAuthenticationFilter
-
-Filter:
-Reads Authorization header
-Decodes username/password
-Creates Authentication token
-Calls AuthenticationManager
-
-After this point:
-AuthenticationManager
-      |
-      v
-AuthenticationProvider
-      |
-      v
-UserDetailsService
-      |
-      v
-PasswordEncoder
-is exactly the same as Form Login.
-
-Difference Between Form Login and HTTP Basic
-Form Login
-Credentials come from:
-POST /login
-body:
-username=umesh
-password=123
-Filter:
-UsernamePasswordAuthenticationFilter
-
-HTTP Basic
-Credentials come from:
-Authorization Header
-Filter:
-BasicAuthenticationFilter
-
-Everything after AuthenticationManager is identical.
-
-Why Learn These If JWT Is Used Everywhere?
-Because JWT builds on the same concepts.
-JWT simply replaces:
-UsernamePasswordAuthenticationFilter
-or
-BasicAuthenticationFilter
-with:
-JwtAuthenticationFilter
-The rest remains:
-AuthenticationManager
-AuthenticationProvider
-UserDetailsService
-PasswordEncoder
-SecurityContextHolder
-AuthorizationFilter
-unchanged.
-
-What You Should Practice
-Before moving to JWT, build a small project with:
-Entity
-User
-Repository
-UserRepository
-CustomUserDetails
-implements UserDetails
-CustomUserDetailsService
-implements UserDetailsService
-PasswordEncoder
-BCryptPasswordEncoder
-SecurityConfig
-SecurityFilterChain
-Form Login
-.formLogin()
-Then switch to:
-.httpBasic()
-and observe that only the entry filter changes while the authentication pipeline remains the same.
-Once this is clear, Phase 5 (JWT Authentication) becomes much easier because JWT is essentially a custom authentication mechanism that plugs into the exact same Spring Security architecture.
-
-
-
-
-Perfect. Up to now you've learned:
-Authentication = Who are you?
-Now we move to:
-Authorization = What are you allowed to do?
-This is Phase 3 and it's one of the most important Spring Security topics for senior interviews.
-
-Authentication vs Authorization
-Suppose:
-User: Umesh
-Role: ADMIN
-Authentication answers:
-Who is this user?
-Answer:
-Umesh
-Authorization answers:
-Can Umesh access /admin/users?
-Answer:
-Yes (ADMIN)
-
-Where Does Authorization Happen?
-Remember this:
+Authorization:
+Bearer eyJhbGciOi...
+Flow:
 Request
    |
-Authentication Filter
+BearerTokenAuthenticationFilter
+   |
+JWT Validation
+   |
+Authentication Object
    |
 SecurityContextHolder
    |
 AuthorizationFilter
    |
 Controller
-Authentication runs first.
-Authorization runs second.
-Because Spring must first know:
-Who are you?
-before asking:
-What are you allowed to do?
-
-What Does AuthorizationFilter Use?
-It reads:
-SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-Example:
-Authentication
-    |
-    +--> Principal = umesh
-    |
-    +--> Authorities
-            ROLE_ADMIN
-            ROLE_USER
-AuthorizationFilter checks:
-Do you have required authority?
-
-URL-Based Authorization
-Most common.
-Example:
-@Bean
-SecurityFilterChain securityFilterChain(
-        HttpSecurity http)
-        throws Exception {
-
-    http
-        .authorizeHttpRequests(auth -> auth
-
-            .requestMatchers("/public/**")
-            .permitAll()
-
-            .requestMatchers("/admin/**")
-            .hasRole("ADMIN")
-
-            .requestMatchers("/user/**")
-            .hasRole("USER")
-
-            .anyRequest()
-            .authenticated()
-        );
-
-    return http.build();
-}
-
-What Happens?
-Suppose:
-User:
-ROLE_USER
-Request:
-GET /admin/users
-AuthorizationFilter checks:
-Required:
-ROLE_ADMIN
-
-Actual:
-ROLE_USER
-Result:
-403 Forbidden
-Controller never executes.
-
-permitAll()
-.requestMatchers("/public/**")
-.permitAll()
-Meaning:
-No login required.
-Example:
-GET /public/products
-Works even for anonymous users.
-
-authenticated()
-.anyRequest()
-.authenticated()
-Meaning:
-Any logged-in user is allowed.
-Role doesn't matter.
-Example:
-ROLE_ADMIN  -> Allowed
-ROLE_USER   -> Allowed
-ROLE_MANAGER-> Allowed
-
-hasRole()
-.hasRole("ADMIN")
-Meaning:
-Must have ROLE_ADMIN
-Important interview question:
-Spring automatically adds:
-ROLE_
-So:
-.hasRole("ADMIN")
-actually checks:
-ROLE_ADMIN
-
-hasAuthority()
-Alternative:
-.hasAuthority("ROLE_ADMIN")
-This checks the exact string.
-No automatic prefix.
-
-Difference
-hasRole
-.hasRole("ADMIN")
-checks:
-ROLE_ADMIN
-
-hasAuthority
-.hasAuthority("ROLE_ADMIN")
-checks:
-ROLE_ADMIN
-exactly.
-
-Multiple Roles
-Example:
-.requestMatchers("/reports/**")
-.hasAnyRole(
-        "ADMIN",
-        "MANAGER"
-)
-Meaning:
-ROLE_ADMIN
-OR
-ROLE_MANAGER
-can access.
-
-Common Enterprise Example
-.authorizeHttpRequests(auth -> auth
-
-    .requestMatchers("/login")
-    .permitAll()
-
-    .requestMatchers("/admin/**")
-    .hasRole("ADMIN")
-
-    .requestMatchers("/finance/**")
-    .hasAnyRole(
-            "ADMIN",
-            "FINANCE"
-    )
-
-    .anyRequest()
-    .authenticated()
-)
-
-Method-Level Authorization
-Very important.
-Sometimes URL security is not enough.
-Example:
-GET /users/1
-GET /users/2
-Both hit:
-@GetMapping("/users/{id}")
-URL pattern is identical.
-But:
-User A should only see User A's data
-This is where method security helps.
-
-Enable Method Security
-@EnableMethodSecurity
-Without this:
-@PreAuthorize
-won't work.
-
-@PreAuthorize
-Most commonly used.
-Example:
-@PreAuthorize("hasRole('ADMIN')")
-public List<User> getAllUsers() {
-    ...
-}
-Before method execution:
-Spring checks:
-ROLE_ADMIN ?
-If no:
-403 Forbidden
-Method never runs.
-
-Flow
-Request
-   |
-Controller
-   |
-@PreAuthorize
-   |
-Role Check
-   |
-Method Executes
-
-Example
-@PreAuthorize(
-   "hasAnyRole('ADMIN','MANAGER')"
-)
-public Report getReport() {
-}
-Allowed:
-ROLE_ADMIN
-ROLE_MANAGER
-Denied:
-ROLE_USER
-
-Access Current User
-Suppose:
-User A
-should only access his own profile.
-
-Example:
-@PreAuthorize(
-"#id == authentication.principal.id"
-)
-public User getProfile(Long id) {
-}
-Request:
-GET /users/5
-User:
-principal.id = 5
-Allowed.
-
-Request:
-GET /users/6
-User:
-principal.id = 5
-Denied.
-
-This is called:
-Attribute Based Access Control (ABAC)
-Very common in enterprise applications.
-
-@PostAuthorize
-Runs after method execution.
-Example:
-@PostAuthorize(
-"returnObject.owner ==
- authentication.name"
-)
-public Document getDocument(
-        Long id) {
-}
-Method executes first.
-Then Spring checks returned object.
-If unauthorized:
-Access denied
-
-Used less frequently.
-
-@Secured
-Older annotation.
-Example:
-@Secured("ROLE_ADMIN")
-public void deleteUser() {
-}
-Works fine.
-But:
-No SpEL
-Less flexible
-Nowadays most teams prefer:
-@PreAuthorize
-
-Authorization Data Source
-Where do roles come from?
-Remember:
-UserDetails
-contains:
-Collection<
-    ? extends GrantedAuthority
->
-Example:
-@Override
-public Collection<
-        ? extends GrantedAuthority>
-getAuthorities() {
-
-    return List.of(
-        new SimpleGrantedAuthority(
-            "ROLE_ADMIN"
-        )
-    );
-}
-
-After Login
-Authentication object contains:
-Authentication
-     |
-     +--> Principal
-     |
-     +--> Authorities
-             ROLE_ADMIN
-             ROLE_USER
-AuthorizationFilter reads those authorities.
-
-401 vs 403
-Extremely common interview question.
-401 Unauthorized
-Actually means:
-Not Authenticated
-Example:
-No JWT
-No Session
-No Login
-Result:
-401
-
-403 Forbidden
-Means:
-Authenticated
-But insufficient permissions
-Example:
-ROLE_USER
-trying to access
-ROLE_ADMIN endpoint
-Result:
-403
-
-Real Production Flow
-Request
-   |
-JWT Filter
-   |
-Authentication Created
-   |
-SecurityContextHolder
-   |
-AuthorizationFilter
-   |
-Role Check
-   |
-Controller
-Example:
-GET /admin/users
-User:
-ROLE_ADMIN
-Result:
-Controller Executes
-User:
-ROLE_USER
-Result:
-403 Forbidden
-
-What Senior Interviews Usually Ask
-You should be able to explain:
-Authentication vs Authorization
-hasRole vs hasAuthority
-permitAll vs authenticated
-@PreAuthorize
-@EnableMethodSecurity
-How AuthorizationFilter works
-401 vs 403
-How roles are stored in Authentication
-RBAC (Role Based Access Control)
-ABAC (Attribute Based Access Control)
-If you understand those, you're ready to move into the next major topic: JWT Authentication, where you'll build a custom filter that creates the Authentication object used by everything you learned so far.
-you completely missed the
-what Authenticatio Object
-what is Principal and related stuff.
-also exmmplain me the techincal diff between hasAuthority and hasRole
-
-
-
-Good catch. Those are actually central concepts. Many developers use Spring Security for years without fully understanding what an Authentication object contains.
-
-What is Authentication Object?
-The Authentication object represents:
-The currently authenticated user and their permissions
-It lives inside:
-SecurityContextHolder
-        |
-        v
-SecurityContext
-        |
-        v
-Authentication
-When you write:
-Authentication auth =
-    SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-you're getting the current user's authentication information.
-
-Authentication Interface
-Simplified:
-public interface Authentication extends Principal {
-
-    Object getPrincipal();
-
-    Object getCredentials();
-
-    Collection<? extends GrantedAuthority>
-        getAuthorities();
-
-    boolean isAuthenticated();
-}
-Important fields:
-Principal
-Credentials
-Authorities
-Authenticated Flag
-
-Example After Successful Login
-Suppose:
-Username: umesh
-Role: ADMIN
-Authentication might look like:
-Authentication
-    |
-    +--> Principal
-    |       umesh
-    |
-    +--> Credentials
-    |       null
-    |
-    +--> Authorities
-    |       ROLE_ADMIN
-    |
-    +--> Authenticated
-            true
-
-What is Principal?
-The principal is:
-The identity of the logged-in user
-Think:
-Principal = WHO
-Authorities = WHAT HE CAN DO
-
-Example:
-Principal
-    |
-    +--> umesh@gmail.com
-or
-Principal
-    |
-    +--> CustomUserDetails
-depending on your implementation.
-
-Real Example
-Suppose your UserDetails looks like:
-public class CustomUserDetails
-        implements UserDetails {
-
-    private Long id;
-    private String email;
-}
-Then:
-Authentication auth =
-    SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-
-You can get:
-CustomUserDetails user =
-    (CustomUserDetails)
-        auth.getPrincipal();
-Now:
-user.getId();
-user.getEmail();
-are available.
-
-Why Not Store User Entity?
-Spring Security wants a standard contract.
-So it stores:
-UserDetails
-instead of:
-UserEntity
-directly.
-
-What are Credentials?
-Credentials are:
-Proof of identity
-Usually:
-Password
-
-Before Authentication
-Principal = umesh
-Credentials = secret123
-Authenticated = false
-
-After Authentication
-Spring usually removes the password:
-Principal = UserDetails
-Credentials = null
-Authenticated = true
-for security reasons.
-
-What are Authorities?
-Authorities represent permissions.
-Example:
-ROLE_ADMIN
-ROLE_USER
-READ_REPORTS
-WRITE_REPORTS
-DELETE_USERS
-Stored inside:
-Collection<GrantedAuthority>
-
-Example:
-List.of(
-    new SimpleGrantedAuthority("ROLE_ADMIN"),
-    new SimpleGrantedAuthority("READ_REPORTS")
-);
-
-Authentication Before Login
-When login request arrives:
-new UsernamePasswordAuthenticationToken(
-        "umesh",
-        "secret123"
-);
-Authentication object:
-Principal = umesh
-Credentials = secret123
-Authorities = []
-Authenticated = false
-
-Authentication After Login
-After verification:
-new UsernamePasswordAuthenticationToken(
-        userDetails,
-        null,
-        authorities
-);
-Now:
-Principal = UserDetails
-Credentials = null
-Authorities = ROLE_ADMIN
-Authenticated = true
-This authenticated object gets stored in SecurityContextHolder.
-
-Visualizing Authentication Lifecycle
-Before login:
-Authentication
-    |
-    +--> umesh
-    +--> secret123
-    +--> false
-After login:
-Authentication
-    |
-    +--> UserDetails
-    +--> null
-    +--> ROLE_ADMIN
-    +--> true
-
-Technical Difference Between hasRole() and hasAuthority()
-This is one of the most misunderstood Spring Security topics.
-
-hasAuthority()
-Checks exact authority string.
-Example:
-.hasAuthority("ROLE_ADMIN")
-Spring checks:
-Authentication
-      |
-      +--> Authorities
-              ROLE_ADMIN
-Exact match.
-
-Another example:
-.hasAuthority("READ_REPORTS")
-Checks:
-READ_REPORTS
-exactly.
-No modification.
-
-hasRole()
-This is actually a convenience wrapper.
-When you write:
-.hasRole("ADMIN")
-Spring internally converts it to:
-.hasAuthority("ROLE_ADMIN")
 Notice:
-ROLE_
-is automatically added.
+No login form
+No password
+No UserDetailsService
+because the token already represents an authenticated user.
 
-Internally it behaves roughly like:
-hasAuthority(
-    "ROLE_" + role
-);
-
-Example
-Suppose authorities are:
-ROLE_ADMIN
-READ_REPORTS
-WRITE_REPORTS
-
-Case 1
-.hasRole("ADMIN")
-Spring checks:
-ROLE_ADMIN
-Result:
-Allowed
-
-Case 2
-.hasAuthority("ROLE_ADMIN")
-Spring checks:
-ROLE_ADMIN
-Result:
-Allowed
-Same result.
-
-Case 3
-.hasAuthority("READ_REPORTS")
-Spring checks:
-READ_REPORTS
-Result:
-Allowed
-
-Case 4
-.hasRole("READ_REPORTS")
-Spring checks:
-ROLE_READ_REPORTS
-Result:
-Denied
-because your authority is:
-READ_REPORTS
-not:
-ROLE_READ_REPORTS
-
-When Should You Use Which?
-Roles
-Use for coarse-grained access:
-ADMIN
-USER
-MANAGER
-SUPPORT
+BearerTokenAuthenticationFilter
+Remember from the filter discussion?
+For Resource Server:
+BearerTokenAuthenticationFilter
+becomes very important.
+Its job:
+Extract token from Authorization header
 Example:
-.hasRole("ADMIN")
+Authorization:
+Bearer abc.xyz.123
+Extract:
+abc.xyz.123
+Then pass it to Spring's JWT authentication machinery.
 
-Authorities
-Use for fine-grained permissions:
-READ_REPORTS
-WRITE_REPORTS
-EXPORT_REPORTS
-DELETE_USERS
+JWT Validation
+Before trusting the token Spring must verify:
+Signature
+Was it really issued by Keycloak?
+Expiration
+{
+  "exp": 1780000000
+}
+Expired?
+Reject.
+
+Issuer
+{
+  "iss":
+  "https://auth.company.com"
+}
+Expected issuer?
+
+Audience (optional)
+{
+  "aud": "order-service"
+}
+Is token intended for this API?
+
+How Does Spring Verify Signature?
+This is where JWK comes in.
+
+JWK (JSON Web Key)
+The Authorization Server exposes public keys.
 Example:
-.hasAuthority("DELETE_USERS")
-
-Real Enterprise Pattern
-A common setup:
-ROLE_ADMIN
-ROLE_MANAGER
-ROLE_USER
-and
-READ_REPORTS
-WRITE_REPORTS
-DELETE_USERS
-
-Admin user:
-ROLE_ADMIN
-READ_REPORTS
-WRITE_REPORTS
-DELETE_USERS
-
-Manager user:
-ROLE_MANAGER
-READ_REPORTS
-WRITE_REPORTS
-
-Security:
-.hasRole("ADMIN")
-for admin pages.
-.hasAuthority("DELETE_USERS")
-for dangerous operations.
-
-One More Interview Detail
-Spring Security does not fundamentally distinguish roles from authorities.
-Internally:
-ROLE_ADMIN
-is just another authority string.
-The only special thing is:
-hasRole("ADMIN")
-adds:
-ROLE_
-before checking.
-So these are equivalent:
-.hasRole("ADMIN")
-and
-.hasAuthority("ROLE_ADMIN")
-That's the technical difference.
-
-A concise mental model:
-Authentication
-    |
-    +--> Principal
-    |       Who are you?
-    |
-    +--> Credentials
-    |       How did you prove it?
-    |
-    +--> Authorities
-    |       What can you do?
-    |
-    +--> Authenticated
-            Are you verified?
-and
-hasRole("ADMIN")
-       ↓
-hasAuthority("ROLE_ADMIN")
-while
-hasAuthority(...)
-checks the exact authority string with no transformation.
-
-
-
-
-
-I know JWT already. explain me the phase 6, OAuth
-
-Perfect. Since you already know JWT, don't learn OAuth as "some Spring Security configuration."
-Learn it as a distributed authorization protocol.
-Most confusion happens because people mix up:
-JWT = Token Format
-
-OAuth2 = Authorization Protocol
-These are different things.
-A JWT can be used inside OAuth.
-OAuth does not require JWT.
-
-Why OAuth Exists
-Imagine it's 2010.
-You want to build:
-Travel App
-that can access a user's Google Calendar.
-Bad solution:
-User gives Google username/password
-      ↓
-Travel App stores password
-      ↓
-Travel App logs into Google
-Problems:
-Travel App knows user's password
-Can't limit permissions
-Can't revoke access easily
-Huge security risk
-OAuth was invented to solve this.
-
-OAuth in One Sentence
-OAuth allows:
-User grants limited access
-to a third-party application
-without sharing credentials.
-
-The Four Actors
-You must know these.
-1. Resource Owner
-Usually:
-The User
-Example:
-Umesh
-owns:
-Google Calendar
-
-2. Client
-Application requesting access.
-Example:
-Travel App
-
-3. Authorization Server
-Authenticates user.
-Issues tokens.
-Example:
-Google
 Keycloak
-Okta
-Auth0
-
-4. Resource Server
-Hosts protected data.
-Example:
-Google Calendar API
-
-Visualization
-+----------------+
-|     User       |
-+----------------+
-        |
-        |
-        v
-+----------------+
-| Travel App     |
-| (Client)       |
-+----------------+
-        |
-        |
-        v
-+----------------+
-| Google Auth    |
-| Authorization  |
-| Server         |
-+----------------+
-        |
-        |
-        v
-+----------------+
-| Calendar API   |
-| ResourceServer |
-+----------------+
-
-Access Token
-OAuth's end goal:
-Get Access Token
-Example:
-eyJhbGciOiJIUzI1...
-or
-random_string_xyz
-OAuth doesn't care.
-Could be:
-JWT
-Opaque token
-Both are valid.
-
-Most Important OAuth Flow
-Authorization Code Flow.
-Used by:
-Google Login
-GitHub Login
-Microsoft Login
-
-Step 1
-User clicks:
-Login with Google
-Travel App redirects user.
-Travel App
      |
      v
-Google Login Page
+Public Key
+Resource Server downloads them.
+Example endpoint:
+https://auth.company.com
+/.well-known/jwks.json
+The Resource Server uses those public keys to verify JWT signatures.
+
+Why Public Key?
+Because modern OAuth systems usually use:
+RSA
+ECDSA
+asymmetric cryptography.
+
+Authorization Server:
+Private Key
+used to sign.
+
+Resource Server:
+Public Key
+used to verify.
+
+Result:
+Resource Server can verify
+without knowing the private key.
+Very secure.
+
+Typical JWT
+Example:
+{
+  "sub": "umesh",
+  "roles": ["ADMIN"],
+  "scope": "orders.read orders.write",
+  "iss": "https://auth.company.com"
+}
+After validation Spring creates:
+Authentication
+
+Authentication Object
+Usually:
+JwtAuthenticationToken
+instead of:
+UsernamePasswordAuthenticationToken
+
+Contains:
+Principal
+Authorities
+JWT Claims
+
+Example:
+Authentication
+     |
+     +--> Principal = Jwt
+     |
+     +--> Scope:
+             orders.read
+             orders.write
+Stored in:
+SecurityContextHolder
+just like any other authentication mechanism.
+
+Scope Mapping
+OAuth commonly uses scopes.
+Token:
+{
+  "scope":
+    "orders.read orders.write"
+}
+Spring converts these into authorities.
+Typically:
+SCOPE_orders.read
+SCOPE_orders.write
+
+Now you can write:
+.hasAuthority(
+    "SCOPE_orders.read"
+)
+
+or
+@PreAuthorize(
+    "hasAuthority('SCOPE_orders.write')"
+)
+
+Role Mapping
+Some providers include:
+{
+  "roles": [
+      "ADMIN",
+      "USER"
+  ]
+}
+Spring does not automatically know how to convert every custom claim into authorities.
+Often you configure a converter.
+Example idea:
+roles claim
+      |
+      v
+ROLE_ADMIN
+ROLE_USER
+Now:
+.hasRole("ADMIN")
+works.
+
+Example Request
+Token:
+{
+  "sub":"umesh",
+  "roles":["ADMIN"]
+}
+Request:
+GET /admin/users
+Configuration:
+.requestMatchers("/admin/**")
+.hasRole("ADMIN")
+Flow:
+JWT Validated
+     |
+Authentication Created
+     |
+ROLE_ADMIN Present
+     |
+Access Granted
+
+Accessing JWT Claims
+Inside controller:
+@GetMapping("/profile")
+public String profile(
+        Authentication auth) {
+
+    Jwt jwt =
+      (Jwt) auth.getPrincipal();
+
+    return jwt.getSubject();
+}
+
+Get claim:
+jwt.getClaim("email");
+or
+jwt.getClaim("roles");
+
+Resource Server vs Old Authentication
+Traditional Spring Security:
+Request
+   |
+UsernamePasswordAuthenticationFilter
+   |
+AuthenticationManager
+   |
+UserDetailsService
+   |
+PasswordEncoder
+
+Resource Server:
+Request
+   |
+BearerTokenAuthenticationFilter
+   |
+JWT Validation
+   |
+Authentication Created
+Much simpler.
+
+Real Microservice Architecture
+Very common.
+               Keycloak
+                    |
+                    |
+            Access Token
+                    |
+                    v
+API Gateway
+    |
+    +------ Order Service
+    |
+    +------ Payment Service
+    |
+    +------ Customer Service
+Every service is a Resource Server.
+Every service:
+Validates token
+Creates Authentication
+Checks authorization
+No service stores passwords.
+No service performs login.
+
+Interview Questions You Should Be Able to Answer
+What is a Resource Server?
+An API that protects resources
+and validates access tokens.
+
+What filter processes Bearer Tokens?
+BearerTokenAuthenticationFilter
+
+What Authentication implementation is commonly created?
+JwtAuthenticationToken
+
+Does Resource Server use UserDetailsService?
+Usually no.
+Authentication already happened at the Authorization Server.
+
+What is JWK?
+Public keys exposed by the
+Authorization Server used
+for JWT signature verification.
+
+What is issuer-uri?
+Example:
+spring.security.oauth2.resourceserver.jwt.issuer-uri=
+https://auth.company.com
+Spring uses it to:
+Discover OAuth metadata
+Find JWK endpoints
+Validate issuer claim
+
+Mental Model
+For Resource Server, remember this flow:
+Authorization Server
+        |
+        | Issues JWT
+        v
+Resource Server
+        |
+        | Verify Signature
+        | Verify Expiry
+        | Verify Issuer
+        v
+JwtAuthenticationToken
+        |
+        v
+SecurityContextHolder
+        |
+        v
+Authorization
+        |
+        v
+Controller
+The key realization is:
+Authorization Server authenticates users.
+
+Resource Server trusts tokens.
+That single sentence explains most of OAuth2 Resource Server architecture.
+
+
+Now Explain me Phase 8: OAuth2 Login / SSO in detail
+
+
+
+This is where many engineers get confused because OAuth2 Login and OAuth2 Resource Server use some of the same OAuth concepts but solve different problems.
+
+First: OAuth2 Login vs Resource Server
+Resource Server
+Your application receives a token.
+User
+  |
+  | JWT
+  v
+Your API
+Your API validates the token.
+No login screen.
+No redirects.
+
+OAuth2 Login
+Your application wants somebody else to authenticate users.
+Example:
+Login with Google
+Login with GitHub
+Login with Microsoft
+Login with Okta
+Your application doesn't ask for passwords.
+Google does.
+
+What is SSO?
+SSO = Single Sign-On
+Meaning:
+Login once
+Access many applications
+Example:
+Company Employee
+        |
+        v
+Okta Login
+        |
+        +--> Jira
+        |
+        +--> Confluence
+        |
+        +--> Slack
+        |
+        +--> Internal Portal
+One login.
+Many applications.
+
+Why Companies Love SSO
+Without SSO:
+Jira Password
+Confluence Password
+Slack Password
+Internal App Password
+Nightmare.
+
+With SSO:
+Okta Password
+Only one identity provider.
+
+Actors
+Let's use Google Login.
+User
+  |
+  v
+Spring Boot App
+  |
+  v
+Google
+
+Resource Owner
+User
+
+Client
+Spring Boot App
+
+Authorization Server
+Google
+
+Resource Server
+Often:
+Google UserInfo API
+or
+Google Calendar API
+depending on use case.
+
+What Problem Is OAuth2 Login Solving?
+Suppose your application needs:
+Name
+Email
+Profile Picture
+Instead of:
+Register
+Store Password
+Reset Password
+MFA
+Account Recovery
+you delegate identity management to Google.
+
+Complete OAuth2 Login Flow
+This is essentially Authorization Code Flow.
+
+Step 1
+User visits:
+https://myapp.com
+Clicks:
+Login with Google
 
 Step 2
-User authenticates with Google.
-email
-password
-MFA
-Google verifies identity.
+Spring redirects user.
+My App
+    |
+    v
+Google Login Page
+
+Example URL:
+https://accounts.google.com/...
+contains:
+client_id
+redirect_uri
+scope
+state
+
+What is client_id?
+Every OAuth client gets:
+client_id
+client_secret
+from Google.
+Think:
+client_id
+    =
+Application Username
+
+client_secret
+    =
+Application Password
+(not exactly, but close enough)
 
 Step 3
-Google asks:
-Travel App wants:
-
-Read Calendar
-Read Profile
-
-Allow?
-This is called:
-Consent Screen
+User authenticates.
+Google handles:
+Email
+Password
+MFA
+Device Trust
+Risk Detection
+Your application never sees any of it.
 
 Step 4
-User clicks:
-Allow
-Google redirects back.
-Travel App
-with:
-Authorization Code
-Example:
-abc123xyz
+Consent Screen
+Google asks:
+This app wants:
 
-Important
-This is NOT the token.
-It's just a temporary code.
-Typically valid for minutes.
+✓ Read profile
+✓ Read email
+
+Allow?
+
+User approves.
 
 Step 5
-Backend exchanges code for token.
-Travel App Backend
-       |
-       v
+Google redirects back.
+Example:
+https://myapp.com/login/oauth2/code/google
+with:
+authorization_code=abc123
+
+Important
+Authorization Code is NOT a JWT.
+It's just a temporary ticket.
+Usually valid for a few minutes.
+
+Step 6
+Spring backend exchanges code.
+Spring App
+      |
+      | code
+      v
 Google Token Endpoint
-Sends:
+Spring sends:
 authorization_code
 client_id
 client_secret
 
-Step 6
-Google returns:
+Google responds:
 {
-  "access_token": "...",
-  "refresh_token": "...",
-  "expires_in": 3600
+  "access_token":"...",
+  "refresh_token":"...",
+  "expires_in":3600
 }
 
 Step 7
-Travel App calls:
-Calendar API
-using:
-Authorization: Bearer ACCESS_TOKEN
-
-Complete Flow
-User
- |
- | Login with Google
- v
-Client
- |
- v
-Authorization Server
- |
- | Authorization Code
- v
-Client Backend
- |
- | Exchange Code
- v
-Authorization Server
- |
- | Access Token
- v
-Client
- |
- | Bearer Token
- v
-Resource Server
-
-Access Token vs Refresh Token
-Interview favorite.
+Spring Fetches User Info
+Now Spring has:
 Access Token
-Used to access APIs.
-Usually:
-15 min
-30 min
-1 hour
-lifetime.
+Spring calls:
+Google UserInfo API
+Example response:
+{
+  "sub":"12345",
+  "email":"umesh@gmail.com",
+  "name":"Umesh",
+  "picture":"..."
+}
 
-Refresh Token
-Used to get new access tokens.
-Usually:
-Days
-Weeks
-Months
-lifetime.
+Step 8
+Spring Creates Authentication
+This is the key step.
+Spring converts:
+{
+  "email":"umesh@gmail.com"
+}
+into:
+OAuth2AuthenticationToken
 
-Example:
-Access Token expires
-      ↓
-Client sends Refresh Token
-      ↓
-Authorization Server
-      ↓
-New Access Token
-User doesn't log in again.
-
-Scopes
-OAuth doesn't just say:
-Allowed
-It says:
-Allowed for WHAT?
-Example:
-calendar.read
-calendar.write
-profile.read
-email.read
-These are scopes.
-
-User may allow:
-calendar.read
-but deny:
-calendar.write
-
-Access Token contains:
-Scopes
-which later become:
-Authorities
-inside Spring Security.
-
-OAuth vs JWT
-Most interviewers ask this.
-OAuth:
-Authorization Protocol
-JWT:
-Token Format
-
-Example:
-OAuth
-      |
-      v
-Issues JWT
-Common.
-
-Example:
-OAuth
-      |
-      v
-Issues Opaque Token
-Also valid.
-
-OAuth in Microservices
-Common architecture:
-Frontend
-    |
-    v
-Keycloak
-    |
-    v
-Access Token
-    |
-    v
-Order Service
-    |
-    v
-Payment Service
-
-Order Service doesn't authenticate users.
-Keycloak already did.
-Order Service only verifies:
-Access Token
-and checks:
-roles
-scopes
-permissions
-
-OAuth Resource Server
-This is the Spring Security part you'll use most.
-http
- .oauth2ResourceServer(
-      oauth -> oauth.jwt()
- );
-Meaning:
-I trust an external Authorization Server.
-
-I will only validate tokens.
-
-Flow:
-Request
-    |
-Bearer Token
-    |
-Resource Server
-    |
-Validate JWT
-    |
-Create Authentication
-    |
+Stored in:
 SecurityContextHolder
-    |
-Authorization
-Notice:
-No login
-No password check
-No UserDetailsService
-because authentication already happened elsewhere.
+exactly like:
+UsernamePasswordAuthenticationToken
+or
+JwtAuthenticationToken
 
-OAuth Login vs Resource Server
-Many people confuse these.
-OAuth Login
-Your application wants users to login using Google.
-User
-   |
+Authentication Object
+After Google Login:
+Authentication
+      |
+      +--> Principal
+      |       OAuth2User
+      |
+      +--> Authorities
+      |
+      +--> Authenticated=true
+
+Principal becomes:
+OAuth2User
+instead of:
+UserDetails
+
+Example:
+Authentication auth =
+    SecurityContextHolder
+        .getContext()
+        .getAuthentication();
+
+Principal:
+OAuth2User user =
+    (OAuth2User)
+      auth.getPrincipal();
+
+Get email:
+user.getAttribute("email");
+
+Get name:
+user.getAttribute("name");
+
+Spring Configuration
+Simplified:
+http
+    .oauth2Login();
+That's it.
+Spring auto-configures the OAuth login flow.
+
+Properties:
+spring.security.oauth2.client.registration.google.client-id=...
+spring.security.oauth2.client.registration.google.client-secret=...
+
+What Does Spring Create Internally?
+Several components:
+
+OAuth2AuthorizationRequestRedirectFilter
+Handles:
+/login/oauth2/authorization/google
+Redirects to Google.
+
+OAuth2LoginAuthenticationFilter
+Handles:
+/login/oauth2/code/google
+Processes authorization code.
+
+OAuth2AuthorizedClientManager
+Stores:
+Access Token
+Refresh Token
+for future use.
+
+OAuth2User
+Think of it as:
+UserDetails
+for OAuth.
+
+Contains attributes.
+Example:
+{
+   "email":"umesh@gmail.com",
+   "name":"Umesh"
+}
+
+Access:
+OAuth2User user =
+    (OAuth2User)
+    auth.getPrincipal();
+
+Common Enterprise Requirement
+Google login succeeds.
+Now company wants:
+Internal Roles
+Example:
+umesh@gmail.com
+       |
+       v
+ROLE_ADMIN
+stored in company DB.
+
+How?
+After OAuth login:
+Google User
+       |
+       v
+Load Internal User
+       |
+       v
+Attach Roles
+
+Result:
+Google Identity
++
+Internal Authorization
+Very common.
+
+OAuth2 Login vs Traditional Login
+Traditional:
+Username
+Password
+↓
+UserDetailsService
+↓
+Authentication
+
+OAuth Login:
 Google Login
-   |
-Your App
-Spring:
-.oauth2Login()
+↓
+OAuth2User
+↓
+Authentication
 
-OAuth Resource Server
-Your application receives tokens issued elsewhere.
-User
+Same end result:
+SecurityContextHolder
+contains authenticated user.
+
+OAuth2 Login vs SAML
+Enterprise interview topic.
+
+OAuth2 Login
+Typically:
+Google
+GitHub
+Microsoft
+Web/mobile applications.
+
+SAML
+Typically:
+Large Enterprises
+ADFS
+Legacy Corporate SSO
+XML-based.
+Older.
+
+Modern systems mostly prefer:
+OIDC
+OAuth2 Login
+
+OpenID Connect (OIDC)
+Another interview favorite.
+People often say:
+Google OAuth Login
+Technically:
+Google Login
+=
+OpenID Connect (OIDC)
+built on top of OAuth2
+Because OAuth alone answers:
+Can this app access resources?
+OIDC answers:
+Who is the user?
+
+OIDC introduces:
+ID Token
+usually a JWT.
+Contains:
+{
+  "sub":"12345",
+  "email":"umesh@gmail.com"
+}
+identity information.
+
+Real Enterprise SSO Architecture
+Employee
+    |
+    v
+Okta
+    |
+    +--> Jira
+    |
+    +--> Confluence
+    |
+    +--> Internal HR Portal
+    |
+    +--> Spring Boot Apps
+Every application trusts:
+Okta
+as Identity Provider.
+Employee logs in once.
+All applications receive trusted identity.
+
+Most Important Spring Security Classes
+OAuth2LoginAuthenticationFilter
+Handles callback from Google.
+
+OAuth2User
+Represents authenticated user.
+
+OAuth2AuthenticationToken
+Authentication object stored in SecurityContext.
+
+OAuth2AuthorizedClient
+Stores:
+Access Token
+Refresh Token
+for calling downstream APIs.
+
+Senior Interview Mental Model
+Think of OAuth2 Login as:
+Authentication Outsourcing
+Instead of:
+My App
    |
+   +--> Password Storage
+   +--> Password Reset
+   +--> MFA
+   +--> Account Recovery
+you delegate all identity verification to:
+Google
+GitHub
+Microsoft
+Okta
 Keycloak
-   |
-JWT
-   |
-Your API
-Spring:
-.oauth2ResourceServer()
-
-OAuth Interview Mental Model
-Memorize this:
+The flow becomes:
 User
-   |
-   v
-Client
-   |
-   v
-Authorization Server
-   |
-   | Access Token
-   v
-Resource Server
-And:
+  |
+  v
+Identity Provider
+(Google/Okta)
+  |
+  v
+Authorization Code
+  |
+  v
+Spring Application
+  |
+  v
+OAuth2AuthenticationToken
+  |
+  v
+SecurityContextHolder
+The most important realization is:
+OAuth2 Login is about authenticating users through an external Identity Provider.
+
+OAuth2 Resource Server is about validating tokens issued by that Identity Provider.
+They are often used together in large systems, but they solve different problems.
+
+
+explain OpenID Connect (OIDC) as well
+
+OIDC is one of those topics that suddenly makes OAuth2 Login "click".
+Most developers learn:
+OAuth2 -> Login with Google
+But that's not actually what OAuth2 was designed for.
+
+The Problem with OAuth2
+OAuth2 answers:
+Can this application access a resource?
+Example:
+Travel App
+    |
+    v
+Google Calendar
+User grants:
+calendar.read
+OAuth2 solves:
+Authorization
+
+But suppose your application wants:
+Who is this user?
+Example:
+Email
+Name
+Profile Picture
+OAuth2 itself does not define a standard answer.
+
+Enter OIDC
+OpenID Connect (OIDC) is:
+Identity Layer on top of OAuth2
+Think:
 OAuth2
     =
-Authorization Protocol
+Authorization
 
-JWT
+OIDC
     =
-Token Format
+Authentication + Identity
 
-OAuth2 often issues JWTs,
-but does not require JWTs.
-For a Senior Backend Engineer, the most practical topics after this are:
-Authorization Code Flow
-Access Token vs Refresh Token
-Scopes
-OAuth2 Resource Server
-Keycloak architecture
-JWT validation via JWKs
-How Spring converts scopes/claims into Authentication and authorities
-Those are the OAuth topics that show up most often in real-world Java/Spring interviews and production systems.
+Real Difference
+OAuth2
+Gives:
+Access Token
+which lets you access APIs.
 
+OIDC
+Gives:
+Access Token
++
+ID Token
+The ID Token contains user identity.
 
-this referesh token, who has control, since some proveder can take access for infinite time if not guarded properly.
+Example
+When you login with Google today:
+You are usually not using pure OAuth2.
+You are using:
+OIDC
 
-Excellent question. This is exactly why refresh tokens are considered more sensitive than access tokens.
-Who Controls the Refresh Token?
-The refresh token is issued and controlled by the:
-Authorization Server
-Examples:
-Keycloak
+Flow:
+User
+   |
+   v
 Google
+   |
+   +--> Access Token
+   |
+   +--> ID Token
+
+What is an ID Token?
+Usually a JWT.
+Example:
+{
+  "iss": "https://accounts.google.com",
+  "sub": "123456789",
+  "email": "umesh@gmail.com",
+  "name": "Umesh Maurya",
+  "picture": "...",
+  "exp": 1780000000
+}
+This token answers:
+Who authenticated?
+
+Access Token vs ID Token
+Many engineers mix these up.
+Access Token
+Used for:
+Calling APIs
+Example:
+Authorization: Bearer xxx
+sent to:
+Google Calendar API
+
+ID Token
+Used for:
+Identifying User
+Example:
+{
+  "email":"umesh@gmail.com"
+}
+
+Simple Analogy
+Imagine airport security.
+ID Token
+Passport
+Who are you?
+
+Access Token
+Boarding Pass
+What are you allowed to access?
+
+OIDC Flow
+Suppose user clicks:
+Login with Google
+
+Step 1
+Application redirects user.
+App
+   |
+   v
+Google
+
+Step 2
+User authenticates.
+Email
+Password
+MFA
+
+Step 3
+Google returns:
+Authorization Code
+
+Step 4
+Backend exchanges code.
+Receives:
+{
+  "access_token":"...",
+  "id_token":"...",
+  "refresh_token":"..."
+}
+
+Step 5
+Spring validates ID Token.
+Checks:
+Signature
+Issuer
+Audience
+Expiration
+Nonce
+
+Step 6
+Spring creates:
+OAuth2AuthenticationToken
+using identity information from ID Token.
+
+Important OIDC Claims
+These are standard.
+
+sub
+Subject identifier.
+{
+  "sub":"123456789"
+}
+Unique user ID.
+
+email
+{
+  "email":"umesh@gmail.com"
+}
+
+name
+{
+  "name":"Umesh Maurya"
+}
+
+picture
+{
+  "picture":"https://..."
+}
+
+iss
+Issuer.
+{
+  "iss":"https://accounts.google.com"
+}
+
+aud
+Audience.
+{
+  "aud":"client-id"
+}
+Ensures token was issued for your application.
+
+OIDC Scopes
+Another interview favorite.
+When requesting login:
+scope=openid
+must be present.
+This tells provider:
+I want OIDC.
+
+Additional scopes:
+openid
+profile
+email
+
+Example:
+openid
+gives identity.
+
+profile
+gives:
+name
+picture
+locale
+
+email
+gives:
+email
+email_verified
+
+Why OIDC Won?
+Before OIDC:
+Every provider did identity differently.
+Google:
+/custom endpoint A
+Facebook:
+/custom endpoint B
+Microsoft:
+/custom endpoint C
+Chaos.
+
+OIDC standardized:
+ID Token
+UserInfo Endpoint
+Claims
+Discovery
+Now every compliant provider behaves similarly.
+
+OIDC Discovery
+Provider exposes:
+https://provider.com/.well-known/openid-configuration
+Example:
+Google
+Keycloak
 Okta
-Auth0
 Azure AD
-The Resource Server (your API) usually never sees the refresh token.
+Spring can discover automatically:
+Authorization Endpoint
+Token Endpoint
+JWK Endpoint
+UserInfo Endpoint
 
-Why Is Refresh Token Dangerous?
+OIDC and Spring Security
+When using:
+.oauth2Login()
+Spring often upgrades to OIDC automatically if the provider supports it.
+
+Principal becomes:
+OidcUser
+instead of:
+OAuth2User
+
+Example:
+OidcUser user =
+    (OidcUser)
+    auth.getPrincipal();
+Get email:
+user.getEmail();
+Get claims:
+user.getClaims();
+Get ID Token:
+user.getIdToken();
+
+OIDC vs OAuth2 Summary
+Feature
+OAuth2
+OIDC
+Authorization
+✅
+✅
+Authentication
+❌
+✅
+Access Token
+✅
+✅
+ID Token
+❌
+✅
+User Identity
+❌ Standardized
+✅
+Login / SSO
+Not originally
+Primary use case
+
+
+Why Companies Use OIDC for SSO
+Consider:
+Okta
+as Identity Provider.
+Employees login:
+username
+password
+MFA
+once.
+Okta issues:
+ID Token
+Access Token
+Applications trust Okta.
+Applications learn:
+Who is the user?
+from:
+ID Token
+without ever handling passwords.
+
+Senior Interview Answer
+If asked:
+What is the difference between OAuth2 and OpenID Connect?
+A strong answer is:
+OAuth2 is an authorization framework that allows a client to obtain access to protected resources.
+
+OpenID Connect is an identity layer built on top of OAuth2. It introduces the ID Token, standardized user claims, and authentication capabilities, enabling applications to know who the user is and implement SSO.
+
+OAuth2 answers "What can this application access?"
+OIDC answers "Who is the user?"
+That's usually the exact distinction interviewers are looking for.
+
+
+Now explain me Phase 9: RBAC and ABAC
+
+This is a very important senior-level topic because most real systems eventually outgrow simple role checks.
+
+First: What Problem Are We Solving?
+Suppose you have:
+Users
+Admins
+Managers
+Support Agents
+You need to decide:
+Who can access what?
+That's authorization.
+There are multiple models.
+The two most common are:
+RBAC = Role-Based Access Control
+
+ABAC = Attribute-Based Access Control
+
+RBAC (Role-Based Access Control)
+RBAC says:
+Permissions are assigned to Roles.
+
+Users get Roles.
+
+Example:
+ADMIN
+    |
+    +--> CREATE_USER
+    +--> DELETE_USER
+    +--> VIEW_REPORT
+
+MANAGER
+    |
+    +--> VIEW_REPORT
+    +--> APPROVE_ORDER
+
+USER
+    |
+    +--> VIEW_PROFILE
+
+Users:
+Umesh
+    |
+    +--> ADMIN
+
+John
+    |
+    +--> USER
+
+Authorization becomes:
+User
+   |
+Role
+   |
+Permissions
+
+Spring Security RBAC
+Very common.
+.requestMatchers("/admin/**")
+.hasRole("ADMIN")
+or
+@PreAuthorize("hasRole('ADMIN')")
+
+Request:
+GET /admin/users
+User authorities:
+ROLE_ADMIN
+Allowed.
+
+User authorities:
+ROLE_USER
+Denied.
+
+Why RBAC Is Popular
+Easy to understand.
+Easy to implement.
+Easy to explain.
+Example:
+HR
+Finance
+Admin
+Support
+Everybody understands roles.
+
+RBAC Limitation
 Suppose:
-Access Token = 1 hour
-Refresh Token = 90 days
-Even if the access token expires:
-Client
-   |
-Refresh Token
-   |
-Authorization Server
-   |
-New Access Token
-The user remains logged in.
-If an attacker steals the refresh token:
-Attacker
-    |
-Refresh Token
-    |
-Authorization Server
-    |
-Unlimited New Access Tokens
-Potentially for months.
-That's why refresh tokens require stronger protection.
+User A
+User B
+Both have:
+ROLE_USER
 
-Can a Provider Keep Access Forever?
-Not necessarily.
-The Authorization Server decides:
-Refresh Token Lifetime
+Endpoint:
+GET /users/{id}
+Question:
+Can User A see User B's profile?
+RBAC says:
+Both are ROLE_USER.
+RBAC cannot differentiate.
+
+This is where ABAC comes in.
+
+ABAC (Attribute-Based Access Control)
+ABAC says:
+Access depends on attributes,
+not only roles.
+
+Attributes can come from:
+User
+id
+department
+country
+manager
+
+Resource
+ownerId
+department
+status
+
+Environment
+time
+location
+ip address
+
+Decision is based on rules.
+
+Example
+Rule:
+User can view a document
+only if he owns it.
+
+Document:
+ownerId = 10
+
+Logged in user:
+userId = 10
+Allowed.
+
+Logged in user:
+userId = 11
+Denied.
+
+No roles involved.
+
+ABAC in Spring Security
+Example:
+@PreAuthorize(
+    "#id == authentication.principal.id"
+)
+public User getProfile(Long id) {
+}
+
+Request:
+GET /users/10
+User:
+principal.id = 10
+Allowed.
+
+Request:
+GET /users/20
+User:
+principal.id = 10
+Denied.
+
+This is ABAC.
+Because access depends on:
+Resource Attribute:
+    id
+
+User Attribute:
+    principal.id
+
+Another Example
+Imagine:
+Employee
+Department = Finance
+Document:
+Department = Finance
+Rule:
+Employee can access
+documents of his department.
+
+Spring:
+@PreAuthorize(
+    "#document.department == authentication.principal.department"
+)
+
+That's ABAC.
+
+Yet Another Example
+Only managers can approve orders above ₹1 lakh.
+Rule:
+Amount < 100000
+      Any Employee
+
+Amount >= 100000
+      Manager Required
+This isn't pure RBAC anymore.
+It's:
+Role Attribute
++
+Resource Attribute
+ABAC.
+
+Real Production Example
+E-commerce.
+Order:
+orderId=100
+
+ownerId=50
+
+User:
+userId=50
+Can view.
+
+User:
+userId=51
+Cannot view.
+
+Even though both have:
+ROLE_CUSTOMER
+RBAC alone cannot solve this.
+ABAC solves it.
+
+Spring Security Expression Language (SpEL)
+ABAC is usually implemented using:
+@PreAuthorize
+with SpEL.
+Example:
+@PreAuthorize(
+"#order.userId == authentication.principal.id"
+)
+
+Useful variables:
+authentication
+principal
+#methodParameter
+returnObject
+
+Example:
+@PreAuthorize(
+"authentication.name == #email"
+)
+Only allow users to access their own email.
+
+RBAC + ABAC Together
+Most enterprise systems use both.
+
+Step 1:
+@PreAuthorize("hasRole('ADMIN')")
+RBAC.
+
+Step 2:
+@PreAuthorize(
+"hasRole('ADMIN') and #userId == authentication.principal.id"
+)
+RBAC + ABAC.
+
+Real Banking Example
+Imagine:
+ROLE_CUSTOMER
+ROLE_BANK_EMPLOYEE
+ROLE_MANAGER
+
+RBAC:
+ROLE_MANAGER
+    |
+    +--> Approve Loan
+
+ABAC:
+Manager can approve loan
+only if branch matches.
+
+Rule:
+manager.branch == loan.branch
+Now authorization depends on attributes.
+
+Policy-Based View
+ABAC is often written as policies.
+Example:
+ALLOW IF
+
+user.department
+==
+document.department
+or
+ALLOW IF
+
+user.id
+==
+resource.ownerId
+
+This becomes very powerful.
+
+Interview Question
+Which is more flexible?
+Answer:
+ABAC
+because decisions are based on arbitrary attributes.
+
+Which is simpler?
+Answer:
+RBAC
+because it only needs roles.
+
+Which scales better for complex enterprises?
+Usually:
+RBAC + ABAC
+combined.
+
+Real Spring Security Mapping
+RBAC
+.hasRole("ADMIN")
+or
+@PreAuthorize(
+"hasRole('ADMIN')"
+)
+
+ABAC
+@PreAuthorize(
+"#userId == authentication.principal.id"
+)
+
+RBAC + ABAC
+@PreAuthorize(
+"hasRole('MANAGER') and " +
+"#branchId == authentication.principal.branchId"
+)
+
+Senior-Level Mental Model
+Think of it this way:
+RBAC
+WHO ARE YOU?
+Example:
+ADMIN
+MANAGER
+USER
+
+ABAC
+WHAT ARE YOUR ATTRIBUTES?
+WHAT ARE THE RESOURCE ATTRIBUTES?
+WHAT IS THE CONTEXT?
+Example:
+UserId
+Department
+Branch
+Country
+Time
+IP
+OwnerId
+
+Typical Enterprise Flow
+Authentication
+       |
+       v
+Authentication Object
+       |
+       +--> Roles
+       |
+       +--> User Attributes
+       |
+       v
+Authorization
+
+RBAC Check
+       +
+ABAC Check
+       |
+       v
+Allow / Deny
+That's why in modern systems, RBAC gets you the first 70–80% of authorization requirements, and ABAC handles the more specific ownership, department, branch, tenant, and business-rule checks that roles alone cannot express.
+CORS
+
+
+
+
+CORS is one of those topics that seems complicated until you understand why browsers enforce it.
+
+Step 1: Why CORS Exists
+Imagine:
+Frontend:
+https://amazon.com
+Backend:
+https://api.amazon.com
+User logs into Amazon.
+Now imagine the user opens another tab:
+https://evil-hacker.com
+Without protection, JavaScript running on evil-hacker.com could do:
+fetch("https://api.amazon.com/user/bank-details")
+and read the response.
+That would be a disaster.
+To prevent this, browsers enforce a security rule called:
+Same-Origin Policy (SOP)
+A webpage can only read responses from the same origin.
+
+Step 2: What is an Origin?
+Origin consists of:
+Protocol + Domain + Port
 Examples:
-Google -> configurable behavior
-Keycloak -> configurable
-Okta -> configurable
-Auth0 -> configurable
-Common settings:
-Access Token: 15 minutes
-Refresh Token: 30 days
-After 30 days:
-Refresh Token Expired
-User must log in again.
+Same Origin
+https://amazon.com
+https://amazon.com
 
-How Is Access Revoked?
-OAuth provides several mechanisms.
+Different Origin (Protocol)
+http://amazon.com
+https://amazon.com
+Different origin.
 
-1. Refresh Token Expiry
-Most common.
+Different Origin (Domain)
+https://amazon.com
+https://api.amazon.com
+Different origin.
+
+Different Origin (Port)
+https://amazon.com:443
+https://amazon.com:8080
+Different origin.
+
+Step 3: The Problem
+Modern architectures look like:
+Frontend:
+https://app.company.com
+Backend:
+https://api.company.com
+Different origins.
+Browser blocks response:
+fetch("https://api.company.com/users")
+because of SOP.
+But we actually WANT frontend to access backend.
+So how can backend tell browser:
+"It's okay, I trust this frontend."
+This is where CORS comes in.
+
+Step 4: What is CORS?
+CORS =
+Cross-Origin Resource Sharing
+It's a mechanism where:
+Backend tells browser
+which origins are allowed.
+
+Example request:
+fetch("https://api.company.com/users")
+Browser sends request.
+Backend responds:
+Access-Control-Allow-Origin: https://app.company.com
+Browser sees:
+Origin matches
+and allows JavaScript to read response.
+
+Step 5: Request Flow
+Frontend:
+fetch("https://api.company.com/users")
+Browser automatically adds:
+Origin: https://app.company.com
+Request:
+GET /users
+
+Origin: https://app.company.com
+
+Backend responds:
+200 OK
+
+Access-Control-Allow-Origin: https://app.company.com
+Browser checks:
+Request Origin == Allowed Origin
+If yes:
+Response accessible
+If no:
+CORS Error
+
+Step 6: Important Confusion
+People think:
+CORS blocks requests
+Not exactly.
+Backend still receives request
+Browser only blocks JavaScript from reading response.
 Example:
-Access Token: 15 min
-Refresh Token: 30 days
-After 30 days:
-Refresh denied
-User re-authenticates.
+fetch(...)
+Browser:
+Request sent
+Response received
+Response hidden from JS
+Hence you see:
+Blocked by CORS policy
+in console.
 
-2. User Revokes Consent
-Example:
-User goes to:
-Google Account
-  -> Security
-  -> Third-party apps
-and removes:
-Travel App
-Google invalidates:
-Access Tokens
-Refresh Tokens
-for that application.
-The next refresh request fails.
-
-3. Logout
-Depending on the provider.
-Example:
-Logout
-   |
-Invalidate Refresh Token
-Future refresh attempts fail.
-
-4. Token Rotation (Very Important)
-Modern providers often use:
-Refresh Token Rotation
-Instead of:
-Refresh Token A
-being reusable forever:
-Use Refresh Token A
-      |
-      v
-Get Access Token
-Get Refresh Token B
-      |
-Invalidate A
-Now:
-A = invalid
-B = valid
-
+Step 7: Why Postman Works
+Very common interview question.
+Browser
+fetch(...)
+fails.
+Postman
+works.
 Why?
-Suppose attacker steals:
-Refresh Token A
-and the real user already exchanged it.
-When attacker tries:
-Refresh Token A
-again:
-Invalid Token
-Provider detects possible theft.
-This significantly reduces risk.
+Because:
+CORS is enforced by browsers.
+Postman is not a browser.
+No Same-Origin Policy.
+No CORS enforcement.
+Hence:
+Postman succeeds
+Browser fails
 
-Where Should Refresh Tokens Be Stored?
-For browser applications:
-Preferred:
-HttpOnly Secure Cookie
-Avoid:
-localStorage
-for refresh tokens because XSS attacks can steal them.
-
-What About Microservices?
-Typical architecture:
-Browser
-    |
-Refresh Token
-    |
-Authorization Server
-Browser
-    |
-Access Token
-    |
-API Gateway
-    |
-Microservices
-Microservices usually receive only:
-Access Token
-not refresh tokens.
-
-Real Example: Google OAuth
-When your app asks for:
-offline_access
-(or equivalent provider-specific settings)
-Google may issue:
-Access Token
-Refresh Token
-The refresh token allows your app to act later when the user is not actively using the application.
+Step 8: Simple Requests
+Browser directly sends request if it is considered "simple".
+Examples:
+GET
+POST
+HEAD
+with standard headers.
 Example:
-Calendar Sync App
-can continue syncing calendars overnight.
-But:
-User can revoke access
-Google can expire tokens
-Google can detect suspicious usage
-Refresh token policies apply
-So it is not truly "forever."
+fetch("/users")
+Browser directly sends request.
 
-Senior-Level Security Concern
-The biggest OAuth risk is usually:
-Refresh Token Theft
-not:
-Access Token Theft
+Step 9: Preflight Request
+Suppose:
+fetch("/users", {
+  method: "PUT",
+  headers: {
+      "Authorization": "Bearer xyz"
+  }
+})
+Now browser becomes cautious.
+Before actual request it sends:
+OPTIONS /users
+called a
+Preflight Request
+
+Step 10: Why Preflight Exists
+Browser asks backend:
+Can I send a PUT request?
+
+Can I send Authorization header?
+Request:
+OPTIONS /users
+
+Origin: https://app.company.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: Authorization
+
+Backend replies:
+Access-Control-Allow-Origin: https://app.company.com
+
+Access-Control-Allow-Methods: GET,POST,PUT
+
+Access-Control-Allow-Headers: Authorization
+Browser sees:
+Everything allowed
+Then sends actual request.
+
+Complete flow:
+Browser
+   |
+OPTIONS
+   |
+Backend
+   |
+Allowed
+   |
+PUT Request
+   |
+Backend
+   |
+Response
+
+Step 11: Most Important CORS Headers
+Allow Origin
+Access-Control-Allow-Origin
+Example:
+Access-Control-Allow-Origin: https://app.company.com
+
+Allow Methods
+Access-Control-Allow-Methods
+Example:
+Access-Control-Allow-Methods: GET,POST,PUT,DELETE
+
+Allow Headers
+Access-Control-Allow-Headers
+Example:
+Access-Control-Allow-Headers: Authorization,Content-Type
+
+Allow Credentials
+Access-Control-Allow-Credentials: true
+Used for:
+Cookies
+Session Authentication
+
+Step 12: JWT vs Cookie and CORS
+This is where Spring Security developers get confused.
+JWT in Authorization Header
+Authorization: Bearer abc123
+No cookie involved.
+Backend:
+Access-Control-Allow-Origin
+usually enough.
+
+Session Cookie
+Browser automatically sends:
+Cookie: JSESSIONID=xyz
+Now backend must also return:
+Access-Control-Allow-Credentials: true
+and frontend must call:
+fetch(url,{
+   credentials:"include"
+})
+
+Step 13: Why * Can Be Dangerous
+Some developers do:
+Access-Control-Allow-Origin: *
+Meaning:
+Everyone can access.
+Okay for:
+Public APIs
+Dangerous for:
+Banking
+Payments
+Admin portals
+Usually whitelist:
+https://app.company.com
+https://admin.company.com
+
+Step 14: Spring Boot Example
+@Configuration
+public class CorsConfig {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addCorsMappings(
+                    CorsRegistry registry) {
+
+                registry.addMapping("/**")
+                        .allowedOrigins(
+                            "https://app.company.com")
+                        .allowedMethods(
+                            "GET","POST","PUT","DELETE")
+                        .allowedHeaders("*");
+            }
+        };
+    }
+}
+
+Step 15: Spring Security Gotcha
+Many people configure CORS:
+WebMvcConfigurer
+but still get errors.
+Why?
+Because Spring Security intercepts request before MVC.
+Need:
+@Bean
+SecurityFilterChain securityFilterChain(
+        HttpSecurity http)
+        throws Exception {
+
+    http.cors(Customizer.withDefaults());
+
+    return http.build();
+}
+Without this:
+OPTIONS request gets blocked
+Preflight fails.
+Actual request never sent.
+
+Interview-Level Summary
+Think of CORS like a nightclub security check:
+Frontend = Visitor
+Browser = Security Guard
+Backend = Club Owner
+Visitor says:
+I want to enter.
+Security guard asks owner:
+Is this origin allowed?
+Backend replies:
+Yes, app.company.com is allowed.
+Then browser lets the frontend read the response.
+Without CORS, the browser protects users from malicious websites stealing data from other sites they are logged into.
+The two concepts that unlock 90% of CORS are:
+Same-Origin Policy (browser security rule)
+Preflight OPTIONS request (browser asking permission before risky requests)
+Once these are clear, the rest of CORS becomes mostly a matter of understanding the headers.
+
+what is defination of simple request, why Get and POST are allowd, Get can access sentive data and POST can modify the resource
+
+Excellent question. Many developers initially assume:
+"GET can read sensitive data and POST can change data, so why are they considered simple?"
+The answer is:
+"Simple" in CORS does NOT mean safe.
+It means:
+"This request type has existed on the web for a long time and websites have always been able to trigger it."
+
+Before AJAX existed
+Long before JavaScript fetch() and CORS, a website could already make the browser send requests to another site.
+For example:
+GET
+<img src="https://bank.com/account">
+When browser loads the image:
+GET https://bank.com/account
+is sent automatically.
+
+POST
+A website could also create a form:
+<form action="https://bank.com/transfer" method="POST">
+    <input name="amount" value="1000">
+</form>
+and auto-submit it.
+Browser would send:
+POST /transfer
+to another website.
+This was possible even 25 years ago.
+
+So what problem was CORS solving?
+Not:
+Can a website send a request?
+That was already possible.
+Instead:
+Can JavaScript READ the response?
+That is the dangerous part.
+Example:
+Attacker site
+fetch("https://bank.com/account")
+If JS could read the response:
+{
+  "balance": 100000,
+  "accountNumber": "123456"
+}
+then the attacker could steal it.
+So browser says:
+Request can be sent.
+Response cannot be read unless CORS allows it.
+
+Then why preflight for some requests?
+Because some requests indicate AJAX/API behavior rather than traditional web forms.
+For example:
+PUT /users/123
+DELETE /users/123
+PATCH /users/123
+Traditional HTML forms cannot generate these methods.
+Similarly:
+Authorization: Bearer xxx
+or
+X-Custom-Header: abc
+are not standard browser form submissions.
+When browser sees these, it thinks:
+This is an advanced cross-origin API call.
+Let me ask permission first.
+Hence preflight.
+
+Official definition of a Simple Request
+A request is "simple" only if all conditions are satisfied.
+Method
+Must be one of:
+GET
+POST
+HEAD
+
+Headers
+Only simple headers:
+Accept
+Accept-Language
+Content-Language
+Content-Type
+plus a few browser-managed headers.
+
+Content-Type
+For POST, only:
+application/x-www-form-urlencoded
+
+multipart/form-data
+
+text/plain
+are simple.
+
+This is simple:
+fetch("/users", {
+    method: "POST",
+    headers: {
+        "Content-Type":
+            "application/x-www-form-urlencoded"
+    }
+})
+No preflight.
+
+This is NOT simple:
+fetch("/users", {
+    method: "POST",
+    headers: {
+        "Content-Type":
+            "application/json"
+    }
+})
+Surprisingly:
+application/json
+causes preflight.
+Many developers don't realize this.
+
+Why is GET considered simple if it can read data?
+Because:
+Simple request ≠ Safe request
+Browser already allows websites to initiate GETs through:
+<img>
+<script>
+<link>
+<iframe>
+etc.
+The security protection is:
+JavaScript cannot read the response
+unless CORS allows it.
+So:
+fetch("https://bank.com/account")
+may successfully send the request,
+but browser hides:
+{
+  "balance": 100000
+}
+from the attacking website.
+
+Then how were CSRF attacks possible?
+Great connection.
+Imagine you're logged into your bank.
+Attacker page:
+<form action="https://bank.com/transfer"
+      method="POST">
+  <input name="amount" value="10000">
+  <input name="to" value="attacker">
+</form>
+
+<script>
+document.forms[0].submit();
+</script>
+Browser automatically sends your bank cookies.
+The transfer may succeed.
+Notice:
+Attacker never read the response.
+So CORS is not violated.
+This is why:
+CORS protects response reading.
+CSRF protects unwanted state-changing requests.
+They solve different problems.
+
+Mental model
+CORS asks:
+Can JavaScript from Origin A
+read responses from Origin B?
+CSRF asks:
+Can Origin A trick the browser
+into sending authenticated requests
+to Origin B?
+Different threats, different defenses.
+That's why a GET or POST can be a "simple request" even though it may access or modify important resources. The browser's concern for CORS is primarily cross-origin response access, not whether the operation itself is sensitive.
+
+
+what will happen if server sent the response but server is saying that do not show response since it Cross origin but the Web Browser still shows the respones. is this possible or not
+
+In a normal browser environment, no. The browser enforces CORS itself, so JavaScript running on the page cannot simply decide to ignore it.
+Example:
+fetch("https://bank.com/account")
+  .then(r => r.json())
+  .then(console.log)
+If the response is missing the required CORS headers:
+Access-Control-Allow-Origin: https://evil.com
+(or doesn't allow the requesting origin), the browser will:
+Send the request.
+Receive the response.
+Check CORS rules.
+Block JavaScript from accessing the response.
+You will see something like:
+Access to fetch at ...
+has been blocked by CORS policy
+The response body exists internally, but your page's JavaScript cannot read it.
+
+Then why can I see it in the Network tab?
+This confuses many developers.
+Chrome DevTools → Network tab may show:
+{
+  "balance": 100000
+}
+even though JavaScript gets a CORS error.
+Why?
+Because:
+DevTools belongs to the browser/user.
+JavaScript belongs to the webpage.
+The browser is allowed to show you the response for debugging purposes.
+The webpage is not allowed to access it.
+So:
+Developer → Can see
+Website JS → Cannot see
+
+Can a browser ignore CORS?
+Yes, but only if the browser itself is modified or launched with security disabled.
+For example:
+chrome --disable-web-security
+(or similar flags)
+Then CORS checks are disabled.
+This is useful only for local development and is extremely unsafe for normal browsing.
+
+What about Postman?
+Postman receives the response because:
+Postman is not a browser.
+There is no Same-Origin Policy and no CORS enforcement.
+
+What about browser extensions?
+Some extensions can modify requests/responses and effectively bypass CORS restrictions.
+But that's because the extension has elevated browser privileges.
+The website's JavaScript still cannot bypass CORS by itself.
+
+The key point
+When people say:
+"The server says don't show the response."
+That's not exactly what's happening.
+The server merely sends headers such as:
+Access-Control-Allow-Origin: https://app.company.com
+or omits them.
+The browser is the one making the decision:
+Server -> Response
+Browser -> "I will not expose this response to the page"
+The server cannot directly hide the response. The browser voluntarily enforces the rule.
+A useful analogy:
+Server = Club owner
+Browser = Security guard
+JavaScript = Visitor
+The owner says:
+Only app.company.com visitors may enter.
+The security guard enforces that rule. The visitor cannot overrule the guard.
+
+
+
+
+
+Now Come to the CSRF. what is this , what problem does it solves
+
+CSRF is much easier to understand once you understand what CORS does.
+
+First: What CORS Does NOT Prevent
+Suppose you're logged into:
+https://bank.com
+Your browser has:
+Cookie: SESSIONID=abc123
+Now you visit:
+https://evil.com
+The attacker creates:
+<form action="https://bank.com/transfer" method="POST">
+    <input name="amount" value="10000">
+    <input name="to" value="attacker">
+</form>
+
+<script>
+document.forms[0].submit();
+</script>
+What happens?
+Browser sends:
+POST /transfer
+
+Cookie: SESSIONID=abc123
+Notice:
+The browser automatically sends the bank session cookie because the request is going to bank.com.
+From the bank's perspective:
+Valid session cookie
+Authenticated user
+POST request
+So the transfer may succeed.
+
+Where is the attack?
+The user never intended to transfer money.
+The attacker tricked the user's browser into making an authenticated request.
+This is called:
+CSRF
+Cross-Site Request Forgery
+Breaking it down:
+Cross-Site → request originated from another site
+Request → browser sends request
+Forgery → request appears to come from the user even though the user didn't intend it
+
+Why CORS Doesn't Stop This
+Many people think:
+"Shouldn't CORS block this?"
+No.
+Because the attacker doesn't need to read the response.
+They only need the action to happen.
+Example:
+Transfer ₹10,000
+Change email
+Delete account
+Change password
+If the action succeeds, the attacker wins.
+Whether they can read the response is irrelevant.
+
+What Problem Does CSRF Solve?
+CSRF protects against:
+Malicious websites causing a user's browser
+to perform authenticated actions on another site.
+In short:
+CORS protects data reading.
+CSRF protects unwanted actions.
+
+How CSRF Protection Works
+The idea is:
+Session cookie = sent automatically
+CSRF token = cannot be guessed by attacker
+When rendering a page:
+Server generates:
+<input type="hidden"
+       name="_csrf"
+       value="7xK92LmP">
+The browser submits:
+POST /transfer
+
+Cookie: SESSIONID=abc123
+
+_csrf=7xK92LmP
+Server checks:
+Valid session?
+Valid CSRF token?
+Only then executes transfer.
+
+Why Can't Attacker Send the Token?
+Attacker can create:
+<form action="https://bank.com/transfer">
+But they don't know:
+7xK92LmP
+because it's generated by the bank and tied to the user's session.
+So their forged request becomes:
+POST /transfer
+
+Cookie: SESSIONID=abc123
+without:
+_csrf=7xK92LmP
+Server rejects:
+403 Forbidden
+
+Visual Flow
+Without CSRF protection:
+User logged into bank
+        ↓
+Visits evil.com
+        ↓
+evil.com submits form
+        ↓
+Browser sends bank cookie
+        ↓
+Bank executes transfer
+
+With CSRF protection:
+User logged into bank
+        ↓
+Visits evil.com
+        ↓
+evil.com submits form
+        ↓
+Browser sends cookie
+        ↓
+No CSRF token
+        ↓
+Bank rejects request
+
+Why JWT APIs Often Disable CSRF
+Suppose frontend sends:
+Authorization: Bearer eyJ...
+The browser does NOT automatically attach this header.
+JavaScript must explicitly add it:
+fetch("/transfer", {
+  headers: {
+    Authorization: "Bearer eyJ..."
+  }
+})
+Now imagine evil.com.
+Can it send the token?
+No.
+It doesn't know the token.
+Therefore classic CSRF attack doesn't work.
+That's why many Spring Boot applications using JWT do:
+http.csrf(csrf -> csrf.disable());
+
+When Do You Need CSRF Protection?
+Session/Cookie Authentication
+Cookie: JSESSIONID=abc123
+✅ Usually need CSRF protection.
+Because cookies are sent automatically.
+
+JWT in Authorization Header
+Authorization: Bearer xyz
+❌ Usually CSRF protection is not needed.
+Because the attacker cannot automatically cause the browser to include the token.
+
+Interview Summary
+CORS
+Protects:
+Can evil.com READ responses from bank.com?
+
+CSRF
+Protects:
+Can evil.com make the user's browser
+perform actions on bank.com using the user's session?
+
+A classic interview one-liner:
+CORS prevents unauthorized reading of responses; CSRF prevents unauthorized execution of authenticated actions.
+Why the evil site can not read the csrf token when they can read the JSESSION_ID
+
+This is the key insight that makes CSRF protection work.
+The short answer is:
+The evil site cannot read either the JSESSIONID cookie or the CSRF token from bank.com.
+The difference is that the browser automatically sends the cookie, but it does not automatically send the CSRF token.
+Let's walk through it carefully.
+
+What the attacker can do
+Suppose you're logged into:
+https://bank.com
+Your browser stores:
+JSESSIONID=abc123
+Now you visit:
+https://evil.com
+The attacker's page can create:
+<form action="https://bank.com/transfer" method="POST">
+  <input name="amount" value="10000">
+</form>
+and submit it.
+The browser automatically attaches:
+Cookie: JSESSIONID=abc123
+because the request is going to bank.com.
+
+What the attacker cannot do
+The attacker cannot run:
+document.cookie
+and see:
+JSESSIONID=abc123
+because that cookie belongs to bank.com.
+Same-Origin Policy prevents evil.com from reading cookies of bank.com.
+So the attacker does not know the session ID value.
+
+Then how is the cookie being used?
+Because the browser itself sends it.
+Think of it like:
+Attacker: "Send this request to bank.com"
+
+Browser: "Okay, I see this is for bank.com.
+I will attach all bank.com cookies."
+The attacker benefits from the cookie being attached automatically, even though they cannot read it.
+
+What about the CSRF token?
+Suppose bank.com generates:
+<input type="hidden"
+       name="_csrf"
+       value="X7kP91Qz">
+or returns:
+{
+  "csrfToken": "X7kP91Qz"
+}
+For a valid request, bank expects:
+POST /transfer
+
+Cookie: JSESSIONID=abc123
+X-CSRF-Token: X7kP91Qz
+
+Why can't evil.com send the token?
+Because the attacker doesn't know:
+X7kP91Qz
+To know it, they'd need to read a page from:
+https://bank.com
+But Same-Origin Policy and CORS prevent that.
+For example:
+fetch("https://bank.com/profile")
+may send the request,
+but the browser won't allow evil.com to read the response.
+So the attacker cannot extract:
+<input value="X7kP91Qz">
+or
+{
+  "csrfToken": "X7kP91Qz"
+}
+from the bank's pages.
+
+The important distinction
+Session Cookie
+Automatically attached by browser:
+Cookie: JSESSIONID=abc123
+Attacker doesn't know its value, but doesn't need to.
+
+CSRF Token
+Not automatically attached by browser.
+Must be explicitly included:
+X-CSRF-Token: X7kP91Qz
+Attacker needs to know the value.
+But browser prevents them from reading it.
+
+Analogy
+Imagine your office building.
+Session cookie = employee badge
+When you walk through a door:
+Browser automatically presents badge
+The attacker can trick you into walking to a door.
+
+CSRF token = secret daily password
+The guard asks:
+Show your badge.
+Tell me today's password.
+You have the badge automatically.
+But the attacker doesn't know today's password.
+So they can force you to approach the guard, but they can't make you provide the correct password.
+
+One more thing: HttpOnly
+Most session cookies are also marked:
+Set-Cookie: JSESSIONID=abc123; HttpOnly
+This means:
+document.cookie
+cannot even read the session cookie on bank.com itself.
+So in modern applications:
+Evil site cannot read JSESSIONID.
+Evil site cannot read CSRF token.
+Browser automatically sends JSESSIONID.
+Browser does not automatically send CSRF token.
+That asymmetry is exactly what CSRF protection relies on.
+
+
+suppose customer loges in and he gets one JWT token.
+now that JWT token needs to be pass in every subsequent request.
+Now that JWT token is it sotored in cookies.
+and this cookioe what do they contain generally.
+Good question. There are two common ways JWTs are stored, and whether CSRF is a concern depends heavily on which one is used.
+Option 1: JWT Stored in Browser Memory / Local Storage
+After login:
+POST /login
+Server returns:
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs..."
+}
+Frontend stores it:
+localStorage.setItem("token", jwt);
+or in memory (React state, Redux, etc.).
+Subsequent requests:
+fetch("/api/orders", {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})
+Request:
+GET /api/orders
+Authorization: Bearer eyJhbGciOi...
+CSRF Risk?
+Very low.
+Why?
+Because the browser does not automatically attach the Authorization header.
+An attacker at evil.com cannot make the browser magically send:
+Authorization: Bearer eyJhbGciOi...
+because they don't know the token.
+This is why many JWT-based APIs disable CSRF protection.
+
+Option 2: JWT Stored in Cookie
+Some applications store JWT in a cookie:
+Set-Cookie:
+jwt=eyJhbGciOi...;
+HttpOnly;
+Secure;
+SameSite=Lax
+Browser stores:
+jwt=eyJhbGciOi...
+Then every request automatically includes:
+Cookie: jwt=eyJhbGciOi...
+just like:
+Cookie: JSESSIONID=abc123
+CSRF Risk?
+Potentially yes.
+Because the browser automatically sends cookies.
+If misconfigured, an attacker could cause:
+POST /transfer
+Cookie: jwt=eyJhbGciOi...
+to be sent.
+In this model, CSRF protection or proper SameSite cookie settings become important.
+
+What Do Cookies Usually Contain?
+Cookies are just:
+key=value
+pairs.
+Examples:
+Traditional Session Authentication
+Set-Cookie:
+JSESSIONID=abc123xyz
+Cookie contains:
+Session Identifier
+not the user's data.
+The server stores:
+abc123xyz -> User #42
+in Redis, DB, memory, etc.
+
+JWT Authentication
+Set-Cookie:
+jwt=eyJhbGciOi...
+Cookie contains:
+Entire JWT
+The server usually doesn't store session state.
+The JWT itself contains claims.
+Example payload:
+{
+  "sub": "42",
+  "email": "umesh@example.com",
+  "role": "USER",
+  "exp": 1790000000
+}
+
+Other Common Cookies
+Analytics:
+_ga=...
+Preferences:
+theme=dark
+Language:
+lang=en
+Shopping cart:
+cartId=12345
+
+Session Cookie vs JWT Cookie
+Session Cookie
+Cookie:
+JSESSIONID=abc123
+Server stores:
+abc123 -> User Details
+Stateful authentication.
+
+JWT Cookie
+Cookie:
+jwt=eyJhbGciOi...
+Server verifies signature:
+HMAC or RSA signature
+Stateless authentication.
+
+In Modern Spring Boot APIs
+A very common setup is:
+Authorization: Bearer <JWT>
+instead of:
+Cookie: jwt=<JWT>
 because:
-Access Token
-    -> short-lived
+Stateless
+Works well with SPAs
+Avoids most CSRF concerns
+Easy for mobile apps
+That's why when you see Spring Security JWT tutorials, they often do:
+http.csrf(csrf -> csrf.disable());
+because authentication is based on the Authorization header, not an automatically sent cookie.
+Quick Interview Answer
+What is stored in cookies?
+Usually either:
+A session identifier (JSESSIONID) that points to server-side session data.
+A JWT itself (jwt=<token>).
+User preferences or tracking information.
+Why is JWT in the Authorization header often preferred?
+Because the browser does not automatically send it, which greatly reduces the risk of CSRF attacks compared to cookie-based authentication.
 
-Refresh Token
-    -> long-lived
-That's why modern systems often use:
-Short Access Tokens
-+
-Refresh Token Rotation
-+
-Revocation Support
-+
-Consent Revocation
-to keep long-lived access under control.
-Mental Model
-Think of it like this:
-Access Token
-    =
-Temporary visitor pass
+These are HTTP Security Headers. They tell the browser how to behave securely when rendering your website.
+Think of them as additional security instructions sent by the server.
 
-Refresh Token
-    =
-Ability to request new visitor passes
-Losing the visitor pass is annoying.
-Losing the authority to issue yourself new visitor passes is much more serious, which is why authorization servers guard refresh tokens much more aggressively.
+1. X-Frame-Options
+Problem it solves: Clickjacking
+Imagine a banking website:
+https://bank.com/transfer
+An attacker creates:
+<iframe src="https://bank.com/transfer"></iframe>
+and makes it invisible:
+opacity: 0;
+Then places a fake button above it:
+Click here to win ₹1000
+When the user clicks:
+Actual click goes to bank.com
+Maybe they unknowingly approve a transfer.
+This is called:
+Clickjacking
+
+Solution
+Server sends:
+X-Frame-Options: DENY
+Browser refuses:
+This page cannot be loaded inside iframe
+
+Common Values
+DENY
+X-Frame-Options: DENY
+Never allow iframe.
+
+SAMEORIGIN
+X-Frame-Options: SAMEORIGIN
+Only same domain may embed it.
+Example:
+bank.com -> iframe bank.com
+Allowed.
+evil.com -> iframe bank.com
+Blocked.
+
+2. CSP (Content Security Policy)
+Problem it solves: XSS
+Suppose your page accidentally renders:
+<script>
+stealCookies()
+</script>
+in user input.
+Now attacker's JavaScript executes.
+This is:
+Cross-Site Scripting (XSS)
+
+Solution
+Server sends:
+Content-Security-Policy:
+default-src 'self'
+Meaning:
+Only load resources from my own domain
+
+Example
+Content-Security-Policy:
+script-src 'self'
+Allowed:
+<script src="/app.js"></script>
+
+Blocked:
+<script src="https://evil.com/hack.js"></script>
+Browser refuses.
+
+More Advanced CSP
+Content-Security-Policy:
+default-src 'self';
+script-src 'self';
+img-src 'self' cdn.company.com;
+Meaning:
+Scripts only from my site
+Images from my site and CDN
+
+Why CSP is powerful
+Even if an attacker injects:
+<script src="https://evil.com/steal.js"></script>
+Browser says:
+Not allowed by CSP
+and blocks it.
+
+3. HSTS
+Problem it solves
+Suppose user types:
+http://bank.com
+instead of:
+https://bank.com
+Now first request is unencrypted.
+An attacker on public Wi-Fi may intercept.
+This is called:
+SSL Stripping Attack
+
+Solution
+Server sends:
+Strict-Transport-Security:
+max-age=31536000
+(HSTS)
+Meaning:
+For next 1 year,
+always use HTTPS
+
+Browser remembers:
+bank.com => HTTPS only
+Even if user enters:
+http://bank.com
+Browser automatically converts to:
+https://bank.com
+before sending request.
+
+Common Header
+Strict-Transport-Security:
+max-age=31536000;
+includeSubDomains
+Meaning:
+1 year
+all subdomains
+HTTPS only
+
+Real Example
+A banking application might return:
+X-Frame-Options: DENY
+
+Content-Security-Policy:
+default-src 'self'
+
+Strict-Transport-Security:
+max-age=31536000;
+includeSubDomains
+This gives protection against:
+Header
+Protects Against
+X-Frame-Options
+Clickjacking
+CSP
+XSS and malicious resource loading
+HSTS
+SSL stripping / insecure HTTP access
+
+
+Spring Security
+By default, Spring Security already adds several security headers.
+Example:
+http
+    .headers(headers -> headers
+        .frameOptions(frame -> frame.deny())
+    );
+For CSP:
+http.headers(headers ->
+    headers.contentSecurityPolicy(csp ->
+        csp.policyDirectives(
+            "default-src 'self'"
+        )
+    )
+);
+For HSTS:
+http.headers(headers ->
+    headers.httpStrictTransportSecurity(
+        hsts -> hsts
+            .includeSubDomains(true)
+            .maxAgeInSeconds(31536000)
+    )
+);
+
+Interview One-Liners
+X-Frame-Options → Prevents clickjacking by controlling iframe embedding.
+CSP (Content Security Policy) → Restricts where scripts, images, and other resources can be loaded from; helps mitigate XSS.
+HSTS (HTTP Strict Transport Security) → Forces browsers to use HTTPS and prevents SSL stripping attacks.
+
+but what will happen when the customer first time hits http and the call goes to un encrypted
+
+Excellent question.
+You have discovered the "first request problem" of HSTS.
+
+The Problem
+Suppose a user has never visited:
+https://bank.com
+before.
+They type:
+http://bank.com
+Browser sends:
+GET /
+Host: bank.com
+over plain HTTP.
+At this moment:
+Browser has never seen HSTS header.
+So it doesn't know that HTTPS is required.
+
+What normally happens
+Server responds:
+301 Moved Permanently
+Location: https://bank.com
+Browser then goes:
+http://bank.com
+      ↓
+redirect
+      ↓
+https://bank.com
+After reaching HTTPS, server sends:
+Strict-Transport-Security:
+max-age=31536000
+Browser stores:
+bank.com => HTTPS only for 1 year
+Future requests are safe.
+
+Where is the danger?
+The danger exists before HSTS has been learned.
+Imagine you're on public Wi-Fi.
+An attacker sits between you and the server.
+When you send:
+http://bank.com
+attacker intercepts.
+Instead of forwarding:
+301 -> https://bank.com
+they return:
+200 OK
+with a fake page.
+Or they modify links so you stay on HTTP.
+This is the classic:
+SSL Stripping Attack
+The attacker prevents you from ever reaching HTTPS.
+
+So does HSTS fail for first-time visitors?
+By itself:
+Yes, partially.
+HSTS protects:
+Second visit onward
+because the browser has already learned the rule.
+It cannot fully protect the very first visit.
+
+The Solution: HSTS Preload
+Modern browsers ship with a built-in list:
+Chrome
+Firefox
+Safari
+Edge
+contain thousands of domains that are known to require HTTPS.
+Examples:
+google.com
+github.com
+paypal.com
+are preloaded.
+Browser already knows:
+github.com => HTTPS only
+before any request is made.
+
+What happens then?
+User types:
+http://github.com
+Browser checks preload list:
+github.com is HSTS-preloaded
+Browser immediately converts:
+https://github.com
+No HTTP request is ever sent.
+No opportunity for SSL stripping.
+
+Visual Comparison
+Without HSTS
+User
+ ↓
+HTTP
+ ↓
+Attacker can intercept
+
+HSTS Learned Previously
+User
+ ↓
+Browser upgrades to HTTPS
+ ↓
+Secure
+
+HSTS Preload
+User
+ ↓
+Browser already knows HTTPS only
+ ↓
+HTTPS immediately
+No insecure first request.
+
+Real-World Practice
+For production systems:
+Redirect HTTP → HTTPS.
+Enable HSTS.
+Submit domain to HSTS preload list.
+Typical header:
+Strict-Transport-Security:
+max-age=31536000;
+includeSubDomains;
+preload
+Then the domain can be added to the browser preload lists.
+
+Interview Answer
+If asked:
+What happens on the very first HTTP request before HSTS is known?
+Answer:
+HSTS alone cannot protect the first visit because the browser has not yet learned the HSTS policy. An attacker could perform an SSL stripping attack during that initial HTTP request. To solve this, browsers maintain an HSTS preload list of domains that should always be contacted over HTTPS, eliminating the insecure first request.
+
+
+
+Excellent question.
+You have discovered the "first request problem" of HSTS.
+
+The Problem
+Suppose a user has never visited:
+https://bank.com
+before.
+They type:
+http://bank.com
+Browser sends:
+GET /
+Host: bank.com
+over plain HTTP.
+At this moment:
+Browser has never seen HSTS header.
+So it doesn't know that HTTPS is required.
+
+What normally happens
+Server responds:
+301 Moved Permanently
+Location: https://bank.com
+Browser then goes:
+http://bank.com
+      ↓
+redirect
+      ↓
+https://bank.com
+After reaching HTTPS, server sends:
+Strict-Transport-Security:
+max-age=31536000
+Browser stores:
+bank.com => HTTPS only for 1 year
+Future requests are safe.
+
+Where is the danger?
+The danger exists before HSTS has been learned.
+Imagine you're on public Wi-Fi.
+An attacker sits between you and the server.
+When you send:
+http://bank.com
+attacker intercepts.
+Instead of forwarding:
+301 -> https://bank.com
+they return:
+200 OK
+with a fake page.
+Or they modify links so you stay on HTTP.
+This is the classic:
+SSL Stripping Attack
+The attacker prevents you from ever reaching HTTPS.
+
+So does HSTS fail for first-time visitors?
+By itself:
+Yes, partially.
+HSTS protects:
+Second visit onward
+because the browser has already learned the rule.
+It cannot fully protect the very first visit.
+
+The Solution: HSTS Preload
+Modern browsers ship with a built-in list:
+Chrome
+Firefox
+Safari
+Edge
+contain thousands of domains that are known to require HTTPS.
+Examples:
+google.com
+github.com
+paypal.com
+are preloaded.
+Browser already knows:
+github.com => HTTPS only
+before any request is made.
+
+What happens then?
+User types:
+http://github.com
+Browser checks preload list:
+github.com is HSTS-preloaded
+Browser immediately converts:
+https://github.com
+No HTTP request is ever sent.
+No opportunity for SSL stripping.
+
+Visual Comparison
+Without HSTS
+User
+ ↓
+HTTP
+ ↓
+Attacker can intercept
+
+HSTS Learned Previously
+User
+ ↓
+Browser upgrades to HTTPS
+ ↓
+Secure
+
+HSTS Preload
+User
+ ↓
+Browser already knows HTTPS only
+ ↓
+HTTPS immediately
+No insecure first request.
+
+Real-World Practice
+For production systems:
+Redirect HTTP → HTTPS.
+Enable HSTS.
+Submit domain to HSTS preload list.
+Typical header:
+Strict-Transport-Security:
+max-age=31536000;
+includeSubDomains;
+preload
+Then the domain can be added to the browser preload lists.
+
+Interview Answer
+If asked:
+What happens on the very first HTTP request before HSTS is known?
+Answer:
+HSTS alone cannot protect the first visit because the browser has not yet learned the HSTS policy. An attacker could perform an SSL stripping attack during that initial HTTP request. To solve this, browsers maintain an HSTS preload list of domains that should always be contacted over HTTPS, eliminating the insecure first request.
+
+
+
+Question 1 -
+how do the browsers prevent this first time http, since all the websites of the world can not be cached
+Question 2 - Explain in a bit detail that how this first time http can be exploited by attacker
+
+Question 1:
+How do browsers prevent the first-time HTTP problem if they can't preload every website?
+They don't.
+This is an important reality.
+A browser cannot know in advance that every website on Earth requires HTTPS.
+For a completely new domain:
+new-startup-xyz.com
+the browser has only two possibilities:
+Try HTTP first.
+Try HTTPS first.
+Historically, browsers allowed HTTP because much of the web used HTTP.
+
+Modern browsers have improved this
+Today, browsers increasingly use HTTPS-First Mode or HTTPS-Only Mode.
+For example:
+User types:
+example.com
+Browser often tries:
+https://example.com
+first.
+If HTTPS works:
+Stay on HTTPS
+If HTTPS fails:
+May fall back to HTTP
+(depending on browser settings).
+So modern browsers reduce the risk significantly.
+
+HSTS Preload
+For important domains:
+google.com
+github.com
+paypal.com
+amazon.com
+browser vendors ship a built-in list.
+These domains are known beforehand to require HTTPS.
+So:
+http://github.com
+becomes:
+https://github.com
+before any network request.
+
+For unknown domains
+There is no magic.
+The browser cannot preload:
+billions of current and future domains
+So the first-visit problem still exists in theory.
+The web's defense is a combination of:
+HTTPS by default
+HSTS
+HSTS preload
+HTTPS-First browser modes
+rather than a perfect solution.
+
+Question 2:
+How can the first HTTP request be exploited?
+Let's walk through a real attack.
+
+Scenario
+You're in an airport.
+You connect to:
+Free Airport WiFi
+Attacker is on the same network.
+You type:
+http://bank.com
+
+Normal flow
+Without attacker:
+Browser
+   ↓ HTTP
+bank.com
+
+bank.com
+   ↓
+301 Redirect
+
+https://bank.com
+Everything becomes secure.
+
+Attacker in the middle
+The attacker intercepts traffic.
+Instead of forwarding the redirect:
+301 Location: https://bank.com
+they send:
+200 OK
+with their own content.
+
+What the user sees
+The page may look identical:
+BANK LOGIN
+Username
+Password
+User thinks:
+Looks normal
+and logs in.
+
+What attacker gets
+Username
+Password
+immediately.
+This is essentially a phishing page delivered through network interception.
+
+SSL Stripping
+A more sophisticated attack.
+Suppose bank.com really supports HTTPS.
+Attacker sits in the middle:
+You
+ ↓ HTTP
+Attacker
+ ↓ HTTPS
+Bank
+The attacker creates two connections:
+Attacker ↔ Bank
+HTTPS
+You ↔ Attacker
+HTTP
+You believe you're talking to the bank.
+The bank believes it's talking to you.
+In reality:
+You ←→ Attacker ←→ Bank
+
+What can attacker see?
+Everything sent over HTTP:
+Usernames
+Passwords
+Session IDs
+Form data
+because the browser never reached HTTPS.
+
+Why can't they do this after HSTS?
+Suppose you've already visited the site once and received:
+Strict-Transport-Security:
+max-age=31536000
+Now browser remembers:
+bank.com must ALWAYS use HTTPS
+Next time:
+http://bank.com
+is rewritten locally to:
+https://bank.com
+before any network traffic.
+The attacker never gets an HTTP request to intercept.
+
+Can attacker read HTTPS traffic?
+Normally:
+No
+HTTPS uses TLS.
+Without the server's private key (and other compromises), the attacker sees encrypted bytes.
+They cannot read:
+Passwords
+JWTs
+Cookies
+Account data
+
+The key takeaway
+The first-visit problem exists because:
+Browser has not yet learned:
+"This domain requires HTTPS."
+An attacker on the network can exploit that by intercepting or modifying the initial HTTP traffic, performing SSL stripping, or serving a fake page.
+That's why modern security guidance is:
+Use HTTPS everywhere.
+Enable HSTS.
+Submit to the HSTS preload list.
+Rely on browsers' HTTPS-first behavior.
+Those layers together make first-visit attacks much harder in practice.
+
+
+
 
 
 
