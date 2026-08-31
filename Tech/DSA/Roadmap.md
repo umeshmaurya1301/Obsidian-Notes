@@ -810,7 +810,7 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 
 # 🎯 Interview Questions
 
-> Curated cross-topic set of problems flagged for interview prep — matrix/grid simulation, sliding window, string DP, and graph topo-sort patterns that come up repeatedly in MAANG onsite rounds.
+> Curated cross-topic set of problems flagged for interview prep — matrix/grid simulation, sliding window, string DP, graph topo-sort, lexicographic string greedy, and BFS-on-implicit-graph patterns that come up repeatedly in MAANG onsite rounds.
 
 | S.No | Question Name             | Question Link                                                          | Status |
 | ---- | -------------------------- | ------------------------------------------------------------------------ | ------ |
@@ -842,6 +842,13 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 26.  | Moving Average from Data Stream | https://leetcode.com/problems/moving-average-from-data-stream/description/ |        |
 | 27.  | Meeting Rooms II | https://leetcode.com/problems/meeting-rooms-ii/description/ |        |
 | 28.  | Dota2 Senate | https://leetcode.com/problems/dota2-senate/description/ |        |
+| 29.  | Orderly Queue | https://leetcode.com/problems/orderly-queue/description/ |        |
+| 30.  | Largest Merge Of Two Strings | https://leetcode.com/problems/largest-merge-of-two-strings/description/ |        |
+| 31.  | Last Substring in Lexicographical Order | https://leetcode.com/problems/last-substring-in-lexicographical-order/description/ |        |
+| 32.  | Minimum Jumps to Reach End via Prime Teleportation | https://leetcode.com/problems/minimum-jumps-to-reach-end-via-prime-teleportation/description/ |        |
+| 33.  | Jump Game IV | https://leetcode.com/problems/jump-game-iv/description/ |        |
+| 34.  | Minimum Jumps to Reach Home | https://leetcode.com/problems/minimum-jumps-to-reach-home/description/ |        |
+| 35.  | Bus Routes | https://leetcode.com/problems/bus-routes/description/ |        |
 
 ---
 
@@ -858,5 +865,6 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 5.   | Monthly Transactions I | https://leetcode.com/problems/monthly-transactions-i/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 | 6.   | Immediate Food Delivery II | https://leetcode.com/problems/immediate-food-delivery-ii/description/?envType=study-plan-v2&envId=top-sql-50 | ✅      |
 | 7.   | Game Play Analysis IV | https://leetcode.com/problems/game-play-analysis-iv/description/?envType=study-plan-v2&envId=top-sql-50 |        |
+| 8.   | Product Sales Analysis III | https://leetcode.com/problems/product-sales-analysis-iii/description/?envType=study-plan-v2&envId=top-sql-50 |        |
 
 _Generated for Umesh Maurya · 4-Month MAANG DSA Roadmap · Use in Obsidian with Tasks plugin for best experience_
