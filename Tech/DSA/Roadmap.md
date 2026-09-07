@@ -18,7 +18,7 @@
 | 1    | [[#🗓️ WEEK 1 — Arrays + Hashing\|Arrays + Hashing]]                                   | Arrays, Hashing                           | 35              | ✅ Done       |
 | 2    | [[#🗓️ WEEK 2 — Two Pointers + Sliding Window\|Two Pointers + Sliding Window]]          | Two Pointers, Sliding Window              | 32              | ✅ Done       |
 | 3    | [[#🗓️ WEEK 3 — DP Part 1 (1D + Knapsack)\|DP Part 1 — 1D + Knapsack]]                | 1D DP, 0/1 Knapsack                       | 29              |               |
-| 4    | [[#🗓️ WEEK 4 — DP Part 2 (Grid + LIS + LCS)\|DP Part 2 — 2D + LIS + LCS]]            | Grid DP, LIS, LCS                         | 24              |               |
+| 4    | [[#🗓️ WEEK 4 — DP Part 2 (Grid + LIS + LCS)\|DP Part 2 — 2D + LIS + LCS]]            | Grid DP, LIS, LCS                         | 25              |               |
 | 5    | [[#🗓️ WEEK 5 — Backtracking\|Backtracking]]                                            | Subsets, Permutations, NQueen             | 21              |               |
 | 6    | [[#🗓️ WEEK 6 — Trees (BFS + DFS)\|Trees (BFS + DFS)]]                                 | Tree Traversals, Path problems            | 28              | ⚠️ Pain point |
 | 7    | [[#🗓️ WEEK 7 — Binary Search\|Binary Search]]                                          | Binary Search, Search on Answer           | 25              |               |
@@ -27,7 +27,7 @@
 | 10   | [[#🗓️ WEEK 10 — Trees Advanced + BST\|Trees Advanced + BST]]                          | BST, LCA, Serialise                       | 22              | ⚠️ Pain point |
 | 11   | [[#🗓️ WEEK 11 — DP Part 3 (Interval + Tree + Bitmask)\|DP Part 3 — Interval + Tree + Bitmask]] | Hard DP                          | 18              |               |
 | 12   | [[#🗓️ WEEK 12 — Heap / Priority Queue\|Heap / Priority Queue]]                         | Top K, Two Heaps, K-way                   | 22              |               |
-| 13   | [[#🗓️ WEEK 13 — Graphs\|Graphs]]                                                       | BFS, DFS, Union Find, Dijkstra, Topo Sort | 35              |               |
+| 13   | [[#🗓️ WEEK 13 — Graphs\|Graphs]]                                                       | BFS, DFS, Union Find, Dijkstra, Topo Sort | 36              |               |
 | 14   | [[#🗓️ WEEK 14 — Greedy\|Greedy]]                                                       | Greedy, Intervals                         | 21              |               |
 | 15   | [[#🗓️ WEEK 15 — Extras (CP Patterns)\|Extras — CP Patterns]]                          | Math, Combinatorics, Bitmask, etc.        | TBD             |               |
 
@@ -203,6 +203,7 @@
 - [x] [Maximal Square](https://leetcode.com/problems/maximal-square/) — Medium ✅ 2026-08-10
 - [x] [Dungeon Game](https://leetcode.com/problems/dungeon-game/) — Hard ✅ 2026-08-10
 - [x] [Cherry Pickup II](https://leetcode.com/problems/cherry-pickup-ii/) — Hard ✅ 2026-08-10
+- [x] [Number of Increasing Paths in a Grid](https://leetcode.com/problems/number-of-increasing-paths-in-a-grid/) — Hard ✅ 2026-09-05
 
 ## LIS — Longest Increasing Subsequence
 
@@ -596,6 +597,7 @@
 - [ ] [Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/) — Hard ✅ Neetcode
 - [ ] [Evaluate Division](https://leetcode.com/problems/evaluate-division/) — Medium 🔥
 - [ ] [Keys and Rooms](https://leetcode.com/problems/keys-and-rooms/) — Medium
+- [x] [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) — Medium ✅ 2026-09-06
 
 ## Graph BFS
 
@@ -620,12 +622,12 @@
 - [ ] [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) — Medium ✅ Neetcode 🔥
 - [ ] [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) — Hard ✅ Neetcode 🔥 **(FAANG classic)**
 - [ ] [Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) — Medium
-- [ ] [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/) — Medium
+- [x] [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/) — Medium ✅ 2026-09-05
 - [ ] [Parallel Courses](https://leetcode.com/problems/parallel-courses/) — Medium
 
 ## Dijkstra / Shortest Path
 
-- [ ] [Network Delay Time](https://leetcode.com/problems/network-delay-time/) — Medium ✅ Neetcode 🔥
+- [x] [Network Delay Time](https://leetcode.com/problems/network-delay-time/) — Medium ✅ Neetcode 🔥 ✅ 2026-09-06
 - [ ] [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/) — Medium ✅ Neetcode 🔥
 - [ ] [Path with Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/) — Medium 🔥
 - [ ] [Swim in Rising Water](https://leetcode.com/problems/swim-in-rising-water/) — Hard ✅ Neetcode
@@ -753,7 +755,7 @@
 |Arrays + Hashing|35|27|77%|
 |Two Pointers + Sliding Window|32|29|91%|
 |DP Part 1 (1D + Knapsack)|30|27|90%|
-|DP Part 2 (Grid + LIS + LCS)|24|20|83%|
+|DP Part 2 (Grid + LIS + LCS)|25|21|84%|
 |Backtracking|21|0|0%|
 |Trees BFS + DFS|28|0|0%|
 |Binary Search|26|8|31%|
@@ -762,10 +764,10 @@
 |Trees Advanced + BST|22|0|0%|
 |DP Part 3 (Interval + Tree + Bitmask)|18|0|0%|
 |Heap / PQ|22|0|0%|
-|Graphs|35|0|0%|
+|Graphs|36|3|8%|
 |Greedy|21|1|5%|
 |Extras / CP|TBD|2|—|
-|**TOTAL**|**~394**|**144**|**~37%**|
+|**TOTAL**|**~396**|**148**|**~37%**|
 
 ---
 

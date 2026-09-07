@@ -13,6 +13,9 @@
 | D | [[#☕ Section D — Round 1: Core Java, OOP & Concurrency\|Section D]] | Coding + language internals + JMM + Loom |
 | E | [[#✈️ Section E — Round 2: System Design (Flight Booking)\|Section E]] | Dynamic pricing, Redis, double booking, scaling, async |
 | F | [[#🛠️ Section F — Round 3: Software Development Practices\|Section F]] | Kafka, PII/PCI, Spring Security, Kubernetes, Istio |
+| G | [[#🧵 Section G — Rapid-Fire: Concurrency, Spring Annotations & Production Stories\|Section G]] | `synchronized`, thread pools, prod stories, `@Async`/`@Transactional` |
+| H | [[#🧩 Section H — Java Language Traps & OOP Deep Dive\|Section H]] | Abstract/default methods, access traps, pass-by-value, statics, erasure |
+| I | [[#💳 Section I — Kafka in Payments: Reliability, Retry & DLQ\|Section I]] | Producer configs, retry topics + DLQ, ordering, rebalances, incidents |
 
 ---
 
@@ -952,3 +955,229 @@ boolean isValid(String s) {
 * Guardrails: watch p99 latency + error rate per subset (Prometheus/Kiali), automated promotion/rollback via Flagger/Argo Rollouts, instant rollback = set weight back to 0.
 * Istio extras that make it real: mTLS between subsets, retries/timeouts, circuit breaking (`outlierDetection`), fault injection to test the canary.
 * Follow-ups: canary vs blue-green vs feature flags; how do you canary a **schema** change? (Backwards-compatible DB first — expand/contract, see [[#B4 — Renaming a Column on a Huge Table|B4]].) Sticky sessions during a split.
+
+---
+
+# 🧵 Section G — Rapid-Fire: Concurrency, Spring Annotations & Production Stories
+
+> [!warning] Status
+> Four questions fired back-to-back at the top of a round — short, but every one has a deep follow-up chain. Know the one-liner *and* the trap.
+
+## G1 — `synchronized`
+
+> Explain `synchronized` in Java.
+
+* Two guarantees at once: **mutual exclusion** (one thread in the monitor) **and visibility** (unlock → lock is a happens-before edge, so writes before the unlock are visible after the next lock).
+* Instance method → locks `this`; static method → locks the `Class` object; block → locks whatever you pass. Locking `this` publicly is a leak — anyone can grab your lock.
+* **Reentrant** — the same thread can re-enter a monitor it already holds (recursion, one synchronized method calling another).
+* JVM: `monitorenter`/`monitorexit` bytecode; lock inflation thin → fat under contention (biased locking removed in JDK 15+).
+* **`synchronized` vs `ReentrantLock`:** the lock gives you `tryLock`, timed/interruptible acquire, fairness, multiple `Condition`s, non-block-scoped locking. `synchronized` is simpler and auto-releases on exception.
+* **Loom trap:** a virtual thread blocking inside `synchronized` **pins** its carrier thread (much improved in JDK 24) → prefer `ReentrantLock` in virtual-thread code. See [[#D11 — ExecutorService vs CompletableFuture vs Virtual Threads|D11]].
+* Follow-ups: does `synchronized` make `i++` atomic? (Only inside the block.) `volatile` vs `synchronized` — visibility only vs visibility + mutual exclusion, see [[#D10 — Java Memory Model and Concurrency|D10]]. Double-checked locking and why the field must be `volatile`.
+
+## G2 — Why Use `ThreadPoolExecutor`
+
+> Why do we use `ThreadPoolExecutor` instead of creating threads directly?
+
+* **Thread creation is expensive** (~1 MB stack + OS scheduling); a pool amortises it and **bounds** concurrency so a traffic burst can't spawn 10k threads and OOM the JVM.
+* Gives you a **queue + back-pressure + rejection policy** — a defined place to shed load instead of collapsing.
+* Constructor knobs: `corePoolSize`, `maximumPoolSize`, `keepAliveTime`, `workQueue`, `ThreadFactory`, `RejectedExecutionHandler`.
+* **The counter-intuitive rule:** with an **unbounded** queue (`LinkedBlockingQueue`), `maximumPoolSize` is never reached — the queue absorbs everything and the pool never grows past core. Use a **bounded** queue if you want the pool to expand.
+* Rejection policies: `AbortPolicy` (default, throws), `CallerRunsPolicy` (natural back-pressure — the submitter slows down), `DiscardPolicy`, `DiscardOldestPolicy`.
+* Sizing: CPU-bound ≈ `cores + 1`; I/O-bound ≈ `cores × (1 + wait/service)` — measure, don't guess.
+* **Why not `Executors.newFixedThreadPool` / `newCachedThreadPool`:** unbounded queue and unbounded thread count respectively — both are an OOM waiting to happen; construct `ThreadPoolExecutor` explicitly.
+* Follow-ups: separate pools per dependency (**bulkhead**) so a slow PSP can't starve the DB path; monitor `getActiveCount()` / `getQueue().size()` and alert on queue depth; `shutdown()` vs `shutdownNow()`; do virtual threads make pools obsolete? (For I/O-bound work largely yes — but you still need a **semaphore** to bound downstream concurrency, see [[#D12 — Connection Pooling vs Virtual Threads|D12]].)
+
+## G3 — A Production Problem You Faced and How You Solved It
+
+> Tell me a common problem you faced in production and how you overcame it.
+
+* **Structure it STAR-lite:** symptom → how you detected it (a metric/alert, not "a user complained") → diagnosis → fix → the guardrail that stops it recurring.
+* Keep **2–3 rehearsed stories** with real numbers, ideally one per class of failure:
+  * **Latency / thread starvation** — pool exhausted by a slow downstream → bulkhead + timeouts + circuit breaker ([[#G2 — Why Use `ThreadPoolExecutor`|G2]]).
+  * **Data correctness** — duplicate debit from an at-least-once retry → idempotency key + DB unique constraint, see [[#Q2 — Behaviour on Kafka / Redis / DB Failure|Q2]].
+  * **Contention / locking** — deadlock or a hot row under load → lock ordering / sharded counters, see [[#C1 — Pessimistic Locking & Deadlock Redesign|C1]] and [[#C3 — Flash Sale / Hot Wallet: 20k TPS on One Account|C3]].
+  * **Kafka operational** — consumer lag spike or rebalance storm, see [[#I5 — Operational Failures: What Problems Did Kafka Cause You|I5]].
+* State the **blast radius** (transactions/customers affected, duration) and the **permanent guardrail** (alert, test, config, runbook) — the fix alone is only half the answer.
+* Anti-patterns: a generic "we added more pods", blaming another team, or a story with no metric behind it.
+
+## G4 — `@Async` and `@Transactional`
+
+> Explain the `@Async` and `@Transactional` annotations in Spring Boot.
+
+* Both are **proxy-based AOP** — Spring wraps the bean in a proxy, which is the root of the shared traps below.
+* **`@Transactional`**
+  * Opens a transaction, binds the `Connection` to the thread (`ThreadLocal`), commits on normal return, rolls back on **unchecked** exceptions only — checked ones need `rollbackFor = Exception.class`.
+  * `propagation`: `REQUIRED` (default, joins), `REQUIRES_NEW` (suspends the outer one — separate connection, self-deadlock risk), `NESTED` (savepoint), `MANDATORY`, `SUPPORTS`, `NOT_SUPPORTED`, `NEVER`.
+  * Also `isolation`, `timeout`, `readOnly = true` (flush-mode hint + read-replica routing).
+* **`@Async`**
+  * Returns immediately; the body runs on a `TaskExecutor`. Return `void` or `CompletableFuture<T>` — never a plain value.
+  * Needs `@EnableAsync`. **Always define your own `Executor` bean** — the default `SimpleAsyncTaskExecutor` creates a *new thread per call* (unbounded). Since Boot 3.2, `spring.threads.virtual.enabled=true` switches it to virtual threads.
+  * An exception in a `void` `@Async` method vanishes → register an `AsyncUncaughtExceptionHandler`.
+* **The three classic traps**
+  1. **Self-invocation** — calling an annotated method from inside the same bean bypasses the proxy, so the annotation silently does nothing. Fix: move it to another bean, or self-inject.
+  2. **`private` / `final` methods** — a proxy can't intercept them; silent no-op.
+  3. **`@Async` + `@Transactional` together** — the transaction does **not** cross the thread boundary; the async thread starts a fresh one, and lazy JPA entities handed to it blow up with `LazyInitializationException`. Pass IDs, not entities.
+* **The correctness trap that bites in payments:** publishing an event from inside a transaction that later rolls back → a ghost event. Fix: `@TransactionalEventListener(phase = AFTER_COMMIT)` or the **transactional outbox** pattern, see [[#I1 — Producer-Side Reliability & Delivery Guarantees|I1]].
+* Follow-ups: how do you test rollback behaviour? Why is `@Transactional` on a controller method usually the wrong boundary? Read-only transactions and replica routing.
+
+---
+
+# 🧩 Section H — Java Language Traps & OOP Deep Dive
+
+> [!example] Origin
+> Built out from three questions that went wrong in a round: an abstract class's concrete method calling its abstract method, private-field access across instances, and pass-by-value with reassignment. Interviewers circle back with variants once they find a soft spot — so each block below drills the same concept from a different angle. ⭐ = actually asked.
+
+## H1 — Abstract Classes, Interfaces & Default Methods
+
+> ⭐ An abstract class has abstract method `A()` and concrete method `B()`. Can `B()` call `A()` — compile error or not?
+
+* **No error.** A call only needs a valid signature at compile time; the real implementation binds at runtime via dynamic dispatch. This is the **template method pattern** in one line.
+* **Diamond defaults:** interfaces `X` and `Y` both declare `default void greet()` and a class implements both → **compile error**. Java refuses to pick one; you must override and disambiguate with `X.super.greet()`.
+* **`private` interface methods (Java 9+)** exist so `default`/`static` interface methods can share code without leaking it into the public API.
+* **Static methods are never polymorphic** — they can't be overridden, only **hidden**; interface statics aren't inherited at all and must be called via the interface name.
+* **Abstract classes can and do have constructors** — they run via `super()` from a concrete subclass to initialise common state.
+* An **anonymous subclass** overriding the abstract method **cannot** call a `private` method of the abstract class — private members aren't inherited, and the anonymous body is a separate class body.
+* Follow-ups: abstract class vs interface (state + constructors vs multiple inheritance of behaviour); can an abstract class have zero abstract methods? (Yes.) Can it be `final`? (No — a contradiction.)
+
+## H2 — Access Modifiers & Encapsulation Traps
+
+> ⭐ `Person.compareAge(Person other)` reads `other.age`, where `age` is `private`. Compile error?
+
+* **No.** `private` is scoped to the **class**, not the object — any `Person` can read any other `Person`'s privates. Exactly how `equals()`, `compareTo()` and copy constructors are written.
+* **Opposite trap:** inside `Student extends Person`, `person.age` is **denied** — private members are not inherited or visible to subclasses at all.
+* **Declared type wins:** a parameter typed `Object other` holding a `Person` at runtime still can't do `other.age` — access is checked against the **static** type. Cast first.
+* **Nested classes DO get access** to the enclosing class's private members and vice versa — nestmates since Java 11, previously via synthetic bridge methods. Commonly assumed blocked.
+* **Reflection:** `field.get(obj)` on a private field without `setAccessible(true)` compiles fine and throws `IllegalAccessException` at runtime — access control is enforced at runtime too. (On JDK 17+, `setAccessible` on JDK-internal types throws `InaccessibleObjectException`.)
+* Follow-ups: `protected` vs package-private; why `protected` also grants package access; module-level encapsulation (`exports` / `opens`). See [[#D8 — Java Reflection API|D8]].
+
+## H3 — Pass-by-Value, References & Object Mutation
+
+> ⭐ A method receives an object reference, reassigns it (`x = new Counter(2)`), then mutates the new object. Does the caller see anything?
+
+* **No.** Java is **always pass-by-value** — the *reference value* is copied, so reassigning the parameter rebinds only the local copy. Only mutating the object the caller's reference already points at is visible. Core note: [[#D4 — Java Pass-by-Value Semantics|D4]].
+* **`swap(Person a, Person b)` can never work** — the classic disguised version of the same question.
+* **`str = str + "abc"` on a `String` parameter** changes nothing for the caller: `String` is immutable, so `+` allocates a new object and rebinds the local. Same trap, rooted in immutability. See [[#D3 — String Immutability and Thread Safety|D3]].
+* **Arrays:** `arr[0] = 99` **is** visible (mutation through the reference); `arr = new int[]{1,2,3}` is **not** (reassignment). Same rule, applied to arrays.
+* **`Integer a = 100, b = 100; a == b` → `true`, but with `1000` → `false`.** `Integer.valueOf()` caches −128..127, so autoboxing reuses cached objects only in that range. Never compare boxed types with `==`; and beware the NPE when unboxing a `null Integer`.
+* Follow-ups: `final` parameters (block rebinding, not mutation); effectively-final capture in lambdas; defensive copies, see [[#D5 — Shallow Copy vs Deep Copy|D5]].
+
+## H4 — `equals()`, `hashCode()` & Object Identity
+
+> Override `equals()` but not `hashCode()`, put the object in a `HashSet`, then call `set.contains(equalObject)`. Found or not?
+
+* **Not found.** Unequal hash codes route equal objects to different buckets, so the set never even reaches the `equals()` comparison — override one, override both.
+* Contract: equal objects **must** have equal hash codes (the converse isn't required); `hashCode` must stay stable while the object sits in a hash structure — **never key on a mutable field**.
+* `String s1 = new String("abc"); String s2 = "abc";` → `s1 == s2` is `false` (heap object vs pooled literal), `s1.equals(s2)` is `true`. `new String()` deliberately bypasses interning; `s1.intern() == s2` is `true`.
+* Follow-ups: symmetry broken by `instanceof` across a subclass (`getClass()` vs `instanceof` debate); why records generate both for free; `Objects.hash()` allocation cost in hot paths.
+
+## H5 — Static Context: Method Hiding vs Overriding
+
+> Parent and child both declare a `static` method with the same signature. You call it through a `Parent`-typed reference pointing to a `Child`. Which runs?
+
+* **Parent's.** Static methods bind by **declared (compile-time) type** — this is *hiding*, not overriding. The single most common polymorphism trick question.
+* **Fields behave the same way, even instance fields** — `Parent.x` vs `Child.x` through a `Parent` reference gives the parent's value. **Fields never participate in polymorphism**; only instance methods do.
+* **A constructor calling an overridable method:** the subclass override runs *before* the subclass's fields are initialised, so it sees defaults (`0` / `null`), not the field initialiser. Classic bug — never call an overridable method from a constructor.
+* Follow-ups: why `@Override` won't compile on a static method; can you hide a `private` method? (There's nothing to hide — it isn't inherited.)
+
+## H6 — Constructors & Initialization Order
+
+> With a 3-level hierarchy each having static blocks, instance initialiser blocks and constructors — what is the exact execution order when you instantiate the deepest subclass?
+
+* **On class load (once, top-down):** static fields + static blocks of Parent → Child → Grandchild.
+* **Per instantiation:** Parent instance blocks → Parent constructor → Child instance blocks → Child constructor → Grandchild instance blocks → Grandchild constructor. Instance initialisers always run **after** `super()` but **before** the constructor body.
+* **`this(...)` and `super(...)` can't both appear** — only one explicit constructor call, and it must be the first statement. The other happens implicitly/transitively.
+* Follow-ups: what if a static block throws? (`ExceptionInInitializerError`, then `NoClassDefFoundError` on every later use.) When is a class actually loaded vs initialised? Circular static dependencies.
+
+## H7 — Exceptions in Overriding & the `finally` Trap
+
+> Parent's method declares `throws IOException`. Can the override declare `throws Exception`?
+
+* **No** — an override may throw the **same, narrower, or no** checked exceptions; never broader. Unchecked exceptions are unrestricted in both directions.
+* **`try` returns a value and `finally` also returns → `finally` wins**, silently discarding the `try` return *and* swallowing any in-flight exception. Never `return` (or `throw`) from `finally`.
+* Related: try-with-resources closes in reverse order and attaches close failures as **suppressed** exceptions (`getSuppressed()`) instead of masking the primary one.
+* Follow-ups: the checked vs unchecked design debate; why `@Transactional` rolls back only on unchecked by default, see [[#G4 — `@Async` and `@Transactional`|G4]]. Also [[#D9 — Java Exception Handling Improvements|D9]].
+
+## H8 — Generics & Type Erasure
+
+> Inside `class Box<T>`, why can't you write `new T()` or `new T[10]`?
+
+* **Type erasure** — `T` doesn't exist at runtime, so the JVM has no type to instantiate. Workaround: pass a `Class<T>` or `Supplier<T>` factory in.
+* **`void process(List<String>)` and `void process(List<Integer>)` won't compile in the same class** — both erase to `process(List)`, a duplicate signature.
+* Other consequences: no `instanceof List<String>`, no generic array creation, `static` members can't use the class's type parameter, `catch (T e)` is illegal.
+* Follow-ups: PECS (`? extends` produces, `? super` consumes); bridge methods; how frameworks recover generic info at runtime (`TypeToken` / `ParameterizedType` — erasure does keep field and method signatures).
+
+> [!tip] H — Quick-Review Cheat Sheet
+> - **`private`** = scoped to the class body, checked against the **declared type** of the reference, never inherited by subclasses — but nested classes *do* get in.
+> - **Pass-by-value always** — reassigning a parameter never reaches the caller; only mutating the already-referenced object does.
+> - **Static anything (and all fields)** binds by declared type at compile time. Only **instance methods** get dynamic dispatch.
+> - **`equals()` and `hashCode()` are a pair** — override one, override both, or hash-based collections silently break.
+> - **Immutability (`String`, wrappers)** turns "mutation" bugs into "reassignment" bugs — the same root cause as pass-by-value confusion. `Integer` cache = −128..127.
+> - **Overriding + exceptions:** narrower or equal checked exceptions only, never broader. A `return` in `finally` beats everything.
+> - **Generics are erased** — no `new T()`, no erasure-colliding overloads, no runtime generic type checks.
+
+---
+
+# 💳 Section I — Kafka in Payments: Reliability, Retry & DLQ
+
+> [!example] Origin
+> A payments-flavoured Kafka round: half "prove you can build reliable delivery", half "prove you've actually operated this and hit real failure modes". Complements the mechanics in [[#Q5 — Kafka Partitions, Consumers & Rebalancing|Q5]] and [[#F1 — Kafka Producer/Consumer Architecture and Reliability|F1]]. ⭐ = actually asked.
+
+## I1 — Producer-Side Reliability & Delivery Guarantees
+
+> ⭐ Walk through every config you'd set on a payment-events producer — `acks`, `enable.idempotence`, `retries`, `max.in.flight.requests.per.connection`, `delivery.timeout.ms`. What does each actually protect against?
+
+* `acks=all` + `min.insync.replicas=2` → no data loss when a broker dies. `enable.idempotence=true` → producer ID + per-partition sequence number lets the broker drop retry duplicates. `max.in.flight ≤ 5` is the highest value that still preserves ordering **with** idempotence on. `retries=MAX_VALUE`, bounded in practice by `delivery.timeout.ms` — that is the real "give up" knob.
+* **Idempotence is per producer session.** A crash + restart gets a new producer ID, so cross-session duplicates are still possible → end-to-end dedup needs an **application-level idempotency key**, not just the producer flag.
+* **Kafka transactions** (`transactional.id`, `initTransactions`) address the **dual-write problem** — a DB write and a publish aren't atomic. The practical payments answer is the **transactional outbox**: write the event to an outbox table in the same DB transaction, then relay it with CDC/Debezium or a poller using `SKIP LOCKED` (see [[#C2 — `FOR UPDATE` vs `FOR SHARE` vs `SKIP LOCKED`|C2]]).
+* **Trade-off of cranking `retries` up:** with `max.in.flight > 1` and idempotence off you get **reordering**; and a long `delivery.timeout.ms` means the upstream REST caller times out before Kafka ever reports the failure.
+
+## I2 — Retry & DLQ Design
+
+> ⭐ Describe your retry + DLQ setup for payment processing end to end. Where does a message go after N failed retries, and what decides "retry" vs "DLQ immediately"?
+
+* **Classify first:** *retryable* (downstream timeout, transient DB lock, 5xx) → bounded retries with backoff; *non-retryable* (malformed payload, schema failure, business-rule violation, 4xx) → straight to DLQ. Don't burn the retry budget on something that can never succeed.
+* **Retry topology trade-offs**
+  * *In-memory / blocking retry* — simple, but blocks the partition (**head-of-line blocking**) while it spins.
+  * *Re-publish to the same topic* — loses ordering and can loop forever.
+  * *Chain of retry topics with increasing delay* (`retry-5s` → `retry-30s` → `retry-5m` → `dlq`) — the main topic keeps flowing and backoff is tunable per stage. This is the answer they're after.
+* **Poison message** stuck at the head of a partition, crashing the consumer on every redelivery: catch deserialization/processing exceptions explicitly, route that offset to the DLQ, and **manually advance past it** — never let the exception propagate and stall the partition. (Spring Kafka: `DefaultErrorHandler` + `DeadLetterPublishingRecoverer`.)
+* **A DLQ record must be replayable:** original headers, key, partition/offset, retry count, failure reason, timestamp. Replaying a payment must be **idempotent** — a redelivered debit must never double-charge.
+* **Alert on DLQ volume in near real time**, not on a dashboard someone checks weekly — a stuck payment is a customer-facing/compliance incident, not just an engineering metric. Alert on *arrival rate*, plus a separate alert on non-empty-for-N-minutes.
+
+## I3 — Ordering, Partitioning & Idempotency
+
+> How do you guarantee all events for the same payment are processed in order, and how do you make the consumer idempotent?
+
+* **Order:** partition key = `transaction_id` (or account/user ID) so all related events land on one partition — Kafka orders **within a partition only**, never across partitions.
+* **Consumer idempotency**, independent of anything the producer did: unique idempotency key + a **DB unique constraint** on a `processed_events` table, or a Redis dedup key with TTL checked before processing. The DB constraint is authoritative; Redis is only an optimisation.
+* **At-least-once + idempotent consumer beats chasing exactly-once.** Kafka EOS covers Kafka↔Kafka and Kafka↔DB through the same transaction coordinator — it cannot make an external HTTP call to a PSP exactly-once. That boundary needs application-level idempotency regardless, so build it there and keep the pipeline simple.
+* **Increasing partition count silently breaks key→partition mapping** — `hash(key) % partitions` changes, so future events for an in-flight key land on a different partition and can be processed out of order against the old ones. Plan the migration (drain first, or use a partition-stable scheme).
+
+## I4 — Consumer Groups & Rebalancing Problems
+
+> What causes a consumer group rebalance, and why is a rebalance storm worse in a payments pipeline?
+
+* Triggers: consumer join/leave, `session.timeout.ms` heartbeat miss, `max.poll.interval.ms` exceeded, partition-count change. With the eager protocol the **whole group stops** during the rebalance — every payment in that group stalls, adding settlement latency. Fixes: cooperative-sticky assignor, `group.instance.id` (static membership) so a rolling restart doesn't reshuffle assignments.
+* **"Kicked out but never crashed"** = processing time per batch exceeding **`max.poll.interval.ms`** — *not* `session.timeout.ms` (the heartbeat runs on its own thread since 0.10.1). Fixes: shrink `max.poll.records`, move heavy work off the poll thread, or raise the interval deliberately. Conflating the two timeouts is the mistake they're listening for.
+* **Manual commit, always,** for anything financial: auto-commit can commit an offset for a message whose processing never finished → silent loss on crash.
+* **Commit before vs after processing:** before = at-most-once (silent loss); after the side effects are durable = at-least-once (reprocessing). Payments pick at-least-once and absorb duplicates with idempotency ([[#I3 — Ordering, Partitioning & Idempotency|I3]]).
+
+## I5 — Operational Failures: What Problems Did Kafka Cause You
+
+> ⭐ Kafka gives you async decoupling and durability — what did it cost you operationally? Give a concrete incident, not a generic answer.
+
+* They want **specific failure mode → detection → diagnosis → fix → guardrail**. Incidents worth rehearsing:
+  * **Consumer lag spike** during a traffic burst — but diagnose properly: lag climbs from under-provisioned consumers *or* from a slow downstream (DB/PSP). Adding consumers does nothing if partition count is already the ceiling, or if the real limit is downstream throughput.
+  * **ISR shrinking below `min.insync.replicas`** with `acks=all` → the producer throws `NotEnoughReplicasException`. The app needs an explicit fallback — fail fast, buffer to the outbox, alert — never swallow it, because a payment event that fails to publish must not be dropped.
+  * **Schema change breaking consumers** (new required field or a type change) → deserialization failures downstream. Prevention: schema registry with backward/forward compatibility rules. Mid-incident: dead-letter the unparseable records and roll back/hotfix rather than losing them.
+  * **Rebalance storm** from a slow poll loop ([[#I4 — Consumer Groups & Rebalancing Problems|I4]]); **broker disk filling up** from a retention misconfiguration.
+* **The honest trade-off half** (vs a plain synchronous REST call): cluster ops (broker sizing, replication, partition rebalancing), harder distributed tracing across an async boundary, eventual consistency leaking into product behaviour ("why does the receipt take 3 seconds?"), and DLQ replay tooling that needs its own monitoring. That "cost" half is what most candidates skip.
+
+> [!tip] I — Quick-Review Cheat Sheet
+> - **Producer:** `acks=all`, `enable.idempotence=true`, `max.in.flight ≤ 5`, `retries=MAX`, `delivery.timeout.ms` chosen deliberately, `min.insync.replicas=2`.
+> - **Consumer:** manual commit **after** processing, `max.poll.records` tuned to processing time, app-level dedup key.
+> - **DLQ pattern:** classify retryable vs not → bounded retries with backoff via **separate retry topics** (not blocking in-memory loops) → DLQ with full replay metadata → **active alerting**, not a passive dashboard.
+> - **Ordering:** within a partition only; key by transaction/account ID; partition-count changes silently break the mapping.
+> - **Exactly-once reality check:** Kafka EOS covers Kafka↔Kafka/DB only. Anything crossing an external PSP boundary still needs application idempotency — end-to-end exactly-once is never free.
+> - **Have a story ready for:** rebalance storms from slow poll loops, ISR shrinkage under `min.insync.replicas`, lag from downstream slowness (not under-scaling), schema evolution breaking consumers, poison messages stalling a partition.
