@@ -844,7 +844,7 @@ That's the profile that walks into a Google L4 loop with 50-55% clearance probab
 | 26.  | Moving Average from Data Stream | https://leetcode.com/problems/moving-average-from-data-stream/description/ |        |
 | 27.  | Meeting Rooms II | https://leetcode.com/problems/meeting-rooms-ii/description/ |        |
 | 28.  | Dota2 Senate | https://leetcode.com/problems/dota2-senate/description/ |        |
-| 29.  | Orderly Queue | https://leetcode.com/problems/orderly-queue/description/ |        |
+| 29.  | Orderly Queue | https://leetcode.com/problems/orderly-queue/description/ | ✅ 2026-09-14 |
 | 30.  | Largest Merge Of Two Strings | https://leetcode.com/problems/largest-merge-of-two-strings/description/ |        |
 | 31.  | Last Substring in Lexicographical Order | https://leetcode.com/problems/last-substring-in-lexicographical-order/description/ |        |
 | 32.  | Minimum Jumps to Reach End via Prime Teleportation | https://leetcode.com/problems/minimum-jumps-to-reach-end-via-prime-teleportation/description/ |        |
