@@ -1,5 +1,5 @@
-1. Synchronize
-2. Why do we use the Thread Pool Executor
+1. Synchronize → [[3. Synchronization]]
+2. Why do we use the Thread Pool Executor → [[4. Executors and Thread Pools]]
 3. Common problem u faced in production and how did u overcame that
 4. Async and Transactional annotations of the spring boot.
 5. What are the design patterns used in the distributed systems, with pros and cons and also what all have u used.
@@ -527,5 +527,39 @@ static double area(Shape s) {
 - **Marker interface** = zero-method interface used as a runtime `instanceof` tag (`Serializable`, `Cloneable`, `Remote`, `RandomAccess`). `Cloneable` is the textbook example of the pattern done badly — prefer copy constructors over `clone()`.
 - **`serialVersionUID`** should always be declared explicitly — an implicit one is fragile to innocuous code changes. **`transient`** opts a field out of default serialization.
 - **Annotations superseded marker interfaces** for new APIs because they carry parameters and don't cost a hierarchy slot — `@FunctionalInterface` is an annotation, not a marker interface, despite the naming similarity.
+
+
+
+# HashMap Internals — Interview Practice Set
+
+Comes up as a quick follow-up whenever you mention using a `HashMap` at scale — interviewers want to see you reason about amortized vs. worst-case cost, not just recite "O(1) average."
+
+---
+
+## 1. Insertion Cost at Scale
+
+**Q1.** You insert 1 million `String` keys into a `HashMap<String, V>`. Walk through the time and space complexity — average case, worst case, and what actually drives the constants.
+*Concept tested:*
+- **Time (average case):** O(1) per `put`, but that hides the cost of `String.hashCode()`, which is O(k) for a string of length k (cached after the first call on that instance) — so a more honest per-insert cost is O(k), giving O(n·k) total for n strings of average length k, not a flat O(n).
+- **Time (worst case):** if many keys collide into the same bucket (pathological hash or undersized capacity), each bucket degrades to a linked-list scan, O(bucket size) per insert. Java 8+ treeifies a bucket into a red-black tree once it exceeds 8 entries, bounding worst-case per-bucket cost to O(log n) instead of O(n) — so overall worst case is O(n log n) on Java 8+, O(n²) pre-Java 8.
+- **Resizing:** default load factor 0.75 means the table doubles and rehashes every entry once size exceeds capacity × 0.75. Each resize is O(current size), but — like `ArrayList` growth — the amortized cost across n insertions is still O(n); it doesn't change the asymptotic bound, just adds latency spikes mid-load.
+- **Space:** O(n·k) — n `Node` objects (key ref, value ref, hash int, next ptr, ≈32–48 bytes overhead each on a 64-bit JVM) plus the actual `String` objects (header + char/byte array), plus the bucket array itself, sized to the next power of two above n/0.75 (for n=1,000,000 that's 2²¹ ≈ 2.1M slots, ~16MB of references before any entries are counted).
+- **Interview-safe one-liner:** "O(n) amortized time and O(n) space, both scaled by average key length k — and the time bound degrades to O(n log n) rather than O(n²) under heavy collisions because of Java 8's bucket treeification."
+
+**Q2.** Why does `HashMap` size its table to the next power of two instead of just `n / loadFactor`, and why does that matter for `String` keys specifically?
+*Concept tested: a power-of-two table size lets the bucket index be computed via `hash & (capacity - 1)` (a cheap bitmask) instead of `hash % capacity` (a division). `HashMap` also XORs a string's 32-bit hash with itself shifted right 16 bits (`hash ^ (hash >>> 16)`) before masking, specifically to spread entropy from the high bits into the low bits the mask actually uses — `String.hashCode()`'s low bits can cluster for similar-looking keys otherwise.*
+
+**Q3.** If you know upfront you're inserting 1 million entries, what should you do differently when constructing the `HashMap`?
+*Concept tested: pass an initial capacity sized for the known load (`new HashMap<>(1_500_000)`, ≈1M/0.75) to avoid repeated incremental resizes — each resize rehashes every existing entry, so growing from the default 16 up to ~1.3M one doubling at a time burns CPU during the exact window you're trying to load data fast.*
+
+---
+
+## Quick-Review Cheat Sheet
+
+- **Average time per insert is O(k), not O(1)** — k is hashCode computation + equals-on-collision cost, both proportional to string length.
+- **Worst case is O(log n) per bucket (Java 8+ treeification), O(n) per bucket pre-Java 8** — collisions degrade gracefully, not catastrophically, on modern JVMs.
+- **Resizing is amortized O(n) overall**, same reasoning as `ArrayList` growth — doesn't change the asymptotic bound, just causes transient latency spikes.
+- **Space is O(n·k)**: node overhead (~32–48 bytes/entry) + bucket array (power-of-two sized, ~16MB of refs alone at 1M entries) + the actual String payloads.
+- **Pre-size the map** when the final size is known, to skip redundant resize/rehash passes during bulk load.
 
 
